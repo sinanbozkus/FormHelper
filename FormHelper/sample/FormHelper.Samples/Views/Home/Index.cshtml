@@ -29,7 +29,7 @@
                     @formConfig.FormTitle
                 </div>
                 <div class="card-body">
-                    <form id="@formConfig.FormId" asp-controller="Home" asp-action="Save">
+                    <form id="@formConfig.FormId" asp-controller="Home" asp-action="Save" enctype="multipart/form-data">
 
                         <input type="hidden" asp-for="Id" />
 
@@ -54,6 +54,11 @@
                             <label asp-for="Active"></label>
                             <input asp-for="Active" type="checkbox" />
                             <span asp-validation-for="Active" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="File"></label>
+                            <input asp-for="File" type="file" class="form-control-file" />
+                            <span asp-validation-for="File" class="text-danger"></span>
                         </div>
                         <hr />
                         <div class="form-group text-right">

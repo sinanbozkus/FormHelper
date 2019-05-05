@@ -1,4 +1,5 @@
 ﻿using FormHelper.Samples.Enums;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace FormHelper.Samples.Models
@@ -11,7 +12,7 @@ namespace FormHelper.Samples.Models
         [Display(Name = "In Stock")]
         public int InStock { get; set; }
         public bool Active { get; set; } = true;
-
+        public IFormFile File { get; set; }
 
         public bool IsNew => Id == default;
     }
