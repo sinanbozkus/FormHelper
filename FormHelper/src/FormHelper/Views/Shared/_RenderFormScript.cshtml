@@ -1,0 +1,76 @@
+﻿@using FormHelper.Extensions
+@using FormHelper.Enums
+@model FormHelper.Types.FormConfig
+
+<script>
+    $(document).ready(function () {
+
+
+    $("#@Model.FormId").submit(function() {
+        
+        $(this).removeData("validator");
+        $(this).removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($(this));
+
+        var validationResult = $(this).valid();
+
+        if (!validationResult) {
+            toastr.error("Check the form fields.");
+        }
+    });
+
+    $("#@Model.FormId").ajaxForm({
+        beforeSubmit: function (arr, $form, options) {
+
+            @if (Model.ViewContext.HttpContext.Request.IsMobileDevice())
+            {
+                @(Html.Raw("toastr.options.positionClass =  \"toast-top-full-width\";"));
+            }
+
+            return $("#@Model.FormId").valid();
+        },
+        success: function (result, statusText, xhr, $form) {
+
+            if (!result.isSucceed) {
+                $form.find("button[type='submit'], button[type='reset']").removeAttr('disabled');
+            }
+
+            if (result.message !== null) {
+                if (result.isSucceed) {
+                    toastr.success(result.message);
+                } else {
+                    if (result.status == @FormResultStatus.Info.GetHashCode()) {
+                        toastr.info(result.message);
+                    } else if (result.status == @FormResultStatus.Warning.GetHashCode()) {
+                        toastr.warning(result.message);
+                    } else if (result.status == @FormResultStatus.Error.GetHashCode()) {
+                        toastr.error(result.message);
+                    }
+                }
+            }
+            if (result.validationErrors != null && result.validationErrors.length > 0) {
+                $form.find("button[type='submit'], button[type='reset']").removeAttr('disabled');
+                var validator = $("#@Model.FormId").validate();
+                for (var i in result.validationErrors) {
+                    var propertyName = result.validationErrors[i].propertyName;
+                    var errorMessage = result.validationErrors[i].message;
+                    var obj = new Object();
+                    obj[propertyName] = errorMessage;
+                    validator.showErrors(obj);
+                }
+            }
+
+            @if(!string.IsNullOrWhiteSpace(Model.Callback)) {
+                @(Html.Raw($"{Model.Callback}(result);"))
+            }
+
+            if (result.redirectUri != null){
+                setTimeout(function() {
+                    window.location.replace(result.redirectUri);
+                }, result.message !== null ? 2000 : 1);
+            }
+        }
+    });
+
+});
+</script>
