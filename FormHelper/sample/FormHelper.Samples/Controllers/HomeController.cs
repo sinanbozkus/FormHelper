@@ -24,16 +24,18 @@ namespace FormHelper.Samples.Controllers
                 return Json(new FormResult
                 {
                     Status = FormResultStatus.Warning,
-                    Message = "'Abc' is already recorded in the database."
+                    Message = "'Abc' is already exist in the database."
                 });
             }
 
+            return FormResult.CreateSuccessResult("Product saved.");
 
-            return Json(new FormResult
-            {
-                Status = FormResultStatus.Success,
-                Message = "Product saved."
-            });
+            // CreateSuccessResult Called this usage:
+            //return Json(new FormResult
+            //{
+            //    Status = FormResultStatus.Success,
+            //    Message = "Product saved."
+            //});
         }
 
 

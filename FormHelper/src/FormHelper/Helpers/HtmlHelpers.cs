@@ -11,9 +11,6 @@ namespace FormHelper.Helpers
     {
         public static async Task<HtmlString> RenderFormScript(this IHtmlHelper html, FormConfig config)
         {
-            var list = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames();
-
-
             var viewRenderHelper = config.ViewContext.HttpContext.RequestServices.GetService<IViewRenderService>();
 
             var result = await viewRenderHelper.RenderToStringAsync("_RenderFormScript", config);

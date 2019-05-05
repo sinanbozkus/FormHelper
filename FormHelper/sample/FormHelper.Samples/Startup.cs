@@ -23,10 +23,13 @@ namespace FormHelper.Samples
         public void ConfigureServices(IServiceCollection services)
         {
             // Add FormHelper to the project.
-            services.AddFormHelper(new FormHelperConfiguration
-            {
-                CheckTheFormFieldsMessage = "Form alanlarını kontrol ediniz."
-            });
+            services.AddFormHelper();
+
+            // Add FormHelper to the project with configurations.
+            //services.AddFormHelper(new FormHelperConfiguration
+            //{
+            //    CheckTheFormFieldsMessage = "Form alanlarını kontrol ediniz."
+            //});
 
             // You can add these validators in a separate class.
             services.AddValidator<ProductFormViewModel, ProductFormViewModelValidator>();
