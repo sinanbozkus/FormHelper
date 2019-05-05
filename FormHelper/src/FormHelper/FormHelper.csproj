@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>FormHelper</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>Sinan Bozkus</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
