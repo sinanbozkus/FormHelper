@@ -1,5 +1,8 @@
-﻿@using FormHelper.Extensions
+﻿@using FormHelper
+@using FormHelper.Extensions
 @using FormHelper.Enums
+@using FormHelper.Types
+@inject FormHelperConfiguration Configuration
 @model FormHelper.Types.FormConfig
 
 <script>
@@ -7,7 +10,7 @@
 
 
     $("#@Model.FormId").submit(function() {
-        
+
         $(this).removeData("validator");
         $(this).removeData("unobtrusiveValidation");
         $.validator.unobtrusive.parse($(this));
@@ -15,7 +18,7 @@
         var validationResult = $(this).valid();
 
         if (!validationResult) {
-            toastr.error("Check the form fields.");
+            toastr.error("@Configuration.CheckTheFormFieldsMessage");
         }
     });
 
@@ -67,7 +70,7 @@
             if (result.redirectUri != null){
                 setTimeout(function() {
                     window.location.replace(result.redirectUri);
-                }, result.message !== null ? 2000 : 1);
+                }, result.message !== null ? @Configuration.RedirectDelay : 1);
             }
         }
     });

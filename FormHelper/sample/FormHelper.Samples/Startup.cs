@@ -1,6 +1,7 @@
 ﻿using FormHelper.Extensions;
 using FormHelper.Samples.Models;
 using FormHelper.Samples.Validators;
+using FormHelper.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -25,10 +26,13 @@ namespace FormHelper.Samples
         public void ConfigureServices(IServiceCollection services)
         {
             // Add FormHelper to the project.
-            services.AddFormHelper();
+            services.AddFormHelper(new FormHelperConfiguration
+            {
+                CheckTheFormFieldsMessage = "Form alanlarını kontrol ediniz."
+            });
 
             // You can add these validators in a separate class.
-            services.AddFluentValidator<ProductFormViewModel, ProductFormViewModelValidator>();
+            services.AddValidator<ProductFormViewModel, ProductFormViewModelValidator>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
