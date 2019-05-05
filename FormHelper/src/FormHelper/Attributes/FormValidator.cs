@@ -18,12 +18,12 @@ namespace FormHelper.Attributes
     public class FormValidator : ActionFilterAttribute
     {
         private bool ValidateAntiforgeryToken { get; set; }
-        public bool AjaxRequest { get; set; }
+        public bool ValidateAjaxRequest { get; set; }
 
-        public FormValidator(bool validateAntiForgeryToken = true, bool ajaxRequest = false)
+        public FormValidator(bool validateAntiForgeryToken = true, bool validateAjaxRequest = true)
         {
             ValidateAntiforgeryToken = validateAntiForgeryToken;
-            AjaxRequest = ajaxRequest;
+            ValidateAjaxRequest = validateAjaxRequest;
         }
 
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -43,11 +43,8 @@ namespace FormHelper.Attributes
         {
             var httpContext = context.HttpContext;
 
-            if (!httpContext.Request.IsAjaxRequest())
+            if (ValidateAjaxRequest && !httpContext.Request.IsAjaxRequest())
             {
-                //var logger = httpContext.RequestServices.GetService<ILogger<AjaxValidatorAttribute>>();
-                //logger.LogWarning("The request is not in the expected format. Request: {@Request}", context);
-
                 context.Result = new ContentResult()
                 {
                     Content = "The request is not in the expected format",
