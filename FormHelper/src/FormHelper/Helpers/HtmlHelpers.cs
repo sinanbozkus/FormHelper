@@ -13,7 +13,7 @@ namespace FormHelper.Helpers
         {
             var viewRenderHelper = config.ViewContext.HttpContext.RequestServices.GetService<IViewRenderService>();
 
-            var result = await viewRenderHelper.RenderToStringAsync("_RenderFormScript", config);
+            var result = await viewRenderHelper.RenderToStringAsync("RenderFormScript", config);
             return new HtmlString(result);
         }
     }

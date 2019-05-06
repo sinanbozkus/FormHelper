@@ -15,7 +15,11 @@ namespace FormHelper.Extensions
         public static IServiceCollection AddFormHelper(this IServiceCollection services, FormHelperConfiguration config = null)
         {
             services.AddScoped<IViewRenderService, ViewRenderService>();
-            services.AddSingleton(config);
+
+            if (config == null)
+                services.AddSingleton<FormHelperConfiguration>();
+            else
+                services.AddSingleton(config);
 
             services.Configure<RazorViewEngineOptions>(options =>
             {

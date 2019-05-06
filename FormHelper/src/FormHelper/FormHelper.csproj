@@ -2,8 +2,11 @@
 
   <PropertyGroup>
     <PackageId>FormHelper</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Sinan Bozkus</Authors>
+    <projectUrl>https://github.com/sinanbozkus/FormHelper</projectUrl>
+    <description>Form and Validation Helper for ASP.NET Core</description>
+    <tags>form helper validation helper notification crud</tags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   
@@ -12,11 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Views\_RenderFormScript.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Views\Shared\_RenderFormScript.cshtml">
+    <EmbeddedResource Include="Views\RenderFormScript.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
