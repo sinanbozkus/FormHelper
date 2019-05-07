@@ -5,7 +5,12 @@ namespace FormHelper
 {
     public class FormResult
     {
-        public FormResultStatus Status { get; set; }
+        public FormResult(FormResultStatus status)
+        {
+            Status = status;
+        }
+
+        public FormResultStatus Status { get; private set; }
         public string Message { get; set; }
         public string RedirectUri { get; set; }
         public object Object { get; set; }
@@ -18,9 +23,8 @@ namespace FormHelper
 
         public static JsonResult CreateSuccessResult(string message, string redirectUri = null)
         {
-            return new JsonResult(new FormResult
+            return new JsonResult(new FormResult(FormResultStatus.Success)
             {
-                Status = FormResultStatus.Success,
                 Message = message,
                 RedirectUri = redirectUri
             });
@@ -28,9 +32,8 @@ namespace FormHelper
 
         public static JsonResult CreateWarningResult(string message, string redirectUri = null)
         {
-            return new JsonResult(new FormResult
+            return new JsonResult(new FormResult(FormResultStatus.Warning)
             {
-                Status = FormResultStatus.Warning,
                 Message = message,
                 RedirectUri = redirectUri
             });
@@ -38,9 +41,8 @@ namespace FormHelper
 
         public static JsonResult CreateInfoResult(string message, string redirectUri = null)
         {
-            return new JsonResult(new FormResult
+            return new JsonResult(new FormResult(FormResultStatus.Info)
             {
-                Status = FormResultStatus.Info,
                 Message = message,
                 RedirectUri = redirectUri
             });
@@ -48,9 +50,8 @@ namespace FormHelper
 
         public static JsonResult CreateErrorResult(string message, string redirectUri = null)
         {
-            return new JsonResult(new FormResult
+            return new JsonResult(new FormResult(FormResultStatus.Error)
             {
-                Status = FormResultStatus.Error,
                 Message = message,
                 RedirectUri = redirectUri
             });
