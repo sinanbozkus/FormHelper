@@ -11,7 +11,14 @@ namespace FormHelper
         {
             var viewRenderHelper = config.ViewContext.HttpContext.RequestServices.GetService<IFormHelperViewRenderService>();
 
-            var result = await viewRenderHelper.RenderToStringAsync("RenderFormScript", config);
+            var model = new RenderFormScriptModel
+            {
+                FormId = config.FormId,
+                Callback = config.Callback,
+                IsMobileDevice = config.ViewContext.HttpContext.Request.IsMobileDevice()
+            };
+
+            var result = await viewRenderHelper.RenderToStringAsync("RenderFormScript", model);
             return new HtmlString(result);
         }
     }

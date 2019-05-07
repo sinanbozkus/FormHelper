@@ -2,12 +2,14 @@
 
   <PropertyGroup>
     <PackageId>FormHelper</PackageId>
-    <Version>1.0.5-beta3</Version>
+    <Version>1.0.5</Version>
     <Authors>Sinan Bozkus</Authors>
     <projectUrl>https://github.com/sinanbozkus/FormHelper</projectUrl>
+    <RepositoryUrl>https://github.com/sinanbozkus/FormHelper</RepositoryUrl>
     <description>Form and Validation Helper for ASP.NET Core</description>
     <Copyright>Copyright (c) Sinan Bozkus 2019</Copyright>
     <tags>fluentvalidation form helper validation helper notification crud</tags>
+    <PackageIconUrl>http://www.sinanbozkus.com/nuget/formhelper/formhelper-logo.png</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   

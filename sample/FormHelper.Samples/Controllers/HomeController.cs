@@ -1,5 +1,4 @@
 ﻿using FormHelper.Samples.Models;
-using FormHelper;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -12,16 +11,14 @@ namespace FormHelper.Samples.Controllers
             return View(new ProductFormViewModel());
         }
 
-
         [FormValidator]
         public IActionResult Save(ProductFormViewModel viewModel)
         {
             // sample scenario: same name checking in the database 
             if(viewModel.Title.ToLower() == "abc")
             {
-                return Json(new FormResult
+                return Json(new FormResult(FormResultStatus.Warning)
                 {
-                    Status = FormResultStatus.Warning,
                     Message = "'Abc' is already exist in the database."
                 });
             }
