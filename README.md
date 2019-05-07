@@ -21,6 +21,6 @@ This library depends some packages
 - [Toastr](https://github.com/CodeSeven/toastr)
 
 
-### Next Releases:
+### Next Releases: :boom:
 - Default status messages
 - Form Validation without ajax request
