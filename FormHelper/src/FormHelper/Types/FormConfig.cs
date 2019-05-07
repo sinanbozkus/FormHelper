@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace FormHelper.Types
+namespace FormHelper
 {
     public class FormConfig
     {

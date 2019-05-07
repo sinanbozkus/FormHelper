@@ -1,5 +1,4 @@
-﻿using FormHelper.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -11,15 +10,15 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace FormHelper.Services
+namespace FormHelper
 {
-    class ViewRenderService : IViewRenderService
+    class FormHelperViewRenderService : IFormHelperViewRenderService
     {
         private readonly IRazorViewEngine _razorViewEngine;
         private readonly ITempDataProvider _tempDataProvider;
         private readonly IServiceProvider _serviceProvider;
 
-        public ViewRenderService(IRazorViewEngine razorViewEngine,
+        public FormHelperViewRenderService(IRazorViewEngine razorViewEngine,
             ITempDataProvider tempDataProvider,
             IServiceProvider serviceProvider)
         {

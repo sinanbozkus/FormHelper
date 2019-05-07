@@ -1,4 +1,4 @@
-﻿namespace FormHelper.Enums
+﻿namespace FormHelper
 {
     public enum FormResultStatus
     {

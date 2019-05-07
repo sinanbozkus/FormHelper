@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace FormHelper.Extensions
+namespace FormHelper
 {
     public static class FluentValidationExtensions
     {

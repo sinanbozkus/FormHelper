@@ -1,20 +1,17 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
-using FormHelper.Interfaces;
-using FormHelper.Services;
-using FormHelper.Types;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 
-namespace FormHelper.Extensions
+namespace FormHelper
 {
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddFormHelper(this IServiceCollection services, FormHelperConfiguration config = null)
         {
-            services.AddScoped<IViewRenderService, ViewRenderService>();
+            services.AddScoped<IFormHelperViewRenderService, FormHelperViewRenderService>();
 
             if (config == null)
                 services.AddSingleton<FormHelperConfiguration>();
@@ -24,7 +21,7 @@ namespace FormHelper.Extensions
             services.Configure<RazorViewEngineOptions>(options =>
             {
                 options.FileProviders.Add(
-                    new EmbeddedFileProvider(typeof(Helpers.HtmlHelpers).GetTypeInfo().Assembly));
+                    new EmbeddedFileProvider(typeof(FormHelperHtmlHelpers).GetTypeInfo().Assembly));
             });
 
             services.AddMvc()

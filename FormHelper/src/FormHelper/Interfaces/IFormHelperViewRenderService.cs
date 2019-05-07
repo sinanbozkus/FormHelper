@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace FormHelper.Interfaces
+namespace FormHelper
 {
-    interface IViewRenderService
+    interface IFormHelperViewRenderService
     {
         Task<string> RenderToStringAsync(string viewName, object model);
     }

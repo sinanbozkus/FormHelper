@@ -1,8 +1,7 @@
-﻿using FormHelper.Enums;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
-namespace FormHelper.Types
+namespace FormHelper
 {
     public class FormResult
     {
@@ -17,39 +16,43 @@ namespace FormHelper.Types
 
         #region - Helper Methods
 
-        public static JsonResult CreateSuccessResult(string message)
+        public static JsonResult CreateSuccessResult(string message, string redirectUri = null)
         {
             return new JsonResult(new FormResult
             {
                 Status = FormResultStatus.Success,
-                Message = message
+                Message = message,
+                RedirectUri = redirectUri
             });
         }
 
-        public static JsonResult CreateWarningResult(string message)
+        public static JsonResult CreateWarningResult(string message, string redirectUri = null)
         {
             return new JsonResult(new FormResult
             {
                 Status = FormResultStatus.Warning,
-                Message = message
+                Message = message,
+                RedirectUri = redirectUri
             });
         }
 
-        public static JsonResult CreateInfoResult(string message)
+        public static JsonResult CreateInfoResult(string message, string redirectUri = null)
         {
             return new JsonResult(new FormResult
             {
                 Status = FormResultStatus.Info,
-                Message = message
+                Message = message,
+                RedirectUri = redirectUri
             });
         }
 
-        public static JsonResult CreateErrorResult(string message)
+        public static JsonResult CreateErrorResult(string message, string redirectUri = null)
         {
             return new JsonResult(new FormResult
             {
                 Status = FormResultStatus.Error,
-                Message = message
+                Message = message,
+                RedirectUri = redirectUri
             });
         }
 

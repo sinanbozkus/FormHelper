@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 
-namespace FormHelper.Extensions
+namespace FormHelper
 {
     public static class ContextBaseExtensions
     {

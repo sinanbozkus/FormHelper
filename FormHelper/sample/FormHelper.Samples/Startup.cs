@@ -1,12 +1,12 @@
-﻿using FormHelper.Extensions;
-using FormHelper.Samples.Models;
+﻿using FormHelper.Samples.Models;
+using FormHelper;
 using FormHelper.Samples.Validators;
-using FormHelper.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
 
 namespace FormHelper.Samples
 {
@@ -23,7 +23,10 @@ namespace FormHelper.Samples
         public void ConfigureServices(IServiceCollection services)
         {
             // Add FormHelper to the project.
-            services.AddFormHelper();
+            services.AddFormHelper(new FormHelperConfiguration
+            {
+                UsePascalCaseJson = true
+            });
 
             // Add FormHelper to the project with configurations.
             //services.AddFormHelper(new FormHelperConfiguration
@@ -34,7 +37,9 @@ namespace FormHelper.Samples
             // You can add these validators in a separate class.
             services.AddValidator<ProductFormViewModel, ProductFormViewModelValidator>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc()
+                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

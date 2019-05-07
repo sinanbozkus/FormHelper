@@ -1,7 +1,4 @@
-﻿using FormHelper.Enums;
-using FormHelper.Extensions;
-using FormHelper.Types;
-using Microsoft.AspNetCore.Antiforgery;
+﻿using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -12,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FormHelper.Attributes
+namespace FormHelper
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class FormValidator : ActionFilterAttribute
