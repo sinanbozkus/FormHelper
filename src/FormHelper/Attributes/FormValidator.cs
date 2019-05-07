@@ -65,9 +65,8 @@ namespace FormHelper
                             ToArray()
                     };
 
-                var webResult = new FormResult
+                var webResult = new FormResult(FormResultStatus.Error)
                 {
-                    Status = FormResultStatus.Error,
                     ValidationErrors = new List<FormResultValidationError>()
                 };
 
