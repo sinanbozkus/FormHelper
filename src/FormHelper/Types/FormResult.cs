@@ -11,7 +11,7 @@ namespace FormHelper
         public object Object { get; set; }
         public List<FormResultValidationError> ValidationErrors { get; set; }
 
-        public bool IsSucceed => Status == FormResultStatus.Success;
+        public bool IsSucceed => Status == FormResultStatus.Success || Status == FormResultStatus.Info;
 
 
         #region - Helper Methods
