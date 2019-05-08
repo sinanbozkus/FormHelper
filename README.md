@@ -1,6 +1,9 @@
 # FormHelper
 Form &amp; Validation Helper for **ASP.NET Core**
 
+[![NuGet](https://img.shields.io/nuget/v/FormHelper.svg)](https://nuget.org/packages/FormHelper) [![Nuget](https://img.shields.io/nuget/dt/FormHelper.svg)](https://nuget.org/packages/FormHelper)
+
+
 ### Get Started
 
 FormHelper can be installed using the *Nuget Package Manager* or the *dotnet CLI*.
