@@ -18,7 +18,7 @@ dotnet CLI:
 dotnet add package FormHelper
 ```
 
-This library depends some packages
+This library depends on some packages:
 - [jQuery Form](https://github.com/jquery-form/form)
 - [Toastr](https://github.com/CodeSeven/toastr)
 
