@@ -20,7 +20,8 @@ This library depends some packages
 - [jQuery Form](https://github.com/jquery-form/form)
 - [Toastr](https://github.com/CodeSeven/toastr)
 
+### Documents:
+Coming soon...
 
 ### Next Releases: :boom:
 - Default status messages
-- Form Validation without ajax request
