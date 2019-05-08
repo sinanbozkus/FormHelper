@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>FormHelper</PackageId>
-    <Version>1.0.6</Version>
+    <Version>1.0.7</Version>
     <Authors>Sinan Bozkus</Authors>
     <projectUrl>https://github.com/sinanbozkus/FormHelper</projectUrl>
     <RepositoryUrl>https://github.com/sinanbozkus/FormHelper</RepositoryUrl>
@@ -24,9 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation.AspNetCore" Version="8.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
   </ItemGroup>
 
 </Project>

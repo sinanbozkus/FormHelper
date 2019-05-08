@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Mvc.Razor;
+﻿using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
@@ -24,15 +22,7 @@ namespace FormHelper
                     new EmbeddedFileProvider(typeof(FormHelperHtmlHelpers).GetTypeInfo().Assembly));
             });
 
-            services.AddMvc()
-                .AddFluentValidation();
-
             return services;
-        }
-
-        public static void AddValidator<T1, T2>(this IServiceCollection services) where T1 : class where T2 : class
-        {
-            services.AddTransient(typeof(IValidator<T1>), typeof(T2));
         }
     }
 }

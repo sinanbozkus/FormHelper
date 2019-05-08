@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 
 namespace FormHelper.Samples
 {
@@ -35,9 +37,10 @@ namespace FormHelper.Samples
             //});
 
             // You can add these validators in a separate class.
-            services.AddValidator<ProductFormViewModel, ProductFormViewModelValidator>();
+            services.AddTransient<IValidator<ProductFormViewModel>, ProductFormViewModelValidator>();
 
             services.AddMvc()
+                .AddFluentValidation()
                 .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
