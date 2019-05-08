@@ -6,6 +6,10 @@ FormHelper helps you to create ajax forms and validations without writing any ja
 
 [![NuGet](https://img.shields.io/nuget/v/FormHelper.svg)](https://nuget.org/packages/FormHelper) [![Nuget](https://img.shields.io/nuget/dt/FormHelper.svg)](https://nuget.org/packages/FormHelper)
 
+<p align="center">
+<img src="http://www.sinanbozkus.com/nuget/formhelper/formhelper-screenshot.png" alt="FormHelper" />
+</p>
+
 ## Installation
 
 FormHelper can be installed using the *Nuget Package Manager* or the *dotnet CLI*.
@@ -16,7 +20,7 @@ Install-Package FormHelper
 ```
 
 dotnet CLI:
-```
+```csharp
 dotnet add package FormHelper
 ```
 
@@ -26,7 +30,7 @@ This library depends on some packages:
 - [Toastr](https://github.com/CodeSeven/toastr)
 
 CDN:
-```
+```html
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
@@ -37,7 +41,7 @@ CDN:
 ## Usage
 
 View:
-```
+```csharp
 var formConfig = new FormConfig(ViewContext)
 {
     FormId = "ProductForm",
@@ -52,7 +56,7 @@ var formConfig = new FormConfig(ViewContext)
 ```
 
 Controller:
-```
+```csharp
 [HttpPost, FormValidator]
 public IActionResult Save(FormViewModel viewModel)
 ```
