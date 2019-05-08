@@ -2,7 +2,7 @@
 
 Form &amp; Validation Helper for **ASP.NET Core**
 
-FormHelper helps you to create ajax forms and validations without writing any javascript code. It transforms server-side validations to client-side. You can also use the form validator without ajax.
+FormHelper helps you to create ajax forms and validations without writing any javascript code. **It transforms server-side validations to client-side.** You can also use the form validator without ajax.
 
 [![NuGet](https://img.shields.io/nuget/v/FormHelper.svg)](https://nuget.org/packages/FormHelper) [![Nuget](https://img.shields.io/nuget/dt/FormHelper.svg)](https://nuget.org/packages/FormHelper)
 
