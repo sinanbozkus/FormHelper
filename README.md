@@ -19,7 +19,6 @@ dotnet add package FormHelper
 ```
 
 This library depends some packages
-- [Fluent Validation](https://github.com/JeremySkinner/FluentValidation)
 - [jQuery Form](https://github.com/jquery-form/form)
 - [Toastr](https://github.com/CodeSeven/toastr)
 
