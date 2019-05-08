@@ -45,7 +45,7 @@ View:
 var formConfig = new FormConfig(ViewContext)
 {
     FormId = "ProductForm",
-    FormTitle = Model.IsNew ? "New Product" : "Edit Product",
+    FormTitle = "New Product",
     Callback = "ProductFormCallback" // optional,
 };
 
