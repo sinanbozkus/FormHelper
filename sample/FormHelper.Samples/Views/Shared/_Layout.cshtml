@@ -5,11 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FormHelper Samples</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
+
+    <div class="text-center mt-3">
+        <h1 class="display-4"><img src="~/formhelper-logo.png" " class="mb-2 mr-3" />Form Helper</h1>
+        <p>Form & Validation Helper for <a href="https://dotnet.microsoft.com/learn/web/aspnet-hello-world-tutorial/intro" target="_blank">ASP.NET Core</a></p>
+    </div>
+
+    @{
+        var indexPage = !ViewContext.HttpContext.Request.Path.Value.ToUpper().Contains("INDEXPOST");
+    }
+
+    <div class="text-center mt-4 mb-4">
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-light @(indexPage ? "active" : "")">
+                Post with Ajax
+            </a>
+            <a href="@Url.Action("IndexPost", "Home")" class="btn btn-light @(!indexPage ? "active" : "")">
+                Native Post
+            </a>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <p>
+            <a href="https://fluentvalidation.net/" target="_blank">Fluent Validation</a> was used for the validator in the samples.
+            <br />You can also use your own validator. FormHelper doesn't depend to Fluent Validation.
+        </p>
+    </div>
+
     <div class="container mt-4">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -18,7 +46,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.Now.Year - FormHelper.Samples - <a href="http://www.sinanbozkus.com" target="_blank">by Sinan BOZKUS</a>
+            &copy; @DateTime.Now.Year - FormHelper.Samples - <small><a href="http://www.sinanbozkus.com" target="_blank">by Sinan BOZKUS</a></small>
         </div>
     </footer>
 

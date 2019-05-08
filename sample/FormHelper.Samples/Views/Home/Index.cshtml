@@ -1,22 +1,11 @@
-﻿<!-- You can add these usings into _ViewImports.cshtml -->
-@using FormHelper
-@using FormHelper.Samples.Enums
-@model ProductFormViewModel
-
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
-
-
+﻿@model ProductFormViewModel
 
 @{
     var formConfig = new FormConfig(ViewContext)
     {
         FormId = "ProductForm",
         FormTitle = Model.IsNew ? "New Product" : "Edit Product",
-        Callback = "ProductFormCallback" // optional
+        Callback = "ProductFormCallback" // optional,
     };
 }
 
@@ -78,6 +67,7 @@
     <script>
         var ProductFormCallback = function (response) {
             console.log(response);
+            console.log("Callback function!");
         }
     </script>
 }

@@ -1,11 +1,12 @@
 ﻿using FormHelper.Samples.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace FormHelper.Samples.Controllers
 {
     public class HomeController : Controller
     {
+        #region Ajax Post
+
         public IActionResult Index()
         {
             return View(new ProductFormViewModel());
@@ -15,33 +16,48 @@ namespace FormHelper.Samples.Controllers
         public IActionResult Save(ProductFormViewModel viewModel)
         {
             // sample scenario: same name checking in the database 
-            if(viewModel.Title.ToLower() == "abc")
+            if (viewModel.Title.ToLower() == "abc")
             {
-                return Json(new FormResult(FormResultStatus.Warning)
-                {
-                    Message = "'Abc' is already exist in the database."
-                });
+                return FormResult.CreateWarningResult("'Abc' is already exist in the database.");
             }
 
-            return FormResult.CreateSuccessResult("Product saved.");
+            try
+            {
+                //...
+                return FormResult.CreateSuccessResult("Product saved.");
+
+                // Success form result with redirect
+                //return FormResult.CreateSuccessResult("Product saved.", Url.Action("List", "Home");
+            }
+            catch
+            {
+                return FormResult.CreateErrorResult("An error occurred!");
+            }
 
             // CreateSuccessResult Called this usage:
-            //return Json(new FormResult
+            //return Json(new FormResult(FormResultStatus.Success)
             //{
-            //    Status = FormResultStatus.Success,
             //    Message = "Product saved."
             //});
         }
 
+        #endregion
 
+        #region Native Post
 
-
-
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult IndexPost()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ProductFormViewModel());
         }
+
+        [FormValidator(UseAjax = false, ViewName = "IndexPost")]
+        public IActionResult SavePost(ProductFormViewModel viewModel)
+        {
+            // ...
+
+            return View("IndexPost");
+        }
+
+        #endregion
     }
 }

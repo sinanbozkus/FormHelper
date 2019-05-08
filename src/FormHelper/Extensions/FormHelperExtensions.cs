@@ -3,7 +3,7 @@ using System;
 
 namespace FormHelper
 {
-    public static class ContextBaseExtensions
+    internal static class FormHelperExtensions
     {
         public static bool IsAjaxRequest(this HttpRequest request)
         {

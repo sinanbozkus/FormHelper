@@ -1,34 +1,14 @@
-﻿<!-- You can add these usings into _ViewImports.cshtml -->
-@using FormHelper
-@using FormHelper.Samples.Enums
-@model ProductFormViewModel
-
-
-<div class="text-center">
-    <h1 class="display-4">Home Test :)</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
-
-
-
-@{
-    var formConfig = new FormConfig(ViewContext)
-    {
-        FormId = "ProductForm",
-        //FormTitle = Model.IsNew ? "New Product" : "Edit Product",
-        //Callback = "ProductFormCallback" // optional
-    };
-}
+﻿@model ProductFormViewModel
 
 <div class="container">
     <div class="row justify-content-center">
         <div class="col col-lg-8">
             <div class="card">
                 <div class="card-header">
-                    
+                   @(Model.IsNew ? "New Product" : "Edit Product")
                 </div>
                 <div class="card-body">
-                    <form id="" asp-controller="Home" asp-action="Save" enctype="multipart/form-data">
+                    <form  asp-controller="Home" asp-action="SavePost" enctype="multipart/form-data">
 
                         <input type="hidden" asp-for="Id" />
 
@@ -70,14 +50,3 @@
         </div>
     </div>
 </div>
-
-
-@section Scripts {
-    @await Html.RenderFormScript(formConfig)
-
-    <script>
-        var ProductFormCallback = function (response) {
-            console.log(response);
-        }
-    </script>
-}

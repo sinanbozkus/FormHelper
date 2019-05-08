@@ -6,6 +6,7 @@ namespace FormHelper.Samples.Validators
     public class ProductFormViewModelValidator : AbstractValidator<ProductFormViewModel>
     {
         // Fluent Validation
+        // A popular .NET library for building strongly-typed validation rules.
         // GitHub: https://github.com/JeremySkinner/FluentValidation
 
         public ProductFormViewModelValidator()
@@ -13,7 +14,8 @@ namespace FormHelper.Samples.Validators
             RuleFor(x => x.Title)
                 .NotEmpty()
                 .MinimumLength(3)
-                .MaximumLength(15);
+                .MaximumLength(15)
+                .NotEqual("hello");
 
             RuleFor(x => x.Category)
                 .NotEmpty();
