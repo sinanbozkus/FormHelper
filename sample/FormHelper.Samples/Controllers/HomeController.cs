@@ -11,7 +11,7 @@ namespace FormHelper.Samples.Controllers
             return View(new ProductFormViewModel());
         }
 
-        [FormValidator]
+        [FormValidator(useAjax: false, ViewName = "../HomeTest/Index")]
         public IActionResult Save(ProductFormViewModel viewModel)
         {
             // sample scenario: same name checking in the database 

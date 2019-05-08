@@ -5,7 +5,7 @@
 
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">Home Test :)</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
@@ -15,8 +15,8 @@
     var formConfig = new FormConfig(ViewContext)
     {
         FormId = "ProductForm",
-        FormTitle = Model.IsNew ? "New Product" : "Edit Product",
-        Callback = "ProductFormCallback" // optional
+        //FormTitle = Model.IsNew ? "New Product" : "Edit Product",
+        //Callback = "ProductFormCallback" // optional
     };
 }
 
@@ -25,10 +25,10 @@
         <div class="col col-lg-8">
             <div class="card">
                 <div class="card-header">
-                    @formConfig.FormTitle
+                    
                 </div>
                 <div class="card-body">
-                    <form id="@formConfig.FormId" asp-controller="Home" asp-action="Save" enctype="multipart/form-data">
+                    <form id="" asp-controller="Home" asp-action="Save" enctype="multipart/form-data">
 
                         <input type="hidden" asp-for="Id" />
 
@@ -73,7 +73,7 @@
 
 
 @section Scripts {
-    @*@await Html.RenderFormScript(formConfig)*@
+    @await Html.RenderFormScript(formConfig)
 
     <script>
         var ProductFormCallback = function (response) {
