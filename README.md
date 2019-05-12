@@ -64,7 +64,10 @@ Controller:
 public IActionResult Save(FormViewModel viewModel)
 ```
 
-## Documents
-English: English Document are not ready yet. But you can look the samples. It's so easy to use.
+## Blog Posts
+English:
+English Posts are not ready yet. But you can look the samples. It's so easy to use.
 
-Turkish: http://www.sinanbozkus.com/form-helper-ve-fluent-validation-kullanarak-asp-net-core-validation-islemleri/
+Turkish:
+[FormHelper ve Fluent Validation kullanarak ASP.NET Core Validation İşlemleri](http://www.sinanbozkus.com/form-helper-ve-fluent-validation-kullanarak-asp-net-core-validation-islemleri/)
+
