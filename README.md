@@ -43,7 +43,7 @@ CDN:
 
 ## Usage
 
-View:
+**View:**
 ```csharp
 var formConfig = new FormConfig(ViewContext)
 {
@@ -58,10 +58,33 @@ var formConfig = new FormConfig(ViewContext)
 @await Html.RenderFormScript(formConfig)
 ```
 
-Controller:
+**Controller:**
 ```csharp
 [HttpPost, FormValidator]
 public IActionResult Save(FormViewModel viewModel)
+```
+
+**Return a result from Controller:**
+
+Error Message:
+```
+return FormResult.CreateErrorResult("An error occured.");
+```
+Warning Message:
+```
+return FormResult.CreateWarningResult("'ABC' is already exist in the database.");
+```
+Info Message:
+```
+return FormResult.CreateInfoResult("Happy new year!");
+```
+Success Message:
+```
+return FormResult.CreateSuccessResult("Product saved.");
+```
+Success Message with Redirect:
+```
+return FormResult.CreateSuccessResult("Product saved. Please wait...", Url.Action("Home", "Index"));
 ```
 
 ## Blog Posts
