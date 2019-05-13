@@ -43,6 +43,11 @@ CDN:
 
 ## Usage
 
+**Startup.cs**
+```
+services.AddFormHelper();
+```
+
 **View:**
 ```csharp
 var formConfig = new FormConfig(ViewContext)
