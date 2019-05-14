@@ -5,6 +5,7 @@
     {
         FormId = "ProductForm",
         FormTitle = Model.IsNew ? "New Product" : "Edit Product",
+        BeforeSubmit = "ProductFormBeforeSubmit", // optional
         Callback = "ProductFormCallback" // optional,
     };
 }
@@ -65,7 +66,11 @@
     @await Html.RenderFormScript(formConfig)
 
     <script>
-        var ProductFormCallback = function (response) {
+        var ProductFormBeforeSubmit = function (rr, $form, options) {
+            console.log("BeforeSend function!");
+        }
+
+        var ProductFormCallback = function (response, statusText, xhr, $form) {
             console.log(response);
             console.log("Callback function!");
         }

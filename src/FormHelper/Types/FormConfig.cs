@@ -12,6 +12,7 @@ namespace FormHelper
         public ViewContext ViewContext { get; private set; }
         public string FormId { get; set; }
         public string FormTitle { get; set; }
+        public string BeforeSubmit { get; set; }
         public string Callback { get; set; }
     }
 }

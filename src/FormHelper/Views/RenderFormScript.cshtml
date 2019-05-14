@@ -2,7 +2,7 @@
 @inject FormHelperConfiguration Configuration
 @model RenderFormScriptModel
 
-<script>
+    <script>
     $(document).ready(function () {
 
     @if (Configuration.UsePascalCaseJson)
@@ -56,7 +56,9 @@
                 @(Html.Raw("toastr.options.positionClass =  \"toast-top-full-width\";"));
             }
 
-            return $("#@Model.FormId").valid();
+            @if(!string.IsNullOrWhiteSpace(Model.BeforeSubmit)) {
+                @(Html.Raw($"{Model.BeforeSubmit}(arr, $form, options);"))
+            }
         },
         success: function (result, statusText, xhr, $form) {
 
@@ -66,7 +68,7 @@
                     result = toCamel(result);
                 </text>
             }
-            
+
 
             if (!result.isSucceed) {
                 $form.find("button[type='submit'], button[type='reset']").removeAttr('disabled');
@@ -111,4 +113,4 @@
     });
 
 });
-</script>
+    </script>

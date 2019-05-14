@@ -15,6 +15,7 @@ namespace FormHelper
             {
                 FormId = config.FormId,
                 Callback = config.Callback,
+                BeforeSubmit = config.BeforeSubmit,
                 IsMobileDevice = config.ViewContext.HttpContext.Request.IsMobileDevice()
             };
 
