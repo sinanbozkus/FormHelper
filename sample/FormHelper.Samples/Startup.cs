@@ -25,10 +25,7 @@ namespace FormHelper.Samples
         public void ConfigureServices(IServiceCollection services)
         {
             // Add FormHelper to the project.
-            services.AddFormHelper(new FormHelperConfiguration
-            {
-                UsePascalCaseJson = true
-            });
+            services.AddFormHelper();
 
             // Add FormHelper to the project with configurations.
             //services.AddFormHelper(new FormHelperConfiguration

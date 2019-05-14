@@ -16,16 +16,10 @@ namespace FormHelper
     [AttributeUsage(AttributeTargets.Method)]
     public class FormValidator : ActionFilterAttribute
     {
-        private bool ValidateAntiforgeryToken { get; set; }
-        public bool UseAjax { get; set; }
+        public bool ValidateAntiforgeryToken { get; set; } = true;
+        public bool UseAjax { get; set; } = true;
         public string ViewName { get; set; }
 
-        public FormValidator(bool validateAntiForgeryToken = true, bool useAjax = true, string viewName = null)
-        {
-            ValidateAntiforgeryToken = validateAntiForgeryToken;
-            UseAjax = useAjax;
-            ViewName = ViewName;
-        }
 
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
