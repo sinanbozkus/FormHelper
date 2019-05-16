@@ -55,9 +55,8 @@
             {
                 @(Html.Raw("toastr.options.positionClass =  \"toast-top-full-width\";"));
             }
-
             @if(!string.IsNullOrWhiteSpace(Model.BeforeSubmit)) {
-                @(Html.Raw($"{Model.BeforeSubmit}(arr, $form, options);"))
+                @(Html.Raw($"var result = {Model.BeforeSubmit}(arr, $form, options); if(result == false){{ return false; }}"))
             }
         },
         success: function (result, statusText, xhr, $form) {

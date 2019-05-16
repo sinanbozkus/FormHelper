@@ -65,7 +65,7 @@ namespace FormHelper
                                 ToArray()
                         };
 
-                    var webResult = new FormResult(FormResultStatus.Error)
+                    var formResult = new FormResult(FormResultStatus.Error)
                     {
                         ValidationErrors = new List<FormResultValidationError>()
                     };
@@ -76,10 +76,10 @@ namespace FormHelper
                         {
                             foreach (var error in propertyError.errors)
                             {
-                                webResult.Message += error;
+                                formResult.Message += error;
 
                                 if (propertyError.errors.Length > 1 && error != propertyError.errors.Last())
-                                    webResult.Message += "<br>";
+                                    formResult.Message += "<br>";
                             }
 
                             continue;
@@ -95,14 +95,14 @@ namespace FormHelper
                                 errorMessage.Append("<br>");
                         }
 
-                        webResult.ValidationErrors.Add(new FormResultValidationError
+                        formResult.ValidationErrors.Add(new FormResultValidationError
                         {
                             PropertyName = propertyError.key,
                             Message = errorMessage.ToString()
                         });
                     }
 
-                    context.Result = new JsonResult(webResult);
+                    context.Result = new JsonResult(formResult);
                 }
             }
             else
