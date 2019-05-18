@@ -59,5 +59,14 @@ namespace FormHelper.Samples.Controllers
         }
 
         #endregion
+
+        #region Remote Modal
+
+        public IActionResult Modal()
+        {
+            return PartialView("ModalPartial", new ProductFormViewModel());
+        }
+
+        #endregion
     }
 }
