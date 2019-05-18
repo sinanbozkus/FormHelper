@@ -35,22 +35,6 @@
         </text>
     }
 
-    $("#@Model.FormId").submit(function() {
-
-        @if (Configuration.DebugMode) { <text>debugger;</text> }
-
-        $("#@Model.FormId").removeData("validator");
-        $("#@Model.FormId").removeData("unobtrusiveValidation");
-        $.validator.unobtrusive.parse($("#@Model.FormId"));
-
-        var validationResult = $("#@Model.FormId").valid();
-
-        if (!validationResult) {
-            toastr.error("@Configuration.CheckTheFormFieldsMessage");
-            return false;
-        }
-    });
-
     $("#@Model.FormId").ajaxForm({
         beforeSubmit: function (arr, $form, options) {
 
@@ -61,13 +45,22 @@
                 @(Html.Raw("toastr.options.positionClass =  \"toast-top-full-width\";"));
             }
 
+            $("#@Model.FormId").removeData("validator");
+            $("#@Model.FormId").removeData("unobtrusiveValidation");
+            $.validator.unobtrusive.parse($("#@Model.FormId"));
+
+            var validationResult = $("#@Model.FormId").valid();
+
+            if (!validationResult) {
+                toastr.error("@Configuration.CheckTheFormFieldsMessage");
+                return false;
+            }
+
             $form.find("button[type='submit']").attr('disabled', 'disabled');
             
             @if(!string.IsNullOrWhiteSpace(Model.BeforeSubmit)) {
                 @(Html.Raw($"var result = {Model.BeforeSubmit}(arr, $form, options); if(result == false){{ return false; }}"))
             }
-
-            return $("#@Model.FormId").valid();
         },
         success: function (result, statusText, xhr, $form) {
 
