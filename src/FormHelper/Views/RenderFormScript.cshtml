@@ -59,6 +59,9 @@
             {
                 @(Html.Raw("toastr.options.positionClass =  \"toast-top-full-width\";"));
             }
+
+            $form.find("button[type='submit']").attr('disabled', 'disabled');
+            
             @if(!string.IsNullOrWhiteSpace(Model.BeforeSubmit)) {
                 @(Html.Raw($"var result = {Model.BeforeSubmit}(arr, $form, options); if(result == false){{ return false; }}"))
             }
@@ -79,7 +82,7 @@
 
 
             if (!result.isSucceed) {
-                $form.find("button[type='submit'], button[type='reset']").removeAttr('disabled');
+                $form.find("button[type='submit']").removeAttr('disabled');
             }
 
             if (result.message !== null && result.message != "") {
@@ -97,7 +100,7 @@
             }
 
             if (result.validationErrors != null && result.validationErrors.length > 0) {
-                $form.find("button[type='submit'], button[type='reset']").removeAttr('disabled');
+                $form.find("button[type='submit']").removeAttr('disabled');
                 var validator = $("#@Model.FormId").validate();
                 for (var i in result.validationErrors) {
                     var propertyName = result.validationErrors[i].propertyName;

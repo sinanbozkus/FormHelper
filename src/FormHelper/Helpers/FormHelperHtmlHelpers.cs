@@ -10,6 +10,7 @@ namespace FormHelper
         public static async Task<HtmlString> RenderFormScript(this IHtmlHelper html, FormConfig config)
         {
             var viewRenderHelper = config.ViewContext.HttpContext.RequestServices.GetService<IFormHelperViewRenderService>();
+            var configuration = config.ViewContext.HttpContext.RequestServices.GetService<FormHelperConfiguration>();
 
             var model = new RenderFormScriptModel
             {
@@ -20,6 +21,12 @@ namespace FormHelper
             };
 
             var result = await viewRenderHelper.RenderToStringAsync("RenderFormScript", model);
+
+            if (!configuration.DebugMode)
+            {
+                result = result.Replace("\r", "").Replace("\n", "").Replace("  ", "");
+            }
+
             return new HtmlString(result);
         }
     }
