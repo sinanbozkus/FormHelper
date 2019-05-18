@@ -3,7 +3,7 @@
 @model RenderFormScriptModel
 
     <script>
-    $(document).ready(function () {
+(function () {
 
     @if (Configuration.UsePascalCaseJson)
     {
@@ -37,11 +37,13 @@
 
     $("#@Model.FormId").submit(function() {
 
-        $(this).removeData("validator");
-        $(this).removeData("unobtrusiveValidation");
-        $.validator.unobtrusive.parse($(this));
+        @if (Configuration.DebugMode) { <text>debugger;</text> }
 
-        var validationResult = $(this).valid();
+        $("#@Model.FormId").removeData("validator");
+        $("#@Model.FormId").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($("#@Model.FormId"));
+
+        var validationResult = $("#@Model.FormId").valid();
 
         if (!validationResult) {
             toastr.error("@Configuration.CheckTheFormFieldsMessage");
@@ -51,6 +53,8 @@
     $("#@Model.FormId").ajaxForm({
         beforeSubmit: function (arr, $form, options) {
 
+            @if (Configuration.DebugMode) { <text>debugger;</text> }
+
             @if (Model.IsMobileDevice)
             {
                 @(Html.Raw("toastr.options.positionClass =  \"toast-top-full-width\";"));
@@ -58,12 +62,17 @@
             @if(!string.IsNullOrWhiteSpace(Model.BeforeSubmit)) {
                 @(Html.Raw($"var result = {Model.BeforeSubmit}(arr, $form, options); if(result == false){{ return false; }}"))
             }
+
+            return $("#@Model.FormId").valid();
         },
         success: function (result, statusText, xhr, $form) {
+
+            @if (Configuration.DebugMode) { <text>debugger;</text> }
 
             @if (Configuration.UsePascalCaseJson)
             {
                 <text>
+                    var resultForCallback = result;
                     result = toCamel(result);
                 </text>
             }
@@ -97,10 +106,21 @@
                     obj[propertyName] = errorMessage;
                     validator.showErrors(obj);
                 }
+
+                if (result.message === null || result.message === "" || result.message === undefined) {
+                    toastr.error("@Configuration.CheckTheFormFieldsMessage");
+                }
             }
 
             @if(!string.IsNullOrWhiteSpace(Model.Callback)) {
-                @(Html.Raw($"{Model.Callback}(result);"))
+                if (Configuration.UsePascalCaseJson)
+                {
+                    @(Html.Raw($"{Model.Callback}(resultForCallback);"))
+                }
+                else
+                {
+                    @(Html.Raw($"{Model.Callback}(result);"))
+                }
             }
 
             if (result.redirectUri != null){
@@ -111,5 +131,5 @@
         }
     });
 
-});
+})();
     </script>
