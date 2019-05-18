@@ -47,6 +47,16 @@ CDN:
 ```
 services.AddFormHelper();
 ```
+With configuration: (optional)
+```
+services.AddFormHelper(new FormHelperConfiguration
+{
+    UsePascalCaseJson = true,
+    CheckTheFormFieldsMessage = "Your custom message...",
+    RedirectDelay = 6000,
+    DebugMode = true
+});
+```
 
 **View:**
 ```csharp
@@ -54,6 +64,7 @@ var formConfig = new FormConfig(ViewContext)
 {
     FormId = "ProductForm",
     FormTitle = "New Product",
+    BeforeSubmit = "ProductFormBeforeSubmit", // optional
     Callback = "ProductFormCallback" // optional,
 };
 
