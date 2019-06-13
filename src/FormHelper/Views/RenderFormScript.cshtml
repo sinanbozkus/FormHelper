@@ -2,43 +2,46 @@
 @inject FormHelperConfiguration Configuration
 @model RenderFormScriptModel
 
-    <script>
-(function () {
+<script>
+    (function () {
 
-    @if (Configuration.UsePascalCaseJson)
-    {
-        <text>
-            function toCamel(o) {
-          var newO, origKey, newKey, value
-          if (o instanceof Array) {
-            return o.map(function(value) {
-                if (typeof value === "object") {
-                  value = toCamel(value)
+        @if (Configuration.UsePascalCaseJson)
+        {
+            <text>
+                function toCamel(o) {
+              var newO, origKey, newKey, value
+              if (o instanceof Array) {
+                return o.map(function(value) {
+                    if (typeof value === "object") {
+                      value = toCamel(value)
+                    }
+                    return value
+                })
+              } else {
+                newO = {}
+                for (origKey in o) {
+                  if (o.hasOwnProperty(origKey)) {
+                    newKey = (origKey.charAt(0).toLowerCase() + origKey.slice(1) || origKey).toString()
+                    value = o[origKey]
+                    if (value instanceof Array || (value !== null && value.constructor === Object)) {
+                      value = toCamel(value)
+                    }
+                    newO[newKey] = value
+                  }
                 }
-                return value
-            })
-          } else {
-            newO = {}
-            for (origKey in o) {
-              if (o.hasOwnProperty(origKey)) {
-                newKey = (origKey.charAt(0).toLowerCase() + origKey.slice(1) || origKey).toString()
-                value = o[origKey]
-                if (value instanceof Array || (value !== null && value.constructor === Object)) {
-                  value = toCamel(value)
-                }
-                newO[newKey] = value
               }
+              return newO
             }
-          }
-          return newO
+            </text>
         }
-        </text>
-    }
 
-    $("#@Model.FormId").ajaxForm({
-        beforeSubmit: function (arr, $form, options) {
+        $("#@Model.FormId").submit(function (e) {
 
             @if (Configuration.DebugMode) { <text>debugger;</text> }
+
+            e.preventDefault();
+
+            var $form = $(this);
 
             @if (Model.IsMobileDevice)
             {
@@ -58,75 +61,85 @@
 
             $form.find("button[type='submit']").attr('disabled', 'disabled');
             
-            @if(!string.IsNullOrWhiteSpace(Model.BeforeSubmit)) {
-                @(Html.Raw($"var result = {Model.BeforeSubmit}(arr, $form, options); if(result == false){{ return false; }}"))
-            }
-        },
-        success: function (result, statusText, xhr, $form) {
+            
 
-            @if (Configuration.DebugMode) { <text>debugger;</text> }
+            $.ajax({
+                url: $form.attr("action"),
+                type: $form.attr("method"),
+                data: new FormData($form[0]),
+                processData: false,
+                contentType: false,
+                beforeSend: function (arr) {
+                    @if(!string.IsNullOrWhiteSpace(Model.BeforeSubmit)) {
+                        @(Html.Raw($"var beforeSubmitResult = {Model.BeforeSubmit}(arr, $form); if(beforeSubmitResult == false){{ return false; }}"))
+                    }
+                },
+                success: function (result, status)
+                {
+                    @if (Configuration.DebugMode) { <text>debugger;</text> }
 
-            @if (Configuration.UsePascalCaseJson)
-            {
-                <text>
-                    var resultForCallback = result;
-                    result = toCamel(result);
-                </text>
-            }
+                    @if (Configuration.UsePascalCaseJson)
+                    {
+                        <text>
+                            var resultForCallback = result;
+                            result = toCamel(result);
+                        </text>
+                    }
 
 
-            if (!result.isSucceed) {
-                $form.find("button[type='submit']").removeAttr('disabled');
-            }
+                    if (!result.isSucceed) {
+                        $form.find("button[type='submit']").removeAttr('disabled');
+                    }
 
-            if (result.message !== null && result.message != "") {
-                if (result.isSucceed) {
-                    toastr.success(result.message);
-                } else {
-                    if (result.status == @FormResultStatus.Info.GetHashCode()) {
-                        toastr.info(result.message);
-                    } else if (result.status == @FormResultStatus.Warning.GetHashCode()) {
-                        toastr.warning(result.message);
-                    } else if (result.status == @FormResultStatus.Error.GetHashCode()) {
-                        toastr.error(result.message);
+                    if (result.message !== null && result.message != "") {
+                        if (result.isSucceed) {
+                            toastr.success(result.message);
+                        } else {
+                            if (result.status == @FormResultStatus.Info.GetHashCode()) {
+                                toastr.info(result.message);
+                            } else if (result.status == @FormResultStatus.Warning.GetHashCode()) {
+                                toastr.warning(result.message);
+                            } else if (result.status == @FormResultStatus.Error.GetHashCode()) {
+                                toastr.error(result.message);
+                            }
+                        }
+                    }
+
+                    if (result.validationErrors != null && result.validationErrors.length > 0) {
+                        $form.find("button[type='submit']").removeAttr('disabled');
+                        var validator = $("#@Model.FormId").validate();
+                        for (var i in result.validationErrors) {
+                            var propertyName = result.validationErrors[i].propertyName;
+                            var errorMessage = result.validationErrors[i].message;
+                            var obj = new Object();
+                            obj[propertyName] = errorMessage;
+                            validator.showErrors(obj);
+                        }
+
+                        if (result.message === null || result.message === "" || result.message === undefined) {
+                            toastr.error("@Configuration.CheckTheFormFieldsMessage");
+                        }
+                    }
+
+                    @if(!string.IsNullOrWhiteSpace(Model.Callback)) {
+                        if (Configuration.UsePascalCaseJson)
+                        {
+                            @(Html.Raw($"{Model.Callback}(resultForCallback);"))
+                        }
+                        else
+                        {
+                            @(Html.Raw($"{Model.Callback}(result);"))
+                        }
+                    }
+
+                    if (result.redirectUri != null){
+                        setTimeout(function() {
+                            window.location.replace(result.redirectUri);
+                        }, result.message !== null ? @Configuration.RedirectDelay : 1);
                     }
                 }
-            }
+            });
+        });
 
-            if (result.validationErrors != null && result.validationErrors.length > 0) {
-                $form.find("button[type='submit']").removeAttr('disabled');
-                var validator = $("#@Model.FormId").validate();
-                for (var i in result.validationErrors) {
-                    var propertyName = result.validationErrors[i].propertyName;
-                    var errorMessage = result.validationErrors[i].message;
-                    var obj = new Object();
-                    obj[propertyName] = errorMessage;
-                    validator.showErrors(obj);
-                }
-
-                if (result.message === null || result.message === "" || result.message === undefined) {
-                    toastr.error("@Configuration.CheckTheFormFieldsMessage");
-                }
-            }
-
-            @if(!string.IsNullOrWhiteSpace(Model.Callback)) {
-                if (Configuration.UsePascalCaseJson)
-                {
-                    @(Html.Raw($"{Model.Callback}(resultForCallback);"))
-                }
-                else
-                {
-                    @(Html.Raw($"{Model.Callback}(result);"))
-                }
-            }
-
-            if (result.redirectUri != null){
-                setTimeout(function() {
-                    window.location.replace(result.redirectUri);
-                }, result.message !== null ? @Configuration.RedirectDelay : 1);
-            }
-        }
-    });
-
-})();
-    </script>
+    })();
+</script>

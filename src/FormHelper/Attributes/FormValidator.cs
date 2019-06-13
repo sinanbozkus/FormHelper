@@ -25,7 +25,7 @@ namespace FormHelper
         {
             var httpContext = context.HttpContext;
 
-            var antiForgery = context.HttpContext.RequestServices.GetService<IAntiforgery>();
+            var antiForgery = httpContext.RequestServices.GetService<IAntiforgery>();
             if (ValidateAntiforgeryToken)
             {
                 await antiForgery.ValidateRequestAsync(httpContext);
@@ -129,7 +129,7 @@ namespace FormHelper
 
                 context.Result = viewResult;
             }
-
+           
             base.OnActionExecuting(context);
         }
 
