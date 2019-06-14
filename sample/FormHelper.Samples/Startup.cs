@@ -41,6 +41,7 @@ namespace FormHelper.Samples
 
             services.AddMvc()
                 .AddFluentValidation()
+                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

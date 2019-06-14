@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 
 namespace FormHelper
 {
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class FormResult
     {
         public FormResult(FormResultStatus status)
@@ -15,7 +18,6 @@ namespace FormHelper
         public string RedirectUri { get; set; }
         public object Object { get; set; }
         public List<FormResultValidationError> ValidationErrors { get; set; }
-
         public bool IsSucceed => Status == FormResultStatus.Success || Status == FormResultStatus.Info;
 
 
@@ -60,6 +62,7 @@ namespace FormHelper
         #endregion
     }
 
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class FormResultValidationError
     {
         public string PropertyName { get; set; }
