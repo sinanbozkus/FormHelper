@@ -91,6 +91,11 @@
                             window.location.replace(result.redirectUri);
                         }, result.message !== null ? @Configuration.RedirectDelay : 1);
                     }
+                },
+                error: function (request, status, error) {
+                    @if (Configuration.DebugMode) { <text>debugger;</text> }
+                    console.error(request.responseText);
+                    toastr.error(request.responseText);
                 }
             });
         });
