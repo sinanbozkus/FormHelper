@@ -49,7 +49,6 @@ With configuration: (optional)
 ```
 services.AddFormHelper(new FormHelperConfiguration
 {
-    UsePascalCaseJson = true,
     CheckTheFormFieldsMessage = "Your custom message...",
     RedirectDelay = 6000,
     DebugMode = true
