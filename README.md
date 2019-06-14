@@ -28,13 +28,11 @@ dotnet add package FormHelper
 ```
 
 This library depends on some packages:
-- [jQuery Form](https://github.com/jquery-form/form)
 - [jQuery Validation](https://github.com/jquery-validation/jquery-validation)
 - [Toastr](https://github.com/CodeSeven/toastr)
 
 CDN:
 ```html
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
