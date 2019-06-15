@@ -83,7 +83,7 @@
                     }
 
                     @if(!string.IsNullOrWhiteSpace(Model.Callback)) {
-                        Html.Raw($"{Model.Callback}(result);");
+                        @(Html.Raw($"{Model.Callback}(result);"));
                     }
 
                     if (result.redirectUri != null){
