@@ -114,4 +114,5 @@ return FormResult.CreateSuccessResult("Product saved. Please wait...", Url.Actio
 
 ## Next Releases (Roadmap)
 - Tag Helper support.
+- Sending JSON Data
 - ASP.NET Core 3.0 support
