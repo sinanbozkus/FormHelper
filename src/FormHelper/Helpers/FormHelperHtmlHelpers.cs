@@ -9,6 +9,11 @@ namespace FormHelper
     {
         public static async Task<HtmlString> RenderFormScript(this IHtmlHelper html, FormConfig config)
         {
+            return await GetFormScript(config);
+        }
+
+        public static async Task<HtmlString> GetFormScript(FormConfig config)
+        {
             var viewRenderHelper = config.ViewContext.HttpContext.RequestServices.GetService<IFormHelperViewRenderService>();
             var configuration = config.ViewContext.HttpContext.RequestServices.GetService<FormHelperConfiguration>();
 
