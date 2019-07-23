@@ -5,9 +5,19 @@ namespace FormHelper.Samples.Controllers
 {
     public class HomeController : Controller
     {
+        public IActionResult Index()
+        {
+            return RedirectToAction(nameof(TagHelper));
+        }
+
         #region Ajax Post
 
-        public IActionResult Index()
+        public IActionResult TagHelper()
+        {
+            return View(new ProductFormViewModel());
+        }
+
+        public IActionResult HtmlHelper()
         {
             return View(new ProductFormViewModel());
         }
@@ -45,7 +55,7 @@ namespace FormHelper.Samples.Controllers
 
         #region Native Post
 
-        public IActionResult IndexPost()
+        public IActionResult Post()
         {
             return View(new ProductFormViewModel());
         }

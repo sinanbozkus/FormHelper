@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.TagHelpers;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System;
@@ -21,21 +22,28 @@ namespace FormHelper
 
         public async override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            if (!output.Attributes.ContainsName("id"))
+            string formId;
+
+            if (output.Attributes.ContainsName("id"))
             {
-                throw new ArgumentNullException("Form must have an ID");
+                formId = output.Attributes["id"].Value.ToString();
+            }
+            else
+            {
+                formId = $"formhelper_{FormHelperExtensions.GenerateCoupon(6)}";
+                output.Attributes.Add("id", formId);
             }
 
             output.TagName = "form";
 
             var htmlString = await FormHelperHtmlHelpers.GetFormScript(new FormConfig(ViewContext)
             {
-                FormId = output.Attributes["id"].Value.ToString(),
+                FormId = formId,
                 Callback = Callback,
                 BeforeSubmit = BeforeSubmit,
             });
 
-            output.PostElement.AppendHtml(htmlString);
+            output.PostElement.AppendHtml(htmlString);            
 
             await base.ProcessAsync(context, output);
         }

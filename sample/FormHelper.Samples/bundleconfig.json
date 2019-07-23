@@ -1,0 +1,10 @@
+[
+  {
+    "outputFileName": "wwwroot/js/formhelper.min.js",
+    "inputFiles": [
+      "wwwroot/js/jquery.validate.min.js",
+      "wwwroot/js/jquery.validate.unobtrusive.min.js",
+      "wwwroot/js/toastr.min.js"
+    ]
+  }
+]

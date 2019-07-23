@@ -1,4 +1,8 @@
-﻿@model ProductFormViewModel
+﻿@{
+    ViewData["page"] = Page.HtmlHelper;
+}
+
+@model ProductFormViewModel
 
 @{
     var formConfig = new FormConfig(ViewContext)
@@ -67,7 +71,6 @@
 
     <script>
         var ProductFormBeforeSubmit = function (rr, $form, options) {
-            debugger;
             console.log("BeforeSubmit function!");
         }
 
