@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 
 namespace FormHelper
 {
@@ -11,6 +12,8 @@ namespace FormHelper
 
         public ViewContext ViewContext { get; private set; }
         public string FormId { get; set; }
+        public FormDataType DataType { get; set; } = FormDataType.FormData;
+        [Obsolete]
         public string FormTitle { get; set; }
         public string BeforeSubmit { get; set; }
         public string Callback { get; set; }

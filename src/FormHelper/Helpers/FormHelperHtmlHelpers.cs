@@ -20,6 +20,7 @@ namespace FormHelper
             var model = new RenderFormScriptModel
             {
                 FormId = config.FormId,
+                DataType = config.DataType,
                 Callback = config.Callback,
                 BeforeSubmit = config.BeforeSubmit,
                 IsMobileDevice = config.ViewContext.HttpContext.Request.IsMobileDevice()

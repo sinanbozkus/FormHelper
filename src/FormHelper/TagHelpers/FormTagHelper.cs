@@ -20,6 +20,9 @@ namespace FormHelper
         [HtmlAttributeName("asp-beforesubmit")]
         public string BeforeSubmit { get; set; }
 
+        [HtmlAttributeName("asp-datatype")]
+        public FormDataType DataType { get; set; } = FormDataType.FormData;
+
         public async override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             string formId;
@@ -39,8 +42,9 @@ namespace FormHelper
             var htmlString = await FormHelperHtmlHelpers.GetFormScript(new FormConfig(ViewContext)
             {
                 FormId = formId,
+                DataType = DataType,
                 Callback = Callback,
-                BeforeSubmit = BeforeSubmit,
+                BeforeSubmit = BeforeSubmit
             });
 
             output.PostElement.AppendHtml(htmlString);            

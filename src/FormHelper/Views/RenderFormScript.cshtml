@@ -32,13 +32,36 @@
             $form.find("button[type='submit']").attr('disabled', 'disabled');
 
 
+            @if(Model.DataType == FormDataType.FormData)
+            {
+                <text>
+                var formData = new FormData($form[0]);
+                var contentType = false;
+                </text>
+            }
+            else
+            {
+                <text>
+                var formDataAsJson = new Object();
+
+                $.each($("#@Model.FormId").serializeArray(), function (key, item) {
+                    formDataAsJson[item.name] = item.value;
+                });
+
+                var formData = JSON.stringify(formDataAsJson);
+                var contentType = "application/json; charset=utf-8";
+                </text>
+            }
+
+            
 
             $.ajax({
                 url: $form.attr("action"),
                 type: $form.attr("method"),
-                data: new FormData($form[0]),
+                data: formData,
+                contentType: contentType,
+                data: formData,
                 processData: false,
-                contentType: false,
                 beforeSend: function (arr) {
                     @if(!string.IsNullOrWhiteSpace(Model.BeforeSubmit)) {
                         @(Html.Raw($"var beforeSubmitResult = {Model.BeforeSubmit}(arr, $form); if(beforeSubmitResult == false){{ return false; }}"))

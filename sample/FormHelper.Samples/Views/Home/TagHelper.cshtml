@@ -12,7 +12,7 @@
                     @(Model.IsNew ? "New Product" : "Edit Product")
                 </div>
                 <div class="card-body">
-                    <formhelper asp-controller="Home" asp-action="Save" asp-callback="ProductFormCallback" asp-beforesubmit="ProductFormBeforeSubmit" enctype="multipart/form-data">
+                    <formhelper asp-controller="Home" asp-action="Save" asp-datatype="FormData" asp-callback="ProductFormCallback" asp-beforesubmit="ProductFormBeforeSubmit" enctype="multipart/form-data">
 
                         <input type="hidden" asp-for="Id" />
 
