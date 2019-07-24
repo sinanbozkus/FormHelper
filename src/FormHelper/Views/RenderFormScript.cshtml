@@ -31,6 +31,7 @@
 
             $form.find("button[type='submit']").attr('disabled', 'disabled');
 
+            var headers = {};
 
             @if(Model.DataType == FormDataType.FormData)
             {
@@ -48,8 +49,13 @@
                     formDataAsJson[item.name] = item.value;
                 });
 
+                if (formDataAsJson.__RequestVerificationToken !== undefined) {
+                    headers['RequestVerificationToken'] = formDataAsJson.__RequestVerificationToken;
+                }
+
                 var formData = JSON.stringify(formDataAsJson);
                 var contentType = "application/json; charset=utf-8";
+
                 </text>
             }
 
@@ -58,6 +64,7 @@
             $.ajax({
                 url: $form.attr("action"),
                 type: $form.attr("method"),
+                headers: headers,
                 data: formData,
                 contentType: contentType,
                 data: formData,
