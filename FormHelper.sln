@@ -17,6 +17,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{ADAC6638-C57C-4B56-BD83-49E73B148B1B}"
+	ProjectSection(SolutionItems) = preProject
+		sample\FormHelper.Samples\wwwroot\js\formhelper.js = sample\FormHelper.Samples\wwwroot\js\formhelper.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dist", "dist", "{64B324B7-DFF1-4F44-9394-22E650D86B71}"
+	ProjectSection(SolutionItems) = preProject
+		sample\FormHelper.Samples\wwwroot\js\formhelper.min.js = sample\FormHelper.Samples\wwwroot\js\formhelper.min.js
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +48,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{202BB983-CD25-47A7-A03B-43AF72996561} = {CD578A0F-05E0-434C-962B-86A4B50503AA}
 		{30A24AF4-FFE4-40A7-B23C-918E562B6F9C} = {5CC4F40F-2E95-45BE-9844-02C921127EEE}
+		{ADAC6638-C57C-4B56-BD83-49E73B148B1B} = {CD578A0F-05E0-434C-962B-86A4B50503AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {67A5E287-EB39-4170-9FE7-31E056CA17BA}

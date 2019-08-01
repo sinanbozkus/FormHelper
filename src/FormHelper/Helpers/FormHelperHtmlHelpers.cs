@@ -1,39 +1,32 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
 
 namespace FormHelper
 {
     public static class FormHelperHtmlHelpers
     {
-        public static async Task<HtmlString> RenderFormScript(this IHtmlHelper html, FormConfig config)
+        public static HtmlString RenderFormScript(this IHtmlHelper html, FormConfig config)
         {
-            return await GetFormScript(config);
-        }
-
-        public static async Task<HtmlString> GetFormScript(FormConfig config)
-        {
-            var viewRenderHelper = config.ViewContext.HttpContext.RequestServices.GetService<IFormHelperViewRenderService>();
             var configuration = config.ViewContext.HttpContext.RequestServices.GetService<FormHelperConfiguration>();
 
-            var model = new RenderFormScriptModel
-            {
-                FormId = config.FormId,
-                DataType = config.DataType,
-                Callback = config.Callback,
-                BeforeSubmit = config.BeforeSubmit,
-                IsMobileDevice = config.ViewContext.HttpContext.Request.IsMobileDevice()
-            };
-
-            var result = await viewRenderHelper.RenderToStringAsync("RenderFormScript", model);
-
-            if (!configuration.DebugMode)
-            {
-                result = result.Replace("\r", "").Replace("\n", "").Replace("  ", "");
-            }
-
-            return new HtmlString(result);
+            return new HtmlString($@"
+                            <script>
+                                $(document).ready(function () {{
+                                    var $form = $('#{config.FormId}');
+                                    $('#{config.FormId}').UseFormHelper({{
+                                        url: $form.attr('action'),
+                                        method: $form.attr('method'),
+                                        dataType: '{config.DataType}',
+                                        redirectDelay: {configuration.RedirectDelay},
+                                        beforeSubmit: '{config.BeforeSubmit}',
+                                        callback: '{config.Callback}',
+                                        enableButtonAfterSuccess: {config.EnableButtonAfterSuccess},
+                                        CheckTheFormFieldsMessage: '{configuration.CheckTheFormFieldsMessage}'
+                                    }});
+                                }});
+                            </script>
+                            ");
         }
     }
 }

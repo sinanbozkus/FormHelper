@@ -1,4 +1,4 @@
-﻿@using FormHelper
+﻿@*@using FormHelper
 @inject FormHelperConfiguration Configuration
 @model RenderFormScriptModel
 
@@ -10,6 +10,12 @@
             @if (Configuration.DebugMode) { <text>debugger;</text> }
 
             e.preventDefault();
+
+            if (window.FormData == undefined) {
+                $form.find("button[type='submit']").attr('disabled', 'disabled');
+                alert("Your internet browser is old and not compatible with Form Helper! Update your browser.");
+                return;
+            }
 
             var $form = $(this);
 
@@ -131,4 +137,4 @@
         });
 
     })();
-</script>
+</script>*@

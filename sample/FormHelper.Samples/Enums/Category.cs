@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace FormHelper.Samples.Enums
 {
+    [DefaultValue(Laptop)]
     public enum Category
     {
         [Display(Name = "Laptops")]

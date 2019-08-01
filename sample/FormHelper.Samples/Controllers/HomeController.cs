@@ -37,7 +37,11 @@ namespace FormHelper.Samples.Controllers
                 return FormResult.CreateSuccessResult("Product saved.");
 
                 // Success form result with redirect
-                //return FormResult.CreateSuccessResult("Product saved.", Url.Action("List", "Home");
+                //return FormResult.CreateSuccessResult("Product saved.", Url.Action("List", "Home"));
+
+                // Success form result with redirect with delay time (15 seconds)
+                // The message will be on the screen for 15 seconds.
+                //return FormResult.CreateSuccessResult("Product saved.", Url.Action("List", "Home"), 15000);
             }
             catch
             {

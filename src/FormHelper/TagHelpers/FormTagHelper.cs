@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
+﻿using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
+using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
 namespace FormHelper
@@ -10,6 +9,7 @@ namespace FormHelper
     [HtmlTargetElement("formhelper")]
     public class FormHelperTagHelper : FormTagHelper
     {
+
         public FormHelperTagHelper(IHtmlGenerator generator) : base(generator)
         {
         }
@@ -17,14 +17,19 @@ namespace FormHelper
         [HtmlAttributeName("asp-callback")]
         public string Callback { get; set; }
 
-        [HtmlAttributeName("asp-beforesubmit")]
+        [HtmlAttributeName("asp-beforeSubmit")]
         public string BeforeSubmit { get; set; }
 
-        [HtmlAttributeName("asp-datatype")]
+        [HtmlAttributeName("asp-dataType")]
         public FormDataType DataType { get; set; } = FormDataType.FormData;
+
+        [HtmlAttributeName("asp-enableButtonAfterSuccess")]
+        public bool EnableButtonAfterSuccess { get; set; } = false;
 
         public async override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
+            var configuration = ViewContext.HttpContext.RequestServices.GetService<FormHelperConfiguration>();
+
             string formId;
 
             if (output.Attributes.ContainsName("id"))
@@ -37,18 +42,28 @@ namespace FormHelper
                 output.Attributes.Add("id", formId);
             }
 
+            output.Attributes.Add("dataType", DataType.ToString());
+
+
+            output.Attributes.Add("redirectDelay", configuration.RedirectDelay);
+
+            if (!string.IsNullOrWhiteSpace(Callback))
+            {
+                output.Attributes.Add("callback", Callback);
+            }
+
+            if (!string.IsNullOrWhiteSpace(BeforeSubmit))
+            {
+                output.Attributes.Add("beforeSubmit", BeforeSubmit);
+            }
+
+            output.Attributes.Add("enableButtonAfterSuccess", EnableButtonAfterSuccess);
+            output.Attributes.Add("checkTheFormFieldsMessage", configuration.CheckTheFormFieldsMessage);
+
             output.TagName = "form";
 
-            var htmlString = await FormHelperHtmlHelpers.GetFormScript(new FormConfig(ViewContext)
-            {
-                FormId = formId,
-                DataType = DataType,
-                Callback = Callback,
-                BeforeSubmit = BeforeSubmit
-            });
-
-            output.PostElement.AppendHtml(htmlString);            
-
+            output.PostContent.AppendHtml($"<script>$(document).ready(function () {{$('#{formId}').UseFormHelper();}});</script>");
+       
             await base.ProcessAsync(context, output);
         }
     }

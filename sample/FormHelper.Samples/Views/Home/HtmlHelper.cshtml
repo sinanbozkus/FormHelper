@@ -67,9 +67,15 @@
 
 
 @section Scripts {
-    @await Html.RenderFormScript(formConfig)
+    @Html.RenderFormScript(formConfig)
 
     <script>
+
+        //$('.formhelper').UseFormHelper({
+             
+        //});
+
+
         var ProductFormBeforeSubmit = function (rr, $form, options) {
             console.log("BeforeSubmit function!");
         }

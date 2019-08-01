@@ -27,7 +27,7 @@ namespace FormHelper.Samples
             // Add FormHelper to the project.
             services.AddFormHelper(new FormHelperConfiguration
             {
-                DebugMode = true
+                RedirectDelay = 30
             });
 
             // Add FormHelper to the project with configurations.
