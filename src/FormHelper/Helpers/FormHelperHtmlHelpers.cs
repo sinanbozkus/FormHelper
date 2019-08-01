@@ -21,7 +21,7 @@ namespace FormHelper
                                         redirectDelay: {configuration.RedirectDelay},
                                         beforeSubmit: '{config.BeforeSubmit}',
                                         callback: '{config.Callback}',
-                                        enableButtonAfterSuccess: {config.EnableButtonAfterSuccess},
+                                        enableButtonAfterSuccess: {(config.EnableButtonAfterSuccess ? "true" : "false")},
                                         CheckTheFormFieldsMessage: '{configuration.CheckTheFormFieldsMessage}'
                                     }});
                                 }});

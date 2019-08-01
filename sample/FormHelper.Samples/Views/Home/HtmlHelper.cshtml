@@ -10,7 +10,9 @@
         FormId = "ProductForm",
         FormTitle = Model.IsNew ? "New Product" : "Edit Product",
         BeforeSubmit = "ProductFormBeforeSubmit", // optional
-        Callback = "ProductFormCallback" // optional,
+        Callback = "ProductFormCallback", // optional,
+        // EnableButtonAfterSuccess = true, // default => false
+        // DataType = FormDataType.Json // default => FormData
     };
 }
 

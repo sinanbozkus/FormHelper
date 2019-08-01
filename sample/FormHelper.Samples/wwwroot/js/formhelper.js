@@ -28,7 +28,7 @@
         $form.unbind('submit');
 
         $form.on('submit', function (e) {
-
+           
             e.preventDefault();
 
             $form.removeData("validator");
@@ -139,7 +139,7 @@
                             window.location.replace(result.redirectUri);
                         }, hasMessage ? delay : 1);
                     }
-                    debugger;
+                 
                     if (options.enableButtonAfterSuccess) {
                         $form.find("button[type='submit']").removeAttr('disabled');
                     }

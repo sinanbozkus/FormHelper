@@ -16,6 +16,8 @@
                                 asp-controller="Home"
                                 asp-action="Save" 
                                 asp-dataType="FormData"
+                                asp-callback="ProductFormCallback"
+                                asp-beforeSubmit="ProductFormBeforeSubmit"
                                 enctype="multipart/form-data">
 
                         <input type="hidden" asp-for="Id" />
