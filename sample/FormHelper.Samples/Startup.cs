@@ -50,6 +50,7 @@ namespace FormHelper.Samples
         {
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
+            app.UseFormHelper();
 
             app.UseMvc(routes =>
             {
