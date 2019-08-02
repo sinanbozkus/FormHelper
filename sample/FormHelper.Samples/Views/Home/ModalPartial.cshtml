@@ -1,22 +1,14 @@
 ﻿@model ProductFormViewModel
 
-@{
-    var formConfig = new FormConfig(ViewContext)
-    {
-        FormId = "ProductModalForm",
-        FormTitle = Model.IsNew ? "New Product" : "Edit Product"
-    };
-}
-
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title">@formConfig.FormTitle</h5>
+            <h5 class="modal-title">@(Model.IsNew ? "New Product" : "Edit Product")</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <form id="@formConfig.FormId" asp-controller="Home" asp-action="Save" enctype="multipart/form-data">
+        <formhelper asp-controller="Home" asp-action="Save" enctype="multipart/form-data">
             <div class="modal-body">
                 <input type="hidden" asp-for="Id" />
 
@@ -28,7 +20,7 @@
                 <div class="form-group">
                     <label asp-for="Category"></label>
                     <select asp-for="Category" asp-items="Html.GetEnumSelectList<Category>()" class="form-control">
-                        <option>Select</option>
+                        <option value="">Select</option>
                     </select>
                     <span asp-validation-for="Category" class="text-danger"></span>
                 </div>
@@ -54,8 +46,6 @@
                     <button class="btn btn-primary" type="submit">Save</button>
                 </div>
             </div>
-        </form>
+        </formhelper>
     </div>
 </div>
-
-@await Html.RenderFormScript(formConfig)

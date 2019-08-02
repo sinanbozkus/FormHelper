@@ -1,0 +1,8 @@
+[
+  {
+    "outputFileName": "wwwroot/js/formhelper.min.js",
+    "inputFiles": [
+      "wwwroot/js/formhelper.js"
+    ]
+  }
+]

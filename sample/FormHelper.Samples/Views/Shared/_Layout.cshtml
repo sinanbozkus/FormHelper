@@ -6,15 +6,21 @@
     <title>FormHelper Samples</title>
 
     <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/sinanbozkus/remotemodal/remotemodal.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/sinanbozkus/formHelper@master/dist/formhelper.css" />
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <!-- form helper -->
+    <script src="/formhelper/formhelper.min.js"></script>
+    <!-- remote modal -->
+    <script src="//cdn.jsdelivr.net/gh/sinanbozkus/remotemodal/remotemodal.js"></script>
 
     <!-- If you want use form helper with dynamic modals, you need to add these codes in the head tag. -->
 </head>
@@ -26,15 +32,18 @@
     </div>
 
     @{
-        var indexPage = !ViewContext.HttpContext.Request.Path.Value.ToUpper().Contains("INDEXPOST");
+        var page = (Page)ViewData["page"];
     }
 
     <div class="text-center mt-4 mb-4">
         <div class="btn-group" role="group" aria-label="Basic example">
-            <a href="@Url.Action("Index", "Home")" class="btn btn-light @(indexPage ? "active" : "")">
+            <a href="@Url.Action("TagHelper", "Home")" class="btn btn-light @(page == Page.TagHelper ? "active" : "")">
+                Tag Helper
+            </a>
+            <a href="@Url.Action("HtmlHelper", "Home")" class="btn btn-light @(page == Page.HtmlHelper ? "active" : "")">
                 Post with Ajax
             </a>
-            <a href="@Url.Action("IndexPost", "Home")" class="btn btn-light @(!indexPage ? "active" : "")">
+            <a href="@Url.Action("Post", "Home")" class="btn btn-light @(page == Page.Post ? "active" : "")">
                 Native Post
             </a>
             <button id="openModal" class="btn btn-light">
@@ -46,7 +55,7 @@
     <div class="text-center">
         <p>
             <a href="https://fluentvalidation.net/" target="_blank">Fluent Validation</a> was used for the validator in the samples.
-            <br />You can also use your own validator. FormHelper doesn't depend to Fluent Validation.
+            <br />You can also use your own validator. Form Helper doesn't depend to Fluent Validation.
         </p>
     </div>
 

@@ -5,15 +5,25 @@ namespace FormHelper.Samples.Controllers
 {
     public class HomeController : Controller
     {
+        public IActionResult Index()
+        {
+            return RedirectToAction(nameof(TagHelper));
+        }
+
         #region Ajax Post
 
-        public IActionResult Index()
+        public IActionResult TagHelper()
+        {
+            return View(new ProductFormViewModel());
+        }
+
+        public IActionResult HtmlHelper()
         {
             return View(new ProductFormViewModel());
         }
 
         [HttpPost, FormValidator]
-        public IActionResult Save(ProductFormViewModel viewModel)
+        public IActionResult Save([FromBody] ProductFormViewModel viewModel)
         {
             // sample scenario: same name checking in the database 
             if (viewModel.Title.ToLower() == "abc")
@@ -27,7 +37,11 @@ namespace FormHelper.Samples.Controllers
                 return FormResult.CreateSuccessResult("Product saved.");
 
                 // Success form result with redirect
-                //return FormResult.CreateSuccessResult("Product saved.", Url.Action("List", "Home");
+                //return FormResult.CreateSuccessResult("Product saved.", Url.Action("List", "Home"));
+
+                // Success form result with redirect with delay time (15 seconds)
+                // The message will be on the screen for 15 seconds.
+                //return FormResult.CreateSuccessResult("Product saved.", Url.Action("List", "Home"), 15000);
             }
             catch
             {
@@ -45,7 +59,7 @@ namespace FormHelper.Samples.Controllers
 
         #region Native Post
 
-        public IActionResult IndexPost()
+        public IActionResult Post()
         {
             return View(new ProductFormViewModel());
         }

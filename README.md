@@ -1,4 +1,4 @@
-# Form Helper
+# Form Helper (2.x - Beta Release)
 
 Form &amp; Validation Helper for **ASP.NET Core**
 
@@ -113,6 +113,5 @@ return FormResult.CreateSuccessResult("Product saved. Please wait...", Url.Actio
 
 
 ## Next Releases (Roadmap)
-- Tag Helper support.
 - Sending JSON Data
 - ASP.NET Core 3.0 support

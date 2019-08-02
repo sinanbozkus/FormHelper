@@ -1,24 +1,24 @@
-﻿@model ProductFormViewModel
-
-@{
-    var formConfig = new FormConfig(ViewContext)
-    {
-        FormId = "ProductForm",
-        FormTitle = Model.IsNew ? "New Product" : "Edit Product",
-        BeforeSubmit = "ProductFormBeforeSubmit", // optional
-        Callback = "ProductFormCallback" // optional,
-    };
+﻿@{
+    ViewData["page"] = Page.TagHelper;
 }
+
+@model ProductFormViewModel
 
 <div class="container">
     <div class="row justify-content-center">
         <div class="col col-lg-8">
             <div class="card">
                 <div class="card-header">
-                    @formConfig.FormTitle
+                    @(Model.IsNew ? "New Product" : "Edit Product")
                 </div>
                 <div class="card-body">
-                    <form id="@formConfig.FormId" asp-controller="Home" asp-action="Save" enctype="multipart/form-data">
+                    <formhelper 
+                                asp-controller="Home"
+                                asp-action="Save" 
+                                asp-dataType="Json"
+                                asp-callback="ProductFormCallback"
+                                asp-beforeSubmit="ProductFormBeforeSubmit"
+                                enctype="multipart/form-data">
 
                         <input type="hidden" asp-for="Id" />
 
@@ -30,7 +30,7 @@
                         <div class="form-group">
                             <label asp-for="Category"></label>
                             <select asp-for="Category" asp-items="Html.GetEnumSelectList<Category>()" class="form-control">
-                                <option>Select</option>
+                                <option value="">Select</option>
                             </select>
                             <span asp-validation-for="Category" class="text-danger"></span>
                         </div>
@@ -54,7 +54,7 @@
                             <button class="btn btn-secondary" type="reset">Reset</button>
                             <button class="btn btn-primary" type="submit">Save</button>
                         </div>
-                    </form>
+                    </formhelper>
                 </div>
             </div>
         </div>
@@ -63,11 +63,8 @@
 
 
 @section Scripts {
-    @await Html.RenderFormScript(formConfig)
-
     <script>
         var ProductFormBeforeSubmit = function (rr, $form, options) {
-            debugger;
             console.log("BeforeSubmit function!");
         }
 

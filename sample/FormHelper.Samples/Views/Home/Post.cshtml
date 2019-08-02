@@ -1,14 +1,18 @@
-﻿@model ProductFormViewModel
+﻿@{
+    ViewData["page"] = Page.Post;
+}
+
+@model ProductFormViewModel
 
 <div class="container">
     <div class="row justify-content-center">
         <div class="col col-lg-8">
             <div class="card">
                 <div class="card-header">
-                   @(Model.IsNew ? "New Product" : "Edit Product")
+                    @(Model.IsNew ? "New Product" : "Edit Product")
                 </div>
                 <div class="card-body">
-                    <form  asp-controller="Home" asp-action="SavePost" enctype="multipart/form-data">
+                    <form asp-controller="Home" asp-action="SavePost" enctype="multipart/form-data">
 
                         <input type="hidden" asp-for="Id" />
 
@@ -20,7 +24,7 @@
                         <div class="form-group">
                             <label asp-for="Category"></label>
                             <select asp-for="Category" asp-items="Html.GetEnumSelectList<Category>()" class="form-control">
-                                <option>Select</option>
+                                <option value="">Select</option>
                             </select>
                             <span asp-validation-for="Category" class="text-danger"></span>
                         </div>
