@@ -1,4 +1,4 @@
-# Form Helper (2.x - Beta Release)
+# Form Helper
 
 Form &amp; Validation Helper for **ASP.NET Core**
 
@@ -28,7 +28,7 @@ dotnet add package FormHelper
 ```
 
 This library depends on some packages:
-- [jQuery Validation](https://github.com/jquery-validation/jquery-validation)
+- [jQuery Validation Unobtrusive](https://github.com/aspnet/jquery-validation-unobtrusive)
 - [Toastr](https://github.com/CodeSeven/toastr)
 
 CDN:
@@ -41,15 +41,19 @@ CDN:
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+<!-- form helper - You don't need to add this file to your project, just add it. it's embeded! -->
+<script src="/formhelper/formhelper.min.js"></script>
 ```
 
 ## Usage
 
 **Startup.cs**
+
+ConfigureServices:
 ```
 services.AddFormHelper();
 ```
-With configuration: (optional)
+*With configuration: (optional)*
 ```
 services.AddFormHelper(new FormHelperConfiguration
 {
@@ -58,8 +62,26 @@ services.AddFormHelper(new FormHelperConfiguration
     DebugMode = true
 });
 ```
+Configure:
+```
+app.UseFormHelper();
+```
 
-**View:**
+
+
+**View: (TagHelper)**
+```csharp
+<formhelper asp-controller="Home" asp-action="Save">
+   // <input...
+   // ...
+</formhelper>
+
+// Optional parameters:
+// asp-callback="...", asp-beforeSubmit="...", asp-dataType="FormData/Json", asp-enableButtonAfterSuccess="False"
+```
+
+
+**View: (HtmlHelper)**
 ```csharp
 var formConfig = new FormConfig(ViewContext)
 {
@@ -67,9 +89,10 @@ var formConfig = new FormConfig(ViewContext)
     FormTitle = "New Product",
     BeforeSubmit = "ProductFormBeforeSubmit", // optional
     Callback = "ProductFormCallback" // optional,
+
 };
 
-// <form id="@formConfig.FormId" asp-controller="Home" asp-action="Save"
+// <form id="@formConfig.FormId" asp-controller="Home" asp-action="Save">
 // ...
 
 @await Html.RenderFormScript(formConfig)
@@ -79,6 +102,9 @@ var formConfig = new FormConfig(ViewContext)
 ```csharp
 [HttpPost, FormValidator]
 public IActionResult Save(FormViewModel viewModel)
+
+// If you use Json data type, you need to add [FromBody] attribute.
+// public IActionResult Save([FromBody]FormViewModel viewModel)
 ```
 
 **Return a result from Controller:**
@@ -103,6 +129,10 @@ Success Message with Redirect:
 ```
 return FormResult.CreateSuccessResult("Product saved. Please wait...", Url.Action("Home", "Index"));
 ```
+Success Message with Redirect and Delay Time:
+```
+return FormResult.CreateSuccessResult("Product saved. Please wait...", Url.Action("Home", "Index"), 10000); // 10 seconds
+```
 
 ## Blog Posts
 >**English:**<br>
@@ -113,5 +143,4 @@ return FormResult.CreateSuccessResult("Product saved. Please wait...", Url.Actio
 
 
 ## Next Releases (Roadmap)
-- Sending JSON Data
 - ASP.NET Core 3.0 support
