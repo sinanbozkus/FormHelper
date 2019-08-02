@@ -15,7 +15,7 @@
                     <formhelper 
                                 asp-controller="Home"
                                 asp-action="Save" 
-                                asp-dataType="FormData"
+                                asp-dataType="Json"
                                 asp-callback="ProductFormCallback"
                                 asp-beforeSubmit="ProductFormBeforeSubmit"
                                 enctype="multipart/form-data">
@@ -30,7 +30,7 @@
                         <div class="form-group">
                             <label asp-for="Category"></label>
                             <select asp-for="Category" asp-items="Html.GetEnumSelectList<Category>()" class="form-control">
-                                <option>Select</option>
+                                <option value="">Select</option>
                             </select>
                             <span asp-validation-for="Category" class="text-danger"></span>
                         </div>

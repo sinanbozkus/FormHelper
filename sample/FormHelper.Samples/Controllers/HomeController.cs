@@ -23,7 +23,7 @@ namespace FormHelper.Samples.Controllers
         }
 
         [HttpPost, FormValidator]
-        public IActionResult Save(ProductFormViewModel viewModel)
+        public IActionResult Save([FromBody] ProductFormViewModel viewModel)
         {
             // sample scenario: same name checking in the database 
             if (viewModel.Title.ToLower() == "abc")

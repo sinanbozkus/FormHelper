@@ -19,12 +19,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{ADAC6638-C57C-4B56-BD83-49E73B148B1B}"
 	ProjectSection(SolutionItems) = preProject
-		sample\FormHelper.Samples\wwwroot\js\formhelper.js = sample\FormHelper.Samples\wwwroot\js\formhelper.js
+		src\scripts\formhelper.js = src\scripts\formhelper.js
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dist", "dist", "{64B324B7-DFF1-4F44-9394-22E650D86B71}"
 	ProjectSection(SolutionItems) = preProject
-		sample\FormHelper.Samples\wwwroot\js\formhelper.min.js = sample\FormHelper.Samples\wwwroot\js\formhelper.min.js
+		dist\formhelper.min.js = dist\formhelper.min.js
 	EndProjectSection
 EndProject
 Global
