@@ -71,10 +71,10 @@ app.UseFormHelper();
 
 **View: (TagHelper)**
 ```csharp
-<formhelper asp-controller="Home" asp-action="Save">
+<form asp-formhelper="true" asp-controller="Home" asp-action="Save">
    // <input...
    // ...
-</formhelper>
+</form>
 
 // Optional parameters:
 // asp-callback="...", asp-beforeSubmit="...", asp-dataType="FormData/Json", asp-enableButtonAfterSuccess="False"
