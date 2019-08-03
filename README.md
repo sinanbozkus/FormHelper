@@ -76,6 +76,7 @@ app.UseFormHelper();
    // ...
 </form>
 
+// You can use <form asp-formhelper="true"> or <formhelper> to activate formhelper.
 // Optional parameters:
 // asp-callback="...", asp-beforeSubmit="...", asp-dataType="FormData/Json", asp-enableButtonAfterSuccess="False"
 ```
