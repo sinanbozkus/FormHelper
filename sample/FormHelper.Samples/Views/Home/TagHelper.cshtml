@@ -12,13 +12,14 @@
                     @(Model.IsNew ? "New Product" : "Edit Product")
                 </div>
                 <div class="card-body">
-                    <formhelper 
-                                asp-controller="Home"
-                                asp-action="Save" 
-                                asp-dataType="Json"
-                                asp-callback="ProductFormCallback"
-                                asp-beforeSubmit="ProductFormBeforeSubmit"
-                                enctype="multipart/form-data">
+                    <!-- You can use  <form asp-formhelper="true"> or <formhelper> to activate formhelper. -->
+                    <form asp-formhelper="true"
+                          asp-controller="Home"
+                          asp-action="Save"
+                          asp-dataType="Json"
+                          asp-callback="ProductFormCallback"
+                          asp-beforeSubmit="ProductFormBeforeSubmit"
+                          enctype="multipart/form-data">
 
                         <input type="hidden" asp-for="Id" />
 
@@ -54,7 +55,7 @@
                             <button class="btn btn-secondary" type="reset">Reset</button>
                             <button class="btn btn-primary" type="submit">Save</button>
                         </div>
-                    </formhelper>
+                    </form>
                 </div>
             </div>
         </div>

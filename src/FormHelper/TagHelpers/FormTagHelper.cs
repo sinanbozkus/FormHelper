@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace FormHelper
 {
+    [HtmlTargetElement("form", Attributes = "asp-formhelper")]
     [HtmlTargetElement("formhelper")]
     public class FormHelperTagHelper : FormTagHelper
     {
@@ -13,6 +14,10 @@ namespace FormHelper
         public FormHelperTagHelper(IHtmlGenerator generator) : base(generator)
         {
         }
+
+
+        [HtmlAttributeName("asp-formhelper")]
+        public bool FormHelperAttribute { get; set; }
 
         [HtmlAttributeName("asp-callback")]
         public string Callback { get; set; }
@@ -25,9 +30,22 @@ namespace FormHelper
 
         [HtmlAttributeName("asp-enableButtonAfterSuccess")]
         public bool EnableButtonAfterSuccess { get; set; } = false;
-
         public async override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
+            var usedFormHelperTag = output.TagName == "formhelper";
+
+            if (usedFormHelperTag)
+            {
+                output.TagName = "form";
+            }
+            else
+            {
+                if (FormHelperAttribute == false)
+                {
+                    return;
+                }
+            }
+
             var configuration = ViewContext.HttpContext.RequestServices.GetService<FormHelperConfiguration>();
 
             string formId;
@@ -43,8 +61,6 @@ namespace FormHelper
             }
 
             output.Attributes.Add("dataType", DataType.ToString());
-
-
             output.Attributes.Add("redirectDelay", configuration.RedirectDelay);
 
             if (!string.IsNullOrWhiteSpace(Callback))
@@ -59,12 +75,12 @@ namespace FormHelper
 
             output.Attributes.Add("enableButtonAfterSuccess", EnableButtonAfterSuccess);
             output.Attributes.Add("checkTheFormFieldsMessage", configuration.CheckTheFormFieldsMessage);
+            output.PostElement.AppendHtml($"<script>$(document).ready(function () {{$('#{formId}').UseFormHelper();}});</script>");
 
-            output.TagName = "form";
-
-            output.PostContent.AppendHtml($"<script>$(document).ready(function () {{$('#{formId}').UseFormHelper();}});</script>");
-       
-            await base.ProcessAsync(context, output);
+            if (usedFormHelperTag)
+            {
+                await base.ProcessAsync(context, output);
+            }
         }
     }
 }
