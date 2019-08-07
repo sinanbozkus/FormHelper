@@ -66,6 +66,11 @@ Configure:
 app.UseFormHelper();
 ```
 
+**ViewImports.cshtml**
+```csharp
+@using FormHelper
+@addTagHelper *, FormHelper
+```
 
 
 **View: (TagHelper)**
