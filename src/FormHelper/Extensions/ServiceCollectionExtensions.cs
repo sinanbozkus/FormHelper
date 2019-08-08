@@ -9,8 +9,6 @@ namespace FormHelper
     {
         public static IServiceCollection AddFormHelper(this IServiceCollection services, FormHelperConfiguration config = null)
         {
-            services.AddScoped<IFormHelperViewRenderService, FormHelperViewRenderService>();
-
             if (config == null)
                 services.AddSingleton<FormHelperConfiguration>();
             else
