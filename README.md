@@ -58,8 +58,7 @@ services.AddFormHelper();
 services.AddFormHelper(new FormHelperConfiguration
 {
     CheckTheFormFieldsMessage = "Your custom message...",
-    RedirectDelay = 6000,
-    DebugMode = true
+    RedirectDelay = 6000
 });
 ```
 Configure:
@@ -68,6 +67,11 @@ Configure:
 app.UseFormHelper();
 ```
 
+**ViewImports.cshtml**
+```csharp
+@using FormHelper
+@addTagHelper *, FormHelper
+```
 
 
 **View: (TagHelper)**
