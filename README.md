@@ -64,6 +64,7 @@ services.AddFormHelper(new FormHelperConfiguration
 ```
 Configure:
 ```
+<!-- If you use embeded form helper script files, add this line -->
 app.UseFormHelper();
 ```
 
