@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Razor;
+﻿using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
@@ -14,11 +14,8 @@ namespace FormHelper
             else
                 services.AddSingleton(config);
 
-            services.Configure<RazorViewEngineOptions>(options =>
-            {
-                options.FileProviders.Add(
-                    new EmbeddedFileProvider(typeof(FormHelperHtmlHelpers).GetTypeInfo().Assembly));
-            });
+            services.Configure<MvcRazorRuntimeCompilationOptions>(opts =>
+                     opts.FileProviders.Add(new EmbeddedFileProvider(typeof(FormHelperHtmlHelpers).GetTypeInfo().Assembly)));
 
             return services;
         }

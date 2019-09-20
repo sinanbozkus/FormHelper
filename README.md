@@ -146,7 +146,3 @@ return FormResult.CreateSuccessResult("Product saved. Please wait...", Url.Actio
 >
 >**Turkish:**<br>
 >[FormHelper ve Fluent Validation kullanarak ASP.NET Core Validation İşlemleri](http://www.sinanbozkus.com/form-helper-ve-fluent-validation-kullanarak-asp-net-core-validation-islemleri/)
-
-
-## Next Releases (Roadmap)
-- ASP.NET Core 3.0 support

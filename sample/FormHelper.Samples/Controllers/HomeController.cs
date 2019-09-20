@@ -64,7 +64,7 @@ namespace FormHelper.Samples.Controllers
             return View(new ProductFormViewModel());
         }
 
-        [FormValidator(UseAjax = false, ViewName = "IndexPost")]
+        [FormValidator(UseAjax = false, ViewName = "Post")]
         public IActionResult SavePost(ProductFormViewModel viewModel)
         {
             // ...
