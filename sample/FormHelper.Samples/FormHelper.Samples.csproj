@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,16 +14,13 @@
     <None Include="wwwroot\js\formhelper.js" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <PackageReference Include="FluentValidation.AspNetCore" Version="8.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+ <ItemGroup>
+    <ProjectReference Include="..\..\src\FormHelper\FormHelper.csproj" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FormHelper\FormHelper.csproj" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.5.0-preview5" />
   </ItemGroup>
 
 </Project>
