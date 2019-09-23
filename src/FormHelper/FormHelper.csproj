@@ -11,6 +11,7 @@
     <tags>fluentvalidation fluent validation form helper validation helper notification crud</tags>
     <PackageIconUrl>http://www.sinanbozkus.com/nuget/formhelper/formhelper-logo.png</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
   
   <PropertyGroup>
