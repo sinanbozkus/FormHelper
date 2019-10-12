@@ -63,7 +63,7 @@ services.AddFormHelper(new FormHelperConfiguration
 ```
 Configure:
 ```
-<!-- If you use embeded form helper script files, add this line -->
+<!-- If you want to use embeded form helper script file, add this line -->
 app.UseFormHelper();
 ```
 
@@ -84,12 +84,6 @@ app.UseFormHelper();
 // You can use <form asp-formhelper="true"> or <formhelper> to activate formhelper.
 // Optional parameters:
 // asp-callback="...", asp-beforeSubmit="...", asp-dataType="FormData/Json", asp-enableButtonAfterSuccess="False"
-```
-
-// <form id="@formConfig.FormId" asp-controller="Home" asp-action="Save">
-// ...
-
-@await Html.RenderFormScript(formConfig)
 ```
 
 **Controller:**
