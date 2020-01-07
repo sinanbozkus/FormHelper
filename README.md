@@ -63,7 +63,7 @@ services.AddFormHelper(new FormHelperConfiguration
 ```
 Configure:
 ```
-<!-- If you use embeded form helper script files, add this line -->
+<!-- If you want to use embeded form helper script file, add this line -->
 app.UseFormHelper();
 ```
 
@@ -86,24 +86,6 @@ app.UseFormHelper();
 // asp-callback="...", asp-beforeSubmit="...", asp-dataType="FormData/Json", asp-enableButtonAfterSuccess="False"
 ```
 
-
-**View: (HtmlHelper)**
-```csharp
-var formConfig = new FormConfig(ViewContext)
-{
-    FormId = "ProductForm",
-    FormTitle = "New Product",
-    BeforeSubmit = "ProductFormBeforeSubmit", // optional
-    Callback = "ProductFormCallback" // optional,
-
-};
-
-// <form id="@formConfig.FormId" asp-controller="Home" asp-action="Save">
-// ...
-
-@await Html.RenderFormScript(formConfig)
-```
-
 **Controller:**
 ```csharp
 [HttpPost, FormValidator]
@@ -119,14 +101,6 @@ Error Message:
 ```
 return FormResult.CreateErrorResult("An error occured.");
 ```
-Warning Message:
-```
-return FormResult.CreateWarningResult("'ABC' is already exist in the database.");
-```
-Info Message:
-```
-return FormResult.CreateInfoResult("Happy new year!");
-```
 Success Message:
 ```
 return FormResult.CreateSuccessResult("Product saved.");
@@ -139,10 +113,3 @@ Success Message with Redirect and Delay Time:
 ```
 return FormResult.CreateSuccessResult("Product saved. Please wait...", Url.Action("Home", "Index"), 10000); // 10 seconds
 ```
-
-## Blog Posts
->**English:**<br>
->English Posts are not ready yet. But you can look the samples. It's so easy to use.
->
->**Turkish:**<br>
->[FormHelper ve Fluent Validation kullanarak ASP.NET Core Validation İşlemleri](http://www.sinanbozkus.com/form-helper-ve-fluent-validation-kullanarak-asp-net-core-validation-islemleri/)
