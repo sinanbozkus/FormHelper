@@ -151,8 +151,6 @@
             });
 
             //end ajax request
-
-
         });
 
     };
@@ -173,8 +171,6 @@
 
     $.fn.UseFormHelper = function (options) {
 
-        //return this.each(function () {
-
             if (!options)
                 options = {
                     url: $(this).attr("action"),
@@ -189,14 +185,6 @@
 
             return new $.formhelper(options, this);
 
-        //});
-
-
     };
 
 })(jQuery);
-
-
-//$(document).ready(function () {
-//    $('.formhelper').UseFormHelper();
-//});

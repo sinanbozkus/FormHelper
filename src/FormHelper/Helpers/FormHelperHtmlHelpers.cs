@@ -22,7 +22,7 @@ namespace FormHelper
                                         beforeSubmit: '{config.BeforeSubmit}',
                                         callback: '{config.Callback}',
                                         enableButtonAfterSuccess: {(config.EnableButtonAfterSuccess ? "true" : "false")},
-                                        CheckTheFormFieldsMessage: '{configuration.CheckTheFormFieldsMessage}'
+                                        checkTheFormFieldsMessage: '{configuration.CheckTheFormFieldsMessage}'
                                     }});
                                 }});
                             </script>
