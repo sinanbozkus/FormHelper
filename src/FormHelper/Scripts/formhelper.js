@@ -28,7 +28,7 @@
         $form.unbind('submit');
 
         $form.on('submit', function (e) {
-           
+
             e.preventDefault();
 
             $form.removeData("validator");
@@ -85,7 +85,7 @@
                 },
                 success: function (result, status) {
 
-                    if (!result.isSucceed) {
+                    if (result.isSucceed === false) {
                         $form.find("button[type='submit']").removeAttr('disabled');
                     }
 
@@ -112,7 +112,7 @@
                         } else if (result.status === 4) {
                             toastr.error(result.message, null, toastrOptions);
                         }
-                    } else {
+                    } else if (result.isSucceed === false) {
                         toastr.error(options.checkTheFormFieldsMessage);
                     }
 
@@ -139,7 +139,7 @@
                             window.location.replace(result.redirectUri);
                         }, hasMessage ? delay : 1);
                     }
-                 
+
                     if (options.enableButtonAfterSuccess) {
                         $form.find("button[type='submit']").removeAttr('disabled');
                     }
@@ -151,6 +151,8 @@
             });
 
             //end ajax request
+
+
         });
 
     };
@@ -171,19 +173,24 @@
 
     $.fn.UseFormHelper = function (options) {
 
-            if (!options)
-                options = {
-                    url: $(this).attr("action"),
-                    method: $(this).attr("method"),
-                    dataType: $(this).attr("dataType"),
-                    checkTheFormFieldsMessage: $(this).attr("CheckTheFormFieldsMessage"),
-                    redirectDelay: parseInt($(this).attr("redirectDelay")),
-                    beforeSubmit: $(this).attr("beforeSubmit"),
-                    callback: $(this).attr("callback"),
-                    enableButtonAfterSuccess: $(this).attr("enableButtonAfterSuccess") === "True"
-                };
+        //return this.each(function () {
 
-            return new $.formhelper(options, this);
+        if (!options)
+            options = {
+                url: $(this).attr("action"),
+                method: $(this).attr("method"),
+                dataType: $(this).attr("dataType"),
+                checkTheFormFieldsMessage: $(this).attr("CheckTheFormFieldsMessage"),
+                redirectDelay: parseInt($(this).attr("redirectDelay")),
+                beforeSubmit: $(this).attr("beforeSubmit"),
+                callback: $(this).attr("callback"),
+                enableButtonAfterSuccess: $(this).attr("enableButtonAfterSuccess") === "True"
+            };
+
+        return new $.formhelper(options, this);
+
+        //});
+
 
     };
 
