@@ -78,9 +78,9 @@
                 data: formData,
                 contentType: contentType,
                 processData: false,
-                beforeSend: function (arr) {
+                beforeSend: function (jqXHR,settings) {
                     if (options.beforeSubmit) {
-                        return window[options.beforeSubmit](arr, $form);
+                        return window[options.beforeSubmit](jqXHR, settings, $form);
                     }
                 },
                 success: function (result, status) {
