@@ -144,7 +144,7 @@
                         $form.find("button[type='submit']").removeAttr('disabled');
                     }
 
-                    if (options.clearFormAfterSuccess) {
+                    if (options.resetFormAfterSuccess) {
                         
                         $form[0].reset();
                     }
@@ -172,7 +172,7 @@
         beforeSubmit: null,
         callback: null,
         enableButtonAfterSuccess: false,
-        clearFormAfterSuccess: false
+        resetFormAfterSuccess: false
     };
 
 
@@ -191,7 +191,7 @@
                 beforeSubmit: $(this).attr("beforeSubmit"),
                 callback: $(this).attr("callback"),
                 enableButtonAfterSuccess: $(this).attr("enableButtonAfterSuccess") === "True",
-                clearFormAfterSuccess: $(this).attr("clearFormAfterSuccess") === "True"
+                resetFormAfterSuccess: $(this).attr("ResetFormAfterSuccess") === "True"
             };
 
         return new $.formhelper(options, this);
