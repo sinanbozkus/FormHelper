@@ -32,6 +32,8 @@ namespace FormHelper
         public bool EnableButtonAfterSuccess { get; set; } = false;
         [HtmlAttributeName("asp-resetFormAfterSuccess")]
         public bool ResetFormAfterSuccess { get; set; } = true;
+        [HtmlAttributeName("asp-toastrPosition")]
+        public ToastrPosition? ToastrPosition { get; set; }
         public async override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var usedFormHelperTag = output.TagName == "formhelper";
@@ -73,6 +75,15 @@ namespace FormHelper
             if (!string.IsNullOrWhiteSpace(BeforeSubmit))
             {
                 output.Attributes.Add("beforeSubmit", BeforeSubmit);
+            }
+
+            if (ToastrPosition == null)
+            {
+                output.Attributes.Add("toastrPositionClass", configuration.ToastrDefaultPosition.ToClassName());
+            }
+            else
+            {
+                output.Attributes.Add("toastrPositionClass", ToastrPosition.Value.ToClassName());
             }
 
             output.Attributes.Add("enableButtonAfterSuccess", EnableButtonAfterSuccess);

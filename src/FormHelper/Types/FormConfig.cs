@@ -17,5 +17,6 @@ namespace FormHelper
         public string Callback { get; set; }
         public bool EnableButtonAfterSuccess { get; set; } = false;
         public bool ResetFormAfterSuccess { get; set; } = true;
+        public ToastrPosition? ToastrPosition { get; set; }
     }
 }

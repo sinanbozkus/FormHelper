@@ -23,7 +23,8 @@ namespace FormHelper
                                         callback: '{config.Callback}',
                                         enableButtonAfterSuccess: {(config.EnableButtonAfterSuccess ? "true" : "false")},
                                         resetFormAfterSuccess: {(config.ResetFormAfterSuccess ? "true" : "false")},
-                                        checkTheFormFieldsMessage: '{configuration.CheckTheFormFieldsMessage}'
+                                        checkTheFormFieldsMessage: '{configuration.CheckTheFormFieldsMessage}',
+                                        toastrPositionClass: '{(config.ToastrPosition == null ? configuration.ToastrDefaultPosition.ToClassName() : config.ToastrPosition.Value.ToClassName())}'
                                     }});
                                 }});
                             </script>

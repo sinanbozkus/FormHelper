@@ -21,15 +21,15 @@
 
         options = $.extend({}, $.formhelper.defaultOptions, options);
 
-        if (window.mobileAndTabletcheck() && toastr) {
-            toastr.options.positionClass = "toast-top-full-width";
-        }
-
         $form.unbind('submit');
 
         $form.on('submit', function (e) {
 
             e.preventDefault();
+
+            var toastrOptions = {
+                positionClass: window.mobileAndTabletcheck() ? "toast-top-full-width" : options.toastrPositionClass
+            };
 
             $form.removeData("validator");
             $form.removeData("unobtrusiveValidation");
@@ -39,7 +39,7 @@
 
             if (!validationResult) {
                 if (toastr) {
-                    toastr.error(options.checkTheFormFieldsMessage);
+                    toastr.error(options.checkTheFormFieldsMessage, null, toastrOptions);
                 }
                 return false;
             }
@@ -49,6 +49,7 @@
             var headers = {};
             var formData = {};
             var contentType = {};
+
             if (options.dataType === "FormData") {
                 formData = new FormData($form[0]);
                 contentType = false;
@@ -84,12 +85,10 @@
                     }
                 },
                 success: function (result, status) {
-
+                    
                     if (result.isSucceed === false) {
                         $form.find("button[type='submit']").removeAttr('disabled');
                     }
-
-                    var toastrOptions = {};
 
                     if (result.redirectUri) {
                         toastrOptions = {
@@ -113,7 +112,7 @@
                             toastr.error(result.message, null, toastrOptions);
                         }
                     } else if (result.isSucceed === false) {
-                        toastr.error(options.checkTheFormFieldsMessage);
+                        toastr.error(options.checkTheFormFieldsMessage, null, toastrOptions);
                     }
 
                     if (result.validationErrors && result.validationErrors.length > 0) {
@@ -140,18 +139,22 @@
                         }, hasMessage ? delay : 1);
                     }
 
-                    if (options.enableButtonAfterSuccess) {
-                        $form.find("button[type='submit']").removeAttr('disabled');
-                    }
+                    
 
-                    if (options.resetFormAfterSuccess) {
-                        
-                        $form[0].reset();
+                    if (result.status === 1) {
+
+                        if (options.enableButtonAfterSuccess) {
+                            $form.find("button[type='submit']").removeAttr('disabled');
+                        }
+
+                        if (options.resetFormAfterSuccess) {
+                            $form[0].reset();
+                        }
                     }
                 },
                 error: function (request, status, error) {
                     console.error(request.responseText);
-                    toastr.error(request.responseText);
+                    toastr.error(request.responseText, null, toastrOptions);
                 }
             });
 
@@ -172,7 +175,8 @@
         beforeSubmit: null,
         callback: null,
         enableButtonAfterSuccess: false,
-        resetFormAfterSuccess: false
+        resetFormAfterSuccess: false,
+        toastrPositionClass: null
     };
 
 
@@ -191,7 +195,8 @@
                 beforeSubmit: $(this).attr("beforeSubmit"),
                 callback: $(this).attr("callback"),
                 enableButtonAfterSuccess: $(this).attr("enableButtonAfterSuccess") === "True",
-                resetFormAfterSuccess: $(this).attr("ResetFormAfterSuccess") === "True"
+                resetFormAfterSuccess: $(this).attr("ResetFormAfterSuccess") === "True",
+                toastrPositionClass: $(this).attr("toastrPositionClass")
             };
 
         return new $.formhelper(options, this);
