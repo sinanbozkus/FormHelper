@@ -1,7 +1,0 @@
-2.0 - ...
-Added TagHelper support.
-
-1.1.2 - 14 June 2019
-jQuery Form dependency removed.
-UsePascalCase property removed from FormHelperConfiguration. (no need anymore)
-Error event added for ajax request.
