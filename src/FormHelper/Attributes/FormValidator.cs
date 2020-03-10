@@ -39,6 +39,7 @@ namespace FormHelper
             var httpContext = context.HttpContext;
             var modelState = context.ModelState;
 
+
             if (UseAjax)
             {
                 if (!httpContext.Request.IsAjaxRequest())
@@ -129,7 +130,7 @@ namespace FormHelper
 
                 context.Result = viewResult;
             }
-           
+
             base.OnActionExecuting(context);
         }
 

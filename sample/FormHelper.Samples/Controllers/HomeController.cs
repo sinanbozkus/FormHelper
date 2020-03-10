@@ -69,7 +69,7 @@ namespace FormHelper.Samples.Controllers
         {
             // ...
 
-            return View("IndexPost");
+            return View("Post", new ProductFormViewModel());
         }
 
         #endregion

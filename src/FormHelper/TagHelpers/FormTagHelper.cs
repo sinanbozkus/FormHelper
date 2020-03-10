@@ -30,6 +30,8 @@ namespace FormHelper
 
         [HtmlAttributeName("asp-enableButtonAfterSuccess")]
         public bool EnableButtonAfterSuccess { get; set; } = false;
+        [HtmlAttributeName("asp-clearFormAfterSuccess")]
+        public bool ClearFormAfterSuccess { get; set; } = true;
         public async override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var usedFormHelperTag = output.TagName == "formhelper";
@@ -74,6 +76,7 @@ namespace FormHelper
             }
 
             output.Attributes.Add("enableButtonAfterSuccess", EnableButtonAfterSuccess);
+            output.Attributes.Add("clearFormAfterSuccess", ClearFormAfterSuccess);
             output.Attributes.Add("checkTheFormFieldsMessage", configuration.CheckTheFormFieldsMessage);
             output.PostElement.AppendHtml($"<script>$(document).ready(function () {{$('#{formId}').UseFormHelper();}});</script>");
 

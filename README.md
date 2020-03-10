@@ -42,6 +42,7 @@ CDN:
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <!-- form helper - You don't need to add this file to your project, just add it. it's embeded! -->
+<!-- You can use formhelper.js instead of formhelper.min.js to debug. -->
 <script src="/formhelper/formhelper.min.js"></script>
 ```
 
@@ -83,7 +84,7 @@ app.UseFormHelper();
 
 // You can use <form asp-formhelper="true"> or <formhelper> to activate formhelper.
 // Optional parameters:
-// asp-callback="...", asp-beforeSubmit="...", asp-dataType="FormData/Json", asp-enableButtonAfterSuccess="False"
+// asp-callback="...", asp-beforeSubmit="...", asp-dataType="FormData/Json", asp-enableButtonAfterSuccess="false", asp-clearFormAfterSuccess="true"
 ```
 
 **Controller:**

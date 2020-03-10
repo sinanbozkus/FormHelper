@@ -16,5 +16,6 @@ namespace FormHelper
         public string BeforeSubmit { get; set; }
         public string Callback { get; set; }
         public bool EnableButtonAfterSuccess { get; set; } = false;
+        public bool ClearFormAfterSuccess { get; set; } = true;
     }
 }

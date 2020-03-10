@@ -143,6 +143,11 @@
                     if (options.enableButtonAfterSuccess) {
                         $form.find("button[type='submit']").removeAttr('disabled');
                     }
+
+                    if (options.clearFormAfterSuccess) {
+                        
+                        $form[0].reset();
+                    }
                 },
                 error: function (request, status, error) {
                     console.error(request.responseText);
@@ -166,7 +171,8 @@
         redirectDelay: 1500,
         beforeSubmit: null,
         callback: null,
-        enableButtonAfterSuccess: false
+        enableButtonAfterSuccess: false,
+        clearFormAfterSuccess: false
     };
 
 
@@ -184,7 +190,8 @@
                 redirectDelay: parseInt($(this).attr("redirectDelay")),
                 beforeSubmit: $(this).attr("beforeSubmit"),
                 callback: $(this).attr("callback"),
-                enableButtonAfterSuccess: $(this).attr("enableButtonAfterSuccess") === "True"
+                enableButtonAfterSuccess: $(this).attr("enableButtonAfterSuccess") === "True",
+                clearFormAfterSuccess: $(this).attr("clearFormAfterSuccess") === "True"
             };
 
         return new $.formhelper(options, this);
