@@ -27,23 +27,17 @@ dotnet CLI:
 dotnet add package FormHelper
 ```
 
-This library depends on some packages:
-- [jQuery Validation Unobtrusive](https://github.com/aspnet/jquery-validation-unobtrusive)
-- [Toastr](https://github.com/CodeSeven/toastr)
+This library works with [jQuery](https://jquery.com)
 
 CDN:
 ```html
-// css
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+<!-- form helper - You don't need to add these files to your project, just add it. it's embeded! -->
+<!-- if you dont't want to use these embeded files, you can download the files from dist folder -->
+<!-- You can use formhelper.js/css instead of formhelper.min.js/css to debug. -->
+<!-- The bundle file includes jQuery validation and jQuery validation unobstructive -->
 
-// js
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-<!-- form helper - You don't need to add this file to your project, just add it. it's embeded! -->
-<!-- You can use formhelper.js instead of formhelper.min.js to debug. -->
-<script src="/formhelper/formhelper.min.js"></script>
+<link rel="stylesheet" href="/formhelper/formhelper.min.css" />
+<script src="/formhelper/formhelper.bundle.min.js"></script>
 ```
 
 ## Usage
