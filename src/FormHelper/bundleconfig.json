@@ -1,14 +1,22 @@
 [
   {
+    "outputFileName": "Styles/formhelper.min.css",
+    "inputFiles": [
+      "Styles/formhelper.css"
+    ]
+  },
+  {
     "outputFileName": "Scripts/formhelper.min.js",
     "inputFiles": [
       "Scripts/formhelper.js"
     ]
   },
   {
-    "outputFileName": "Styles/formhelper.min.css",
+    "outputFileName": "Scripts/formhelper.bundle.min.js",
     "inputFiles": [
-      "Styles/formhelper.css"
+      "Scripts/jquery.validate.min.js",
+      "Scripts/jquery.validate.unobtrusive.min.js",
+      "Scripts/formhelper.js"
     ]
   }
 ]
