@@ -7,7 +7,7 @@ Form Helper helps you to create ajax forms and validations without writing any j
 **Compatible with Fluent Validation**
 (You can add client-side validation support to Fluent Validation.)
 
-[![NuGet](https://img.shields.io/nuget/v/FormHelper.svg)](https://nuget.org/packages/FormHelper) [![Nuget](https://img.shields.io/nuget/dt/FormHelper.svg)](https://nuget.org/packages/FormHelper)
+[![NuGet](https://img.shields.io/nuget/v/FormHelper.svg)](https://nuget.org/packages/FormHelper) [![Nuget](https://img.shields.io/nuget/dt/FormHelper.svg)](https://nuget.org/packages/FormHelper) [![Gitter](https://badges.gitter.im/formhelper/community.svg)](https://gitter.im/formhelper/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 <p align="center">
 <img src="http://www.sinanbozkus.com/nuget/formhelper/formhelper-screenshot.png" alt="FormHelper" />
