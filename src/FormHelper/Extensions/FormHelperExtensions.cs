@@ -39,23 +39,23 @@ namespace FormHelper
             switch (position)
             {
                 case ToastrPosition.TopRight:
-                    return "toast-top-right";
+                    return "formhelper-toast-top-right";
                 case ToastrPosition.BottomRight:
-                    return "toast-bottom-right";
+                    return "formhelper-toast-bottom-right";
                 case ToastrPosition.BottomLeft:
-                    return "toast-bottom-left";
+                    return "formhelper-toast-bottom-left";
                 case ToastrPosition.TopLeft:
-                    return "toast-top-left";
+                    return "formhelper-toast-top-left";
                 case ToastrPosition.TopFullWidth:
-                    return "toast-top-full-width";
+                    return "formhelper-toast-top-full-width";
                 case ToastrPosition.BottomFullWidth:
-                    return "toast-bottom-full-width";
+                    return "formhelper-toast-bottom-full-width";
                 case ToastrPosition.TopCenter:
-                    return "toast-bottom-full-width";
+                    return "formhelper-toast-bottom-full-width";
                 case ToastrPosition.BottomCenter:
-                    return "toast-bottom-center";
+                    return "formhelper-toast-bottom-center";
                 default:
-                    return "toast-top-right";
+                    return "formhelper-toast-top-right";
             }
         }
     }

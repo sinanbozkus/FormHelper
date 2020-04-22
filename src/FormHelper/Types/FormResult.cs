@@ -13,7 +13,7 @@ namespace FormHelper
             Status = status;
         }
 
-        public FormResultStatus Status { get; private set; }
+        public FormResultStatus Status { get; private set; } // todo: remove private => ignoreReadonlyProperties
         public string Message { get; set; }
         public string RedirectUri { get; set; }
         public int? RedirectDelay { get; set; }

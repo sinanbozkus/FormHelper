@@ -4,5 +4,11 @@
     "inputFiles": [
       "Scripts/formhelper.js"
     ]
+  },
+  {
+    "outputFileName": "Styles/formhelper.min.css",
+    "inputFiles": [
+      "Styles/formhelper.css"
+    ]
   }
 ]

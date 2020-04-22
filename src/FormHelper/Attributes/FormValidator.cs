@@ -46,7 +46,7 @@ namespace FormHelper
                 {
                     context.Result = new ContentResult()
                     {
-                        Content = "The request is not in the expected format",
+                        Content = "The request is not in the expected format. Check jQuery is loaded!",
                         StatusCode = StatusCodes.Status400BadRequest
                     };
 

@@ -11,14 +11,25 @@ namespace FormHelper
         {
             var assembly = typeof(ApplicationBuilderExtensions).GetTypeInfo().Assembly;
 
-            var embededFileProvider = new EmbeddedFileProvider(
+            var embededFileProviderStyles = new EmbeddedFileProvider(
+                assembly,
+                "FormHelper.Styles"
+            );
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = embededFileProviderStyles,
+                RequestPath = new PathString("/formhelper"),
+            });
+
+            var embededFileProviderScripts = new EmbeddedFileProvider(
                 assembly,
                 "FormHelper.Scripts"
             );
 
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = embededFileProvider,
+                FileProvider = embededFileProviderScripts,
                 RequestPath = new PathString("/formhelper"),
             });
 
