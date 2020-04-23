@@ -111,5 +111,5 @@ return FormResult.CreateSuccessResult("Product saved. Please wait...", Url.Actio
 
 **Fill the form fields from a json object:**
 ```
-#("#formId").fillFormFields(yourJsonObject);
+$("#formId").fillFormFields(yourJsonObject);
 ```
