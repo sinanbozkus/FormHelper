@@ -34,7 +34,7 @@ CDN:
 <!-- form helper - You don't need to add these files to your project, just add it. it's embeded! -->
 <!-- if you dont't want to use these embeded files, you can download the files from dist folder -->
 <!-- You can use formhelper.js/css instead of formhelper.min.js/css to debug. -->
-<!-- The bundle file includes jQuery validation and jQuery validation unobstructive -->
+<!-- The bundle file includes jQuery validation and jQuery validation unobtrusive -->
 
 <link rel="stylesheet" href="/formhelper/formhelper.min.css" />
 <script src="/formhelper/formhelper.bundle.min.js"></script>
@@ -58,7 +58,7 @@ services.AddFormHelper(new FormHelperConfiguration
 ```
 Configure:
 ```
-<!-- If you want to use embeded form helper script file, add this line -->
+<!-- If you want to use embeded form helper files, add this line -->
 app.UseFormHelper();
 ```
 
@@ -83,7 +83,7 @@ app.UseFormHelper();
 
 **Controller:**
 ```csharp
-[HttpPost, FormValidator]
+[FormValidator]
 public IActionResult Save(FormViewModel viewModel)
 
 // If you use Json data type, you need to add [FromBody] attribute.
