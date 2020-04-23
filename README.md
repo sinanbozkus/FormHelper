@@ -108,3 +108,8 @@ Success Message with Redirect and Delay Time:
 ```
 return FormResult.CreateSuccessResult("Product saved. Please wait...", Url.Action("Home", "Index"), 10000); // 10 seconds
 ```
+
+**Fill the form fields from a json object:**
+```
+#("#formId").fillFormFields(yourJsonObject);
+```
