@@ -475,7 +475,7 @@
         return check;
     };
 
-    function callFunction(name) {
+    function callFunction(name, result) {
         var parts = name.split(".");
         var n;
         var obj = window;
@@ -485,7 +485,7 @@
                 return;
             }
         }
-        return obj ? obj() : undefined;
+        return obj ? obj(result) : undefined;
     }
 
     $.formhelper = function (options, el) {
@@ -612,7 +612,7 @@
                     }
 
                     if (options.callback) {
-                        callFunction(options.callback);
+                        callFunction(options.callback, result);
                     } 
 
                     var delay = result.redirectDelay ? result.redirectDelay : options.redirectDelay;
@@ -622,7 +622,6 @@
                             window.location.replace(result.redirectUri);
                         }, hasMessage ? delay : 1);
                     }
-
                     
 
                     if (result.status === 1) {
