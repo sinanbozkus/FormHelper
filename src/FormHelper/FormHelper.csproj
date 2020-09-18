@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <PackageId>FormHelper</PackageId>
-    <Version>3.2.1</Version>
+    <Version>3.2.3</Version>
     <Authors>Sinan BOZKUS</Authors>
     <projectUrl>https://github.com/sinanbozkus/FormHelper</projectUrl>
     <RepositoryUrl>https://github.com/sinanbozkus/FormHelper</RepositoryUrl>
-    <description>Form and Validation Helper for ASP.NET Core (Compatible with Fluent Validation)</description>
+    <description>Transform server-side validations to client-side without writing any javascript code. (Compatible with Fluent Validation)</description>
     <Copyright>Copyright (c) Sinan Bozkus 2020</Copyright>
     <tags>fluentvalidation fluent validation form helper validation helper notification crud</tags>
     <PackageIconUrl>http://www.sinanbozkus.com/nuget/formhelper/formhelper-logo.png</PackageIconUrl>
@@ -19,8 +19,11 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <None Remove="Styles\formhelper.css" />
+    <None Remove="Styles\formhelper.min.css" />
     <None Remove="Scripts\formhelper.js" />
     <None Remove="Scripts\formhelper.min.js" />
+    <None Remove="Scripts\formhelper.bundle.min.js" />
   </ItemGroup>
   
   <ItemGroup>

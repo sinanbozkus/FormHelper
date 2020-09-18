@@ -21,6 +21,12 @@ namespace FormHelper.Samples
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews()
+                    .AddFluentValidation();
+
+            // You can add these validators in a separate class.
+            services.AddTransient<IValidator<ProductFormViewModel>, ProductFormViewModelValidator>();
+
             // Add FormHelper to the project.
             services.AddFormHelper();
 
@@ -31,12 +37,6 @@ namespace FormHelper.Samples
             //    RedirectDelay = 30,
             //    ToastrDefaultPosition = ToastrPosition.BottomFullWidth
             //});
-
-            // You can add these validators in a separate class.
-            services.AddTransient<IValidator<ProductFormViewModel>, ProductFormViewModelValidator>();
-
-            services.AddControllersWithViews()
-                    .AddFluentValidation();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

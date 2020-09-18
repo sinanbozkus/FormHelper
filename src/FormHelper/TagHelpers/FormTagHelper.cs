@@ -89,7 +89,7 @@ namespace FormHelper
             output.Attributes.Add("enableButtonAfterSuccess", EnableButtonAfterSuccess);
             output.Attributes.Add("resetFormAfterSuccess", ResetFormAfterSuccess);
             output.Attributes.Add("checkTheFormFieldsMessage", configuration.CheckTheFormFieldsMessage);
-            output.PostElement.AppendHtml($"<script>$(document).ready(function () {{$('#{formId}').UseFormHelper();}});</script>");
+            output.PostElement.AppendHtml($"<script>window.addEventListener('load',function () {{$('#{formId}').UseFormHelper();}});</script>");
 
             if (usedFormHelperTag)
             {
