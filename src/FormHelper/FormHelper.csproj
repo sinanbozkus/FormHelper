@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>FormHelper</PackageId>
-    <Version>3.2.3</Version>
+    <Version>3.3.0</Version>
     <Authors>Sinan BOZKUS</Authors>
     <projectUrl>https://github.com/sinanbozkus/FormHelper</projectUrl>
     <RepositoryUrl>https://github.com/sinanbozkus/FormHelper</RepositoryUrl>
@@ -15,7 +15,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp30;netcoreapp31</TargetFrameworks>
+    <TargetFrameworks>net50;netcoreapp30;netcoreapp31</TargetFrameworks>
   </PropertyGroup>
   
   <ItemGroup>
@@ -55,6 +55,13 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.3" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.1.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net50'">
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
