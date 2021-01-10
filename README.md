@@ -12,6 +12,8 @@ Form Helper helps you to create ajax forms and validations without writing any j
 
 [![NuGet](https://img.shields.io/nuget/v/FormHelper.svg)](https://nuget.org/packages/FormHelper) [![Nuget](https://img.shields.io/nuget/dt/FormHelper.svg)](https://nuget.org/packages/FormHelper) [![Gitter](https://badges.gitter.im/formhelper/community.svg)](https://gitter.im/formhelper/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
+<a href="https://www.producthunt.com/posts/formhelper?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-formhelper" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=280591&theme=light" alt="FormHelper - Form and Validation Helper for ASP.NET Core | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+
 <p align="center">
 <img src="http://www.sinanbozkus.com/nuget/formhelper/formhelper-screenshot.png" alt="FormHelper" />
 </p>
