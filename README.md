@@ -1,6 +1,6 @@
 # Form Helper
 
-If you use this library and want to support it, please give a star. :star:	
+If you like this library and want to support it, please give a star. :star:	
 
 
 Form &amp; Validation Helper for **ASP.NET Core**
