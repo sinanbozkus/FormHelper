@@ -13,7 +13,7 @@
                 warning: 'warning'
             };
 
-            var toastr = {
+            var formHelperToastr = {
                 clear: clear,
                 remove: remove,
                 error: error,
@@ -28,7 +28,7 @@
 
             var previousToast;
 
-            return toastr;
+            return formHelperToastr;
 
             ////////////////
 
@@ -438,7 +438,7 @@
             }
 
             function getOptions() {
-                return $.extend({}, getDefaults(), toastr.options);
+                return $.extend({}, getDefaults(), formHelperToastr.options);
             }
 
             function removeToast($toastElement) {
@@ -460,7 +460,7 @@
     if (typeof module !== 'undefined' && module.exports) { //Node
         module.exports = factory(require('jquery'));
     } else {
-        window.toastr = factory(window.jQuery);
+        window.formHelperToastr = factory(window.jQuery);
     }
 }));
 
@@ -499,6 +499,10 @@
             return;
         }
 
+        $($form).find("input, select, textarea").on("blur", function(el) {
+            $(el.target).valid();
+        });
+
         options = $.extend({}, $.formhelper.defaultOptions, options);
 
         $form.unbind('submit');
@@ -518,9 +522,17 @@
             var validationResult = $form.valid();
             var validator = $form.validate();
 
+            // var validator = $form.validate({
+            //     onkeyup: false,
+            //     onfocusout: function( element ) {
+            //         this.element( element );
+            //         alert("sinan");
+            //     }
+            // });
+
             if (!validationResult) {
-                if (toastr) {
-                    toastr.error(options.checkTheFormFieldsMessage, null, toastrOptions);
+                if (formHelperToastr) {
+                    formHelperToastr.error(options.checkTheFormFieldsMessage, null, toastrOptions);
                     validator.focusInvalid();
                 }
                 return false;
@@ -585,16 +597,16 @@
                     if (hasMessage) {
 
                         if (result.status === 1) {
-                            toastr.success(result.message, null, toastrOptions);
+                            formHelperToastr.success(result.message, null, toastrOptions);
                         } else if (result.status === 2) {
-                            toastr.info(result.message, null, toastrOptions);
+                            formHelperToastr.info(result.message, null, toastrOptions);
                         } else if (result.status === 3) {
-                            toastr.warning(result.message, null, toastrOptions);
+                            formHelperToastr.warning(result.message, null, toastrOptions);
                         } else if (result.status === 4) {
-                            toastr.error(result.message, null, toastrOptions);
+                            formHelperToastr.error(result.message, null, toastrOptions);
                         }
                     } else if (result.isSucceed === false) {
-                        toastr.error(options.checkTheFormFieldsMessage, null, toastrOptions);
+                        formHelperToastr.error(options.checkTheFormFieldsMessage, null, toastrOptions);
                     }
 
                     if (result.validationErrors && result.validationErrors.length > 0) {
@@ -637,7 +649,7 @@
                 },
                 error: function (request, status, error) {
                     console.error(request.responseText);
-                    toastr.error(request.responseText, null, toastrOptions);
+                    formHelperToastr.error(request.responseText, null, toastrOptions);
                 }
             });
 

@@ -8,7 +8,7 @@ namespace FormHelper
     {
         public static HtmlString RenderFormScript(this IHtmlHelper html, FormConfig config)
         {
-            var configuration = config.ViewContext.HttpContext.RequestServices.GetService<FormHelperConfiguration>();
+            var configuration = config.ViewContext.HttpContext.RequestServices.GetService<FormHelperOptions>();
 
             return new HtmlString($@"
                             <script>

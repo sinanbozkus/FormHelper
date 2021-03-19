@@ -22,13 +22,14 @@ namespace FormHelper.Samples
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews()
+                    .AddFormHelper(opt => { opt.CheckTheFormFieldsMessage = "selam"; })
                     .AddFluentValidation();
 
             // You can add these validators in a separate class.
             services.AddTransient<IValidator<ProductFormViewModel>, ProductFormViewModelValidator>();
 
             // Add FormHelper to the project.
-            services.AddFormHelper();
+            //services.AddFormHelper();
 
             // Add FormHelper to the project with configurations.
             //services.AddFormHelper(new FormHelperConfiguration

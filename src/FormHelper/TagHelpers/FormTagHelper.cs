@@ -50,7 +50,7 @@ namespace FormHelper
                 }
             }
 
-            var configuration = ViewContext.HttpContext.RequestServices.GetService<FormHelperConfiguration>();
+            var configuration = ViewContext.HttpContext.RequestServices.GetService<FormHelperOptions>();
 
             string formId;
 

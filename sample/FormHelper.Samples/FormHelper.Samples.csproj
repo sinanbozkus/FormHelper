@@ -18,7 +18,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation.AspNetCore" Version="9.3.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="9.5.3" />
   </ItemGroup>
 
 </Project>

@@ -2,20 +2,25 @@
 
   <PropertyGroup>
     <PackageId>FormHelper</PackageId>
-    <Version>3.3.0</Version>
+    <Version>4.0.1</Version>
     <Authors>Sinan BOZKUS</Authors>
     <projectUrl>https://github.com/sinanbozkus/FormHelper</projectUrl>
     <RepositoryUrl>https://github.com/sinanbozkus/FormHelper</RepositoryUrl>
+    <ProjectUrl>https://github.com/sinanbozkus/FormHelper</ProjectUrl>
     <description>Transform server-side validations to client-side without writing any javascript code. (Compatible with Fluent Validation)</description>
-    <Copyright>Copyright (c) Sinan Bozkus 2020</Copyright>
+    <Copyright>Copyright (c) Sinan BOZKUS 2021</Copyright>
     <tags>fluentvalidation fluent validation form helper validation helper notification crud</tags>
-    <PackageIconUrl>http://www.sinanbozkus.com/nuget/formhelper/formhelper-logo.png</PackageIconUrl>
+    <PackageIcon>formhelper-icon.png</PackageIcon>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="images\formhelper-icon.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
   
   <PropertyGroup>
-    <TargetFrameworks>net50;netcoreapp30;netcoreapp31</TargetFrameworks>
+    <TargetFrameworks>netcoreapp31;net50</TargetFrameworks>
   </PropertyGroup>
   
   <ItemGroup>
@@ -44,13 +49,6 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp30'">
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.0.3" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.0.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
-
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp31'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.3" />
@@ -64,5 +62,9 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
+
+  <!-- <ItemGroup>
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+  </ItemGroup> -->
 
 </Project>

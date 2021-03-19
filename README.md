@@ -49,14 +49,14 @@ CDN:
 
 ConfigureServices:
 ```
-services.AddFormHelper();
+services.AddControllersWithViews().AddFormHelper();
 ```
 *With configuration: (optional)*
 ```
-services.AddFormHelper(new FormHelperConfiguration
-{
+services.AddControllersWithViews().AddFormHelper(options => {
     CheckTheFormFieldsMessage = "Your custom message...",
-    RedirectDelay = 6000
+    RedirectDelay = 6000,
+    EmbeddedFiles = false
 });
 ```
 Configure:
@@ -81,7 +81,7 @@ app.UseFormHelper();
 
 // You can use <form asp-formhelper="true"> or <formhelper> to activate formhelper.
 // Optional parameters:
-// asp-callback="...", asp-beforeSubmit="...", asp-dataType="FormData/Json", asp-enableButtonAfterSuccess="false", asp-resetFormAfterSuccess="true" asp-toastrPosition="ToastrPosition.BottomRight"
+// asp-callback="javascriptFunctionName", asp-beforeSubmit="javascriptFunctionName", asp-dataType="FormData/Json", asp-enableButtonAfterSuccess="false", asp-resetFormAfterSuccess="true" asp-toastrPosition="ToastrPosition.BottomRight"
 ```
 
 **Controller:**
@@ -115,4 +115,23 @@ return FormResult.CreateSuccessResult("Product saved. Please wait...", Url.Actio
 **Fill the form fields from a json object:**
 ```
 $("#formId").fillFormFields(yourJsonObject);
+```
+
+**Toastr:**
+
+Success:
+```
+formHelperToastr.success("Text here");
+```
+Warning:
+```
+formHelperToastr.warning("Text here");
+```
+Information:
+```
+formHelperToastr.information("Text here");
+```
+Error:
+```
+formHelperToastr.error("Text here");
 ```

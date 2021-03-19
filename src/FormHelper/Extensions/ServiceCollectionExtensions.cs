@@ -1,23 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using System;
 using System.Reflection;
 
 namespace FormHelper
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddFormHelper(this IServiceCollection services, FormHelperConfiguration config = null)
+        public static IMvcBuilder AddFormHelper(this IMvcBuilder builder, Action<FormHelperOptions> options = null)
         {
-            if (config == null)
-                services.AddSingleton<FormHelperConfiguration>();
-            else
-                services.AddSingleton(config);
+            var _options = new FormHelperOptions
+            {
+                CheckTheFormFieldsMessage = "Check the form fields.",
+                RedirectDelay = 1500,
+                ToastrDefaultPosition = ToastrPosition.TopRight
+            };
 
-            services.Configure<MvcRazorRuntimeCompilationOptions>(opts =>
-                     opts.FileProviders.Add(new EmbeddedFileProvider(typeof(FormHelperHtmlHelpers).GetTypeInfo().Assembly)));
+            if (options != null)
+            {
+                options(_options);
+            }
 
-            return services;
+            builder.Services.AddSingleton(_options);
+
+            if (_options.EmbeddedFiles == true)
+            {
+                builder.Services.Configure<MvcRazorRuntimeCompilationOptions>(options =>
+                {
+                    options.FileProviders.Add(new EmbeddedFileProvider(typeof(FormHelperHtmlHelpers).GetTypeInfo().Assembly));
+                });
+            }
+
+            return builder;
         }
     }
 }
