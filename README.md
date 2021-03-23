@@ -56,9 +56,9 @@ services.AddControllersWithViews().AddFormHelper();
 *With configuration: (optional)*
 ```
 services.AddControllersWithViews().AddFormHelper(options => {
-    CheckTheFormFieldsMessage = "Your custom message...",
-    RedirectDelay = 6000,
-    EmbeddedFiles = false
+    options.CheckTheFormFieldsMessage = "Your custom message...";
+    options.RedirectDelay = 6000;
+    options.EmbeddedFiles = false;
 });
 ```
 Configure:
