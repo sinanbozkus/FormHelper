@@ -22,22 +22,21 @@ namespace FormHelper.Samples
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews()
-                    .AddFormHelper(opt => { opt.CheckTheFormFieldsMessage = "selam"; })
+                    .AddFormHelper()
                     .AddFluentValidation();
 
             // You can add these validators in a separate class.
             services.AddTransient<IValidator<ProductFormViewModel>, ProductFormViewModelValidator>();
 
-            // Add FormHelper to the project.
-            //services.AddFormHelper();
-
             // Add FormHelper to the project with configurations.
-            //services.AddFormHelper(new FormHelperConfiguration
-            //{
-            //    CheckTheFormFieldsMessage = "Form alanlarını kontrol ediniz."
-            //    RedirectDelay = 30,
-            //    ToastrDefaultPosition = ToastrPosition.BottomFullWidth
-            //});
+            // services.AddControllersWithViews()
+            //         .AddFormHelper(options => 
+            //         {
+            //             options.CheckTheFormFieldsMessage = "Form alanlarını kontrol ediniz.";
+            //             options.EmbeddedFiles = true;
+            //             options.RedirectDelay = 2000;
+            //             options.ToastrDefaultPosition = ToastrPosition.TopFullWidth;
+            //         })
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
