@@ -13,7 +13,7 @@
                 warning: 'warning'
             };
 
-            var formHelperToastr = {
+            var fhToastr = {
                 clear: clear,
                 remove: remove,
                 error: error,
@@ -28,7 +28,7 @@
 
             var previousToast;
 
-            return formHelperToastr;
+            return fhToastr;
 
             ////////////////
 
@@ -438,7 +438,7 @@
             }
 
             function getOptions() {
-                return $.extend({}, getDefaults(), formHelperToastr.options);
+                return $.extend({}, getDefaults(), fhToastr.options);
             }
 
             function removeToast($toastElement) {
@@ -460,7 +460,7 @@
     if (typeof module !== 'undefined' && module.exports) { //Node
         module.exports = factory(require('jquery'));
     } else {
-        window.formHelperToastr = factory(window.jQuery);
+        window.fhToastr = factory(window.jQuery);
     }
 }));
 
@@ -531,8 +531,8 @@
             // });
 
             if (!validationResult) {
-                if (formHelperToastr) {
-                    formHelperToastr.error(options.checkTheFormFieldsMessage, null, toastrOptions);
+                if (fhToastr) {
+                    fhToastr.error(options.checkTheFormFieldsMessage, null, toastrOptions);
                     validator.focusInvalid();
                 }
                 return false;
@@ -597,16 +597,16 @@
                     if (hasMessage) {
 
                         if (result.status === 1) {
-                            formHelperToastr.success(result.message, null, toastrOptions);
+                            fhToastr.success(result.message, null, toastrOptions);
                         } else if (result.status === 2) {
-                            formHelperToastr.info(result.message, null, toastrOptions);
+                            fhToastr.info(result.message, null, toastrOptions);
                         } else if (result.status === 3) {
-                            formHelperToastr.warning(result.message, null, toastrOptions);
+                            fhToastr.warning(result.message, null, toastrOptions);
                         } else if (result.status === 4) {
-                            formHelperToastr.error(result.message, null, toastrOptions);
+                            fhToastr.error(result.message, null, toastrOptions);
                         }
                     } else if (result.isSucceed === false) {
-                        formHelperToastr.error(options.checkTheFormFieldsMessage, null, toastrOptions);
+                        fhToastr.error(options.checkTheFormFieldsMessage, null, toastrOptions);
                     }
 
                     if (result.validationErrors && result.validationErrors.length > 0) {
@@ -649,7 +649,7 @@
                 },
                 error: function (request, status, error) {
                     console.error(request.responseText);
-                    formHelperToastr.error(request.responseText, null, toastrOptions);
+                    fhToastr.error(request.responseText, null, toastrOptions);
                 }
             });
 
@@ -701,6 +701,10 @@
 
     };
 
+    $.fn.resetFormFields = function() {
+        this[0].reset();
+    }
+
     $.fn.fillFormFields = function (data, callbacks) {
 
         var that = this;
@@ -713,7 +717,7 @@
         if (options.data !== null) {
             $.each(options.data, function (k, v) {
 
-                if (options.callbacks !== null && options.callbacks.hasOwnProperty(k)) {
+                if (options.callbacks !== null && options.callbacks?.hasOwnProperty(k)) {
                     options.callbacks[k](v);
                 } else {
                     $('[name="' + k + '"]', that).val(v);
