@@ -13,7 +13,7 @@
                 warning: 'warning'
             };
 
-            var formHelperToastr = {
+            var fhToastr = {
                 clear: clear,
                 remove: remove,
                 error: error,
@@ -28,7 +28,7 @@
 
             var previousToast;
 
-            return formHelperToastr;
+            return fhToastr;
 
             ////////////////
 
@@ -438,7 +438,7 @@
             }
 
             function getOptions() {
-                return $.extend({}, getDefaults(), formHelperToastr.options);
+                return $.extend({}, getDefaults(), fhToastr.options);
             }
 
             function removeToast($toastElement) {
@@ -460,7 +460,7 @@
     if (typeof module !== 'undefined' && module.exports) { //Node
         module.exports = factory(require('jquery'));
     } else {
-        window.formHelperToastr = factory(window.jQuery);
+        window.fhToastr = factory(window.jQuery);
     }
 }));
 
@@ -499,7 +499,7 @@
             return;
         }
 
-        $($form).find("input, select, textarea").on("blur", function(el) {
+        $($form).find("input, select, textarea").on("blur", function (el) {
             $(el.target).valid();
         });
 
@@ -531,8 +531,8 @@
             // });
 
             if (!validationResult) {
-                if (formHelperToastr) {
-                    formHelperToastr.error(options.checkTheFormFieldsMessage, null, toastrOptions);
+                if (fhToastr) {
+                    fhToastr.error(options.checkTheFormFieldsMessage, null, toastrOptions);
                     validator.focusInvalid();
                 }
                 return false;
@@ -573,13 +573,13 @@
                 data: formData,
                 contentType: contentType,
                 processData: false,
-                beforeSend: function (jqXHR,settings) {
+                beforeSend: function (jqXHR, settings) {
                     if (options.beforeSubmit) {
                         return window[options.beforeSubmit](jqXHR, settings, $form);
                     }
                 },
                 success: function (result, status) {
-                    
+debugger;
                     if (result.isSucceed === false) {
                         $form.find("button[type='submit']").removeAttr('disabled');
                     }
@@ -596,22 +596,22 @@
 
                     if (hasMessage) {
 
-                        if (result.status === 1) {
-                            formHelperToastr.success(result.message, null, toastrOptions);
-                        } else if (result.status === 2) {
-                            formHelperToastr.info(result.message, null, toastrOptions);
-                        } else if (result.status === 3) {
-                            formHelperToastr.warning(result.message, null, toastrOptions);
-                        } else if (result.status === 4) {
-                            formHelperToastr.error(result.message, null, toastrOptions);
+                        if (result.status === 1 || result.status === "Success") {
+                            fhToastr.success(result.message, null, toastrOptions);
+                        } else if (result.status === 2 || result.status === "Info") {
+                            fhToastr.info(result.message, null, toastrOptions);
+                        } else if (result.status === 3 || result.status === "Warning") {
+                            fhToastr.warning(result.message, null, toastrOptions);
+                        } else if (result.status === 4 || result.status === "Error") {
+                            fhToastr.error(result.message, null, toastrOptions);
                         }
                     } else if (result.isSucceed === false) {
-                        formHelperToastr.error(options.checkTheFormFieldsMessage, null, toastrOptions);
+                        fhToastr.error(options.checkTheFormFieldsMessage, null, toastrOptions);
                     }
 
                     if (result.validationErrors && result.validationErrors.length > 0) {
                         $form.find("button[type='submit']").removeAttr('disabled');
-                        
+
                         for (var i in result.validationErrors) {
                             var propertyName = result.validationErrors[i].propertyName;
                             var errorMessage = result.validationErrors[i].message;
@@ -625,7 +625,7 @@
 
                     if (options.callback) {
                         callFunction(options.callback, result);
-                    } 
+                    }
 
                     var delay = result.redirectDelay ? result.redirectDelay : options.redirectDelay;
 
@@ -634,9 +634,9 @@
                             window.location.replace(result.redirectUri);
                         }, hasMessage ? delay : 1);
                     }
-                    
 
-                    if (result.status === 1) {
+
+                    if (result.status === 1 || result.status === "Success") {
 
                         if (options.enableButtonAfterSuccess) {
                             $form.find("button[type='submit']").removeAttr('disabled');
@@ -649,7 +649,7 @@
                 },
                 error: function (request, status, error) {
                     console.error(request.responseText);
-                    formHelperToastr.error(request.responseText, null, toastrOptions);
+                    fhToastr.error(request.responseText, null, toastrOptions);
                 }
             });
 
@@ -701,7 +701,7 @@
 
     };
 
-    $.fn.fillFormFields = function (data, callbacks) {
+    $.fn.fillFormFields = function (data, callbacks = null) {
 
         var that = this;
 
@@ -713,13 +713,31 @@
         if (options.data !== null) {
             $.each(options.data, function (k, v) {
 
-                if (options.callbacks !== null && options.callbacks.hasOwnProperty(k)) {
+                if (options.callbacks != undefined && options.callbacks != null && options.callbacks.hasOwnProperty(k)) {
                     options.callbacks[k](v);
                 } else {
-                    $('[name="' + k + '"]', that).val(v);
+                    var el = $('#' + that[0].id + ' [name="' + k + '" i]');
+                    if (el.prop("tagName") == "SELECT" && el.attr("multiple") !== undefined && el.attr("enumflags") !== undefined) {
+                        var values = v.toString().split(/[ ,]+/);
+                        el.val(values);
+                    } else if (el.prop("tagName") == "INPUT" && el.prop("type").toUpperCase() == "CHECKBOX") {
+                        if (v === true || v == "true" || v == "1") {
+                            el.attr("checked", "checked");
+                        } else {
+                            el.removeAttr("checked");
+                        }
+                    }
+                    else {
+                        el.val(v);
+                    }
                 }
             });
         }
+    };
+
+    $.fn.fhReset = function () {
+        this[0].reset();
+        this.find("input[type='submit'],button[type='submit']").removeAttr("disabled");
     };
 
 })(jQuery);

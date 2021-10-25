@@ -30,10 +30,17 @@ namespace FormHelper
 
         [HtmlAttributeName("asp-enableButtonAfterSuccess")]
         public bool EnableButtonAfterSuccess { get; set; } = false;
+
         [HtmlAttributeName("asp-resetFormAfterSuccess")]
         public bool ResetFormAfterSuccess { get; set; } = true;
+
         [HtmlAttributeName("asp-toastrPosition")]
         public ToastrPosition? ToastrPosition { get; set; }
+
+        [HtmlAttributeName("asp-addLoadEventListener")]
+        public bool? AddLoadEventListener { get; set; }
+
+
         public async override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var usedFormHelperTag = output.TagName == "formhelper";
@@ -89,7 +96,21 @@ namespace FormHelper
             output.Attributes.Add("enableButtonAfterSuccess", EnableButtonAfterSuccess);
             output.Attributes.Add("resetFormAfterSuccess", ResetFormAfterSuccess);
             output.Attributes.Add("checkTheFormFieldsMessage", configuration.CheckTheFormFieldsMessage);
-            output.PostElement.AppendHtml($"<script>window.addEventListener('load',function () {{$('#{formId}').UseFormHelper();}});</script>");
+
+            if (AddLoadEventListener.HasValue)
+            {
+                if (AddLoadEventListener.Value == true)
+                    output.PostElement.AppendHtml($"<script>window.addEventListener('load',function () {{$('#{formId}').UseFormHelper();}});</script>");
+                else
+                    output.PostElement.AppendHtml($"<script>$('#{formId}').UseFormHelper();</script>");
+            }
+            else
+            {
+                if (configuration.AddLoadEventListener == true)
+                    output.PostElement.AppendHtml($"<script>window.addEventListener('load',function () {{$('#{formId}').UseFormHelper();}});</script>");
+                else
+                    output.PostElement.AppendHtml($"<script>$('#{formId}').UseFormHelper();</script>");
+            }
 
             if (usedFormHelperTag)
             {

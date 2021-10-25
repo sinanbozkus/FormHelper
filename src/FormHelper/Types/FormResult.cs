@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace FormHelper
 {
@@ -12,7 +13,7 @@ namespace FormHelper
         {
             Status = status;
         }
-
+        
         public FormResultStatus Status { get; private set; } // todo: remove private => ignoreReadonlyProperties
         public string Message { get; set; }
         public string RedirectUri { get; set; }
