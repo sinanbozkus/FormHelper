@@ -22,7 +22,7 @@ namespace FormHelper.Samples
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews()
-                    .AddFormHelper()
+                    .AddFormHelper(fh => { fh.ToastrDefaultPosition = ToastrPosition.BottomRight; })
                     .AddFluentValidation();
 
             // You can add these validators in a separate class.

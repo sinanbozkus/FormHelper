@@ -34,7 +34,7 @@ namespace FormHelper.Samples.Controllers
             try
             {
                 //...
-                return FormResult.CreateSuccessResult("Product saved.");
+                return FormResult.CreateSuccessResult("Product saved.", "/asd");
 
                 // Success form result with redirect
                 //return FormResult.CreateSuccessResult("Product saved.", Url.Action("List", "Home"));

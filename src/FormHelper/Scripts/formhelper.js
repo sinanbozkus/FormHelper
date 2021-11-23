@@ -511,8 +511,10 @@
 
             e.preventDefault();
 
+            var toastrPositionClass = mobileAndTabletcheck() ? "formhelper-toast-top-full-width" : options.toastrPositionClass;
+            
             var toastrOptions = {
-                positionClass: mobileAndTabletcheck() ? "formhelper-toast-top-full-width" : options.toastrPositionClass
+                positionClass: toastrPositionClass
             };
 
             $form.removeData("validator");
@@ -521,14 +523,6 @@
 
             var validationResult = $form.valid();
             var validator = $form.validate();
-
-            // var validator = $form.validate({
-            //     onkeyup: false,
-            //     onfocusout: function( element ) {
-            //         this.element( element );
-            //         alert("sinan");
-            //     }
-            // });
 
             if (!validationResult) {
                 if (fhToastr) {
@@ -579,7 +573,6 @@
                     }
                 },
                 success: function (result, status) {
-debugger;
                     if (result.isSucceed === false) {
                         $form.find("button[type='submit']").removeAttr('disabled');
                     }
@@ -587,7 +580,8 @@ debugger;
                     if (result.redirectUri) {
                         toastrOptions = {
                             timeOut: 0,
-                            extendedTimeOut: 0
+                            extendedTimeOut: 0,
+                            positionClass: toastrPositionClass
                         };
                     }
 
