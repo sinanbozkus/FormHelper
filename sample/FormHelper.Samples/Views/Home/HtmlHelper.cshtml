@@ -26,7 +26,7 @@
                     @formConfig.FormTitle
                 </div>
                 <div class="card-body">
-                    <form id="@formConfig.FormId" asp-controller="Home" asp-action="Save" enctype="multipart/form-data">
+                    <form id="@formConfig.FormId" asp-controller="Home" asp-action="Save" enctype="multipart/form-data" formhelper>
 
                         <input type="hidden" asp-for="Id" />
 
@@ -74,12 +74,6 @@
     @Html.RenderFormScript(formConfig)
 
     <script>
-
-        //$('.formhelper').UseFormHelper({
-             
-        //});
-
-
         var ProductFormBeforeSubmit = function (rr, $form, options) {
             console.log("BeforeSubmit function!");
         }
