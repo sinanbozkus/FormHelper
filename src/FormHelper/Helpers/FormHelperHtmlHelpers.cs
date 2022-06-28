@@ -13,19 +13,18 @@ namespace FormHelper
             return new HtmlString($@"
                             <script>
                                 $(document).ready(function () {{
-                                    var $form = $('#{config.FormId}');
-                                    $('#{config.FormId}').UseFormHelper({{
-                                        url: $form.attr('action'),
-                                        method: $form.attr('method'),
-                                        dataType: '{config.DataType}',
-                                        redirectDelay: {configuration.RedirectDelay},
-                                        beforeSubmit: '{config.BeforeSubmit}',
-                                        callback: '{config.Callback}',
-                                        enableButtonAfterSuccess: {(config.EnableButtonAfterSuccess ? "true" : "false")},
-                                        resetFormAfterSuccess: {(config.ResetFormAfterSuccess ? "true" : "false")},
-                                        checkTheFormFieldsMessage: '{configuration.CheckTheFormFieldsMessage}',
-                                        toastrPositionClass: '{(config.ToastrPosition == null ? configuration.ToastrDefaultPosition.ToClassName() : config.ToastrPosition.Value.ToClassName())}'
-                                    }});
+                                    const $form = $('#{config.FormId}');
+                                    
+                                    $form.attr('formhelper')
+                                    $form.attr('dataType', '{config.DataType}');
+                                    $form.attr('CheckTheFormFieldsMessage', '{configuration.CheckTheFormFieldsMessage}');
+                                    $form.attr('redirectDelay', '{configuration.RedirectDelay}');
+                                    $form.attr('beforeSubmit', '{config.BeforeSubmit}');
+                                    $form.attr('callback', '{config.Callback}');
+                                    $form.attr('enableButtonAfterSuccess', '{config.EnableButtonAfterSuccess}');
+                                    $form.attr('resetFormAfterSuccess', '{config.ResetFormAfterSuccess}');
+                                    $form.attr('toastrPositionClass', '{(config.ToastrPosition == null ? configuration.ToastrDefaultPosition.ToClassName() : config.ToastrPosition.Value.ToClassName())}');
+
                                 }});
                             </script>
                             ");

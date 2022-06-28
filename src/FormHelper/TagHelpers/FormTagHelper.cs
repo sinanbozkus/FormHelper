@@ -37,10 +37,6 @@ namespace FormHelper
         [HtmlAttributeName("asp-toastrPosition")]
         public ToastrPosition? ToastrPosition { get; set; }
 
-        [HtmlAttributeName("asp-AddDOMContentLoaded")]
-        public bool? AddDOMContentLoaded { get; set; }
-
-
         public async override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var usedFormHelperTag = output.TagName == "formhelper";
@@ -94,21 +90,9 @@ namespace FormHelper
             }
 
             output.Attributes.Add("enableButtonAfterSuccess", EnableButtonAfterSuccess);
+            output.Attributes.Add("formhelper", null);
             output.Attributes.Add("resetFormAfterSuccess", ResetFormAfterSuccess);
             output.Attributes.Add("checkTheFormFieldsMessage", configuration.CheckTheFormFieldsMessage);
-
-            if (AddDOMContentLoaded.HasValue)
-            {
-                output.PostElement.AppendHtml(AddDOMContentLoaded.Value
-                    ? $"<script>document.addEventListener('DOMContentLoaded',function () {{$('#{formId}').UseFormHelper();}});</script>"
-                    : $"<script>$('#{formId}').UseFormHelper();</script>");
-            }
-            else
-            {
-                output.PostElement.AppendHtml(configuration.AddDOMContentLoaded
-                    ? $"<script>document.addEventListener('DOMContentLoaded',function () {{$('#{formId}').UseFormHelper();}});</script>"
-                    : $"<script>$('#{formId}').UseFormHelper();</script>");
-            }
 
             if (usedFormHelperTag)
             {
