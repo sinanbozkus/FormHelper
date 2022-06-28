@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <PackageId>FormHelper</PackageId>
-    <Version>4.1.0-beta17</Version>
+    <Version>5.0.0-beta1</Version>
     <Authors>Sinan BOZKUS</Authors>
     <projectUrl>https://github.com/sinanbozkus/FormHelper</projectUrl>
     <RepositoryUrl>https://github.com/sinanbozkus/FormHelper</RepositoryUrl>
     <ProjectUrl>https://github.com/sinanbozkus/FormHelper</ProjectUrl>
     <description>Transform server-side validations to client-side without writing any javascript code. (Compatible with Fluent Validation)</description>
-    <Copyright>Copyright (c) Sinan BOZKUS 2021</Copyright>
-    <tags>fluentvalidation fluent validation form helper validation helper notification crud</tags>
+    <Copyright>Copyright (c) Sinan BOZKUS 2022</Copyright>
+    <tags>fluentvalidation fluent validation form helper validation helper notification form ajax</tags>
     <PackageIcon>formhelper-icon.png</PackageIcon>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -20,7 +20,7 @@
   </ItemGroup>
   
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp31;net50</TargetFrameworks>
+    <TargetFrameworks>netcoreapp31;net50;net60</TargetFrameworks>
   </PropertyGroup>
   
   <ItemGroup>
@@ -60,7 +60,12 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net60'">
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.0" />
   </ItemGroup>
 
 <!--  <ItemGroup>-->

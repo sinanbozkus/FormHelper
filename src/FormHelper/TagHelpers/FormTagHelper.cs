@@ -37,8 +37,8 @@ namespace FormHelper
         [HtmlAttributeName("asp-toastrPosition")]
         public ToastrPosition? ToastrPosition { get; set; }
 
-        [HtmlAttributeName("asp-addLoadEventListener")]
-        public bool? AddLoadEventListener { get; set; }
+        [HtmlAttributeName("asp-AddDOMContentLoaded")]
+        public bool? AddDOMContentLoaded { get; set; }
 
 
         public async override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
@@ -97,19 +97,17 @@ namespace FormHelper
             output.Attributes.Add("resetFormAfterSuccess", ResetFormAfterSuccess);
             output.Attributes.Add("checkTheFormFieldsMessage", configuration.CheckTheFormFieldsMessage);
 
-            if (AddLoadEventListener.HasValue)
+            if (AddDOMContentLoaded.HasValue)
             {
-                if (AddLoadEventListener.Value == true)
-                    output.PostElement.AppendHtml($"<script>window.addEventListener('load',function () {{$('#{formId}').UseFormHelper();}});</script>");
-                else
-                    output.PostElement.AppendHtml($"<script>$('#{formId}').UseFormHelper();</script>");
+                output.PostElement.AppendHtml(AddDOMContentLoaded.Value
+                    ? $"<script>document.addEventListener('DOMContentLoaded',function () {{$('#{formId}').UseFormHelper();}});</script>"
+                    : $"<script>$('#{formId}').UseFormHelper();</script>");
             }
             else
             {
-                if (configuration.AddLoadEventListener == true)
-                    output.PostElement.AppendHtml($"<script>window.addEventListener('load',function () {{$('#{formId}').UseFormHelper();}});</script>");
-                else
-                    output.PostElement.AppendHtml($"<script>$('#{formId}').UseFormHelper();</script>");
+                output.PostElement.AppendHtml(configuration.AddDOMContentLoaded
+                    ? $"<script>document.addEventListener('DOMContentLoaded',function () {{$('#{formId}').UseFormHelper();}});</script>"
+                    : $"<script>$('#{formId}').UseFormHelper();</script>");
             }
 
             if (usedFormHelperTag)

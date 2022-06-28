@@ -6,6 +6,6 @@
         public int RedirectDelay { get; set; } = 1500;
         public ToastrPosition ToastrDefaultPosition = ToastrPosition.TopRight;
         public bool EmbeddedFiles {get; set;} = true;
-        public bool AddLoadEventListener { get; set; } = true;
+        public bool AddDOMContentLoaded { get; set; } = true;
     }
 }

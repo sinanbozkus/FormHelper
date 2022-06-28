@@ -9,7 +9,7 @@
             </button>
         </div>
         <!-- You can use <formhelper> or <form asp-formhelper="true"> to activate formhelper. -->
-        <formhelper asp-controller="Home" asp-action="Save" enctype="multipart/form-data">
+        <formhelper asp-controller="Home" asp-action="Save" enctype="multipart/form-data" asp-AddDOMContentLoaded="false">
             <div class="modal-body">
                 <input type="hidden" asp-for="Id" />
 
