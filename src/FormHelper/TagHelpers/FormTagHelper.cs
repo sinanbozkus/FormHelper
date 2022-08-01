@@ -37,7 +37,7 @@ namespace FormHelper
         [HtmlAttributeName("asp-toastrPosition")]
         public ToastrPosition? ToastrPosition { get; set; }
 
-        public async override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var usedFormHelperTag = output.TagName == "formhelper";
 
@@ -55,18 +55,7 @@ namespace FormHelper
 
             var configuration = ViewContext.HttpContext.RequestServices.GetService<FormHelperOptions>();
 
-            string formId;
-
-            if (output.Attributes.ContainsName("id"))
-            {
-                formId = output.Attributes["id"].Value.ToString();
-            }
-            else
-            {
-                formId = $"formhelper_{FormHelperExtensions.GenerateCoupon(6)}";
-                output.Attributes.Add("id", formId);
-            }
-
+            output.Attributes.Add("formhelper", null);
             output.Attributes.Add("dataType", DataType.ToString());
             output.Attributes.Add("redirectDelay", configuration.RedirectDelay);
 
@@ -90,7 +79,6 @@ namespace FormHelper
             }
 
             output.Attributes.Add("enableButtonAfterSuccess", EnableButtonAfterSuccess);
-            output.Attributes.Add("formhelper", null);
             output.Attributes.Add("resetFormAfterSuccess", ResetFormAfterSuccess);
             output.Attributes.Add("checkTheFormFieldsMessage", configuration.CheckTheFormFieldsMessage);
 
