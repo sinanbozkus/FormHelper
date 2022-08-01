@@ -13,6 +13,7 @@ namespace FormHelper.Samples.Models
         public int InStock { get; set; }
         public bool Active { get; set; } = true;
         public IFormFile File { get; set; }
+        public UserType UserType { get; set; } = UserType.User;
 
         public bool IsNew => Id == default;
     }

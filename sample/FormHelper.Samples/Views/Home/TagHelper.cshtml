@@ -44,6 +44,17 @@
                             <span asp-validation-for="Active" class="text-danger"></span>
                         </div>
                         <div class="form-group">
+                            <label>@UserType.Admin</label>
+                            <input asp-for="UserType" type="radio" value="@UserType.Admin" />
+                            <label>@UserType.Moderator</label>
+                            <input asp-for="UserType" type="radio" value="@UserType.Moderator" />
+                            <label>@UserType.Operator</label>
+                            <input asp-for="UserType" type="radio" value="@UserType.Operator" />
+                            <label>@UserType.User</label>
+                            <input asp-for="UserType" type="radio" value="@UserType.User" />
+                            <span asp-validation-for="Active" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
                             <label asp-for="File"></label>
                             <input asp-for="File" type="file" class="form-control-file" />
                             <span asp-validation-for="File" class="text-danger"></span>
