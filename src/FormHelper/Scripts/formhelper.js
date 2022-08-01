@@ -781,6 +781,11 @@
             } else {
               el.removeAttr("checked");
             }
+          } else if (
+            el.prop("tagName") == "INPUT" &&
+            el.prop("type").toUpperCase() == "RADIO"
+          ) {
+            $(`input[name=${k}][value=${v}`).prop("checked", true);
           } else {
             el.val(v);
           }

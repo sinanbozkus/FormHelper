@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>FormHelper</PackageId>
-    <Version>5.0.0-beta2</Version>
+    <Version>5.0.0-beta4</Version>
     <Authors>Sinan BOZKUS</Authors>
     <projectUrl>https://github.com/sinanbozkus/FormHelper</projectUrl>
     <RepositoryUrl>https://github.com/sinanbozkus/FormHelper</RepositoryUrl>
@@ -63,8 +63,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
-  <!-- <ItemGroup>
+  <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
-  </ItemGroup> -->
+  </ItemGroup>
 
 </Project>
