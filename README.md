@@ -1,6 +1,6 @@
 # Form Helper
 
-###\#1 Form Library for ASP.NET Core MVC
+### \#1 Form Library for ASP.NET Core MVC
 
 If you like this library and want to support it, please give a star. :star:	
 
@@ -8,7 +8,7 @@ Form &amp; Validation Helper for **ASP.NET Core MVC**
 
 Form Helper helps you to create ajax forms and validations without writing any javascript code. **It transforms server-side validations to client-side.** You can also use the form validator without ajax.
 
-####**Compatible with Fluent Validation** :white_check_mark:	
+### **Compatible with Fluent Validation** :white_check_mark:	
 (You can add client-side validation support to Fluent Validation.)
 
 [![NuGet](https://img.shields.io/nuget/v/FormHelper.svg)](https://nuget.org/packages/FormHelper) [![Nuget](https://img.shields.io/nuget/dt/FormHelper.svg)](https://nuget.org/packages/FormHelper)
