@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>FormHelper</PackageId>
-    <Version>5.0.0-beta4</Version>
+    <Version>5.0.0</Version>
     <Authors>Sinan BOZKUS</Authors>
     <projectUrl>https://github.com/sinanbozkus/FormHelper</projectUrl>
     <RepositoryUrl>https://github.com/sinanbozkus/FormHelper</RepositoryUrl>
@@ -20,7 +20,7 @@
   </ItemGroup>
   
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp31;net50;net60</TargetFrameworks>
+    <TargetFrameworks>netcoreapp31;net50;net60;net70</TargetFrameworks>
   </PropertyGroup>
   
   <ItemGroup>
@@ -68,8 +68,14 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net70'">
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="7.0.0" />
   </ItemGroup>
 
-</Project>
+<!--  <ItemGroup>-->
+<!--    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />-->
+<!--  </ItemGroup>-->
+
+</Project> 

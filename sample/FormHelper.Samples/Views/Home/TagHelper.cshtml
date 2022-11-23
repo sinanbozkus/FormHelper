@@ -13,8 +13,8 @@
                 </div>
                 <div class="card-body">
                     <!-- You can use  <form asp-formhelper="true"> or <formhelper> to activate formhelper. -->
-                    <form asp-formhelper="true" asp-controller="Home" asp-action="Save" asp-dataType="FormData"
-                        asp-callback="ProductFormCallback" asp-beforeSubmit="ProductFormBeforeSubmit"
+                    <form id="sample-form" asp-formhelper="true" asp-controller="Home" asp-action="Save" asp-dataType="FormData"
+                          asp-callback="ProductFormCallback" asp-beforeSubmit="ProductFormBeforeSubmit"
                         asp-enableButtonAfterSuccess="true" asp-resetFormAfterSuccess="false"
                         enctype="multipart/form-data">
 
@@ -61,7 +61,7 @@
                         </div>
                         <hr />
                         <div class="form-group text-right">
-                            <button class="btn btn-secondary" type="reset">Reset</button>
+                            <button id="sinan" class="btn btn-secondary" type="button" onclick="$(this).closest('form').fhReset();">Reset</button>
                             <button class="btn btn-primary" type="submit">Save</button>
                         </div>
                     </form>
@@ -73,14 +73,14 @@
 
 
 @section Scripts {
-<script>
-    var ProductFormBeforeSubmit = function (rr, $form, options) {
-        console.log("BeforeSubmit function!");
-    }
-
-    var ProductFormCallback = function (response, statusText, xhr, $form) {
-        console.log(response);
-        console.log("Callback function!");
-    }
-</script>
+    <script>
+        var ProductFormBeforeSubmit = function (rr, $form, options) {
+            console.log("BeforeSubmit function!");
+        }
+    
+        var ProductFormCallback = function (response, statusText, xhr, $form) {
+            console.log(response);
+            console.log("Callback function!");
+        }
+    </script>
 }

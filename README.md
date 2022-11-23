@@ -1,16 +1,17 @@
 # Form Helper
 
+###\#1 Form Library for ASP.NET Core MVC
+
 If you like this library and want to support it, please give a star. :star:	
 
-
-Form &amp; Validation Helper for **ASP.NET Core**
+Form &amp; Validation Helper for **ASP.NET Core MVC**
 
 Form Helper helps you to create ajax forms and validations without writing any javascript code. **It transforms server-side validations to client-side.** You can also use the form validator without ajax.
 
-**Compatible with Fluent Validation**
+####**Compatible with Fluent Validation** :white_check_mark:	
 (You can add client-side validation support to Fluent Validation.)
 
-[![NuGet](https://img.shields.io/nuget/v/FormHelper.svg)](https://nuget.org/packages/FormHelper) [![Nuget](https://img.shields.io/nuget/dt/FormHelper.svg)](https://nuget.org/packages/FormHelper) [![Gitter](https://badges.gitter.im/formhelper/community.svg)](https://gitter.im/formhelper/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![NuGet](https://img.shields.io/nuget/v/FormHelper.svg)](https://nuget.org/packages/FormHelper) [![Nuget](https://img.shields.io/nuget/dt/FormHelper.svg)](https://nuget.org/packages/FormHelper)
 
 <p align="center">
 <img src="http://www.sinanbozkus.com/nuget/formhelper/formhelper-screenshot.png" alt="FormHelper" />
@@ -57,6 +58,7 @@ services.AddControllersWithViews().AddFormHelper(options => {
     options.CheckTheFormFieldsMessage = "Your custom message...";
     options.RedirectDelay = 6000;
     options.EmbeddedFiles = true;
+    options.ToastrDefaultPosition = ToastrPosition.TopFullWidth;
 });
 ```
 Configure:
@@ -117,21 +119,26 @@ return FormResult.CreateSuccessResult("Product saved. Please wait...", Url.Actio
 $("#formId").fillFormFields(yourJsonObject);
 ```
 
+**Reset form and clear error messages:**
+```
+$("#formId").fhReset();
+```
+
 **Toastr:**
 
 Success:
 ```
-formHelperToastr.success("Text here");
+fhToastr.success("Text here");
 ```
 Warning:
 ```
-formHelperToastr.warning("Text here");
+fhToastr.warning("Text here");
 ```
 Information:
 ```
-formHelperToastr.information("Text here");
+fhToastr.information("Text here");
 ```
 Error:
 ```
-formHelperToastr.error("Text here");
+fhToastr.error("Text here");
 ```

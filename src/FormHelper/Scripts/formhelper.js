@@ -799,5 +799,6 @@
     this.find("input[type='submit'],button[type='submit']").removeAttr(
       "disabled"
     );
+    this.find("[class*='field-validation']").empty();
   };
 })(jQuery);
