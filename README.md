@@ -99,7 +99,7 @@ public IActionResult Save(FormViewModel viewModel)
 
 Error Message:
 ```
-return FormResult.CreateErrorResult("An error occured.");
+return FormResult.CreateErrorResult("An error occurred.");
 ```
 Success Message:
 ```
