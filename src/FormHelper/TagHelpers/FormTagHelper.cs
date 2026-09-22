@@ -37,7 +37,9 @@ namespace FormHelper
         [HtmlAttributeName("asp-toastrPosition")]
         public ToastrPosition? ToastrPosition { get; set; }
 
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+		[HtmlAttributeName("asp-checkTheFormFieldsMessage")]
+		public string CheckTheFormFieldsMessage { get; set; }
+		public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var usedFormHelperTag = output.TagName == "formhelper";
 
@@ -80,9 +82,9 @@ namespace FormHelper
 
             output.Attributes.Add("enableButtonAfterSuccess", EnableButtonAfterSuccess);
             output.Attributes.Add("resetFormAfterSuccess", ResetFormAfterSuccess);
-            output.Attributes.Add("checkTheFormFieldsMessage", configuration.CheckTheFormFieldsMessage);
+			output.Attributes.Add("checkTheFormFieldsMessage", CheckTheFormFieldsMessage ?? configuration.CheckTheFormFieldsMessage);
 
-            if (usedFormHelperTag)
+			if (usedFormHelperTag)
             {
                 await base.ProcessAsync(context, output);
             }

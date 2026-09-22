@@ -1,86 +1,87 @@
 ﻿@{
-    ViewData["page"] = Page.TagHelper;
+	ViewData["page"] = Page.TagHelper;
 }
 
 @model ProductFormViewModel
 
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col col-lg-8">
-            <div class="card">
-                <div class="card-header">
-                    @(Model.IsNew ? "New Product" : "Edit Product")
-                </div>
-                <div class="card-body">
-                    <!-- You can use  <form asp-formhelper="true"> or <formhelper> to activate formhelper. -->
-                    <form id="sample-form" asp-formhelper="true" asp-controller="Home" asp-action="Save" asp-dataType="FormData"
-                          asp-callback="ProductFormCallback" asp-beforeSubmit="ProductFormBeforeSubmit"
-                        asp-enableButtonAfterSuccess="true" asp-resetFormAfterSuccess="false"
-                        enctype="multipart/form-data">
+	<div class="row justify-content-center">
+		<div class="col col-lg-8">
+			<div class="card">
+				<div class="card-header">
+					@(Model.IsNew ? "New Product" : "Edit Product")
+				</div>
+				<div class="card-body">
+					<!-- You can use  <form asp-formhelper="true"> or <formhelper> to activate formhelper. -->
+					<form id="sample-form" asp-formhelper="true" asp-controller="Home" asp-action="Save" asp-dataType="FormData"
+						  asp-callback="ProductFormCallback" asp-beforeSubmit="ProductFormBeforeSubmit"
+						  asp-enableButtonAfterSuccess="true" asp-resetFormAfterSuccess="false"
+						  asp-checkTheFormFieldsMessage="Error message from tag helper!"
+						  enctype="multipart/form-data">
 
-                        <input type="hidden" asp-for="Id" />
+						<input type="hidden" asp-for="Id" />
 
-                        <div class="form-group">
-                            <label asp-for="Title"></label>
-                            <input asp-for="Title" type="text" class="form-control">
-                            <span asp-validation-for="Title" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Category"></label>
-                            <select asp-for="Category" asp-items="Html.GetEnumSelectList<Category>()"
-                                class="form-control">
-                                <option value="">Select</option>
-                            </select>
-                            <span asp-validation-for="Category" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="InStock"></label>
-                            <input asp-for="InStock" type="text" class="form-control">
-                            <span asp-validation-for="InStock" class="form-text m-b-none text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Active"></label>
-                            <input asp-for="Active" type="checkbox" />
-                            <span asp-validation-for="Active" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>@UserType.Admin</label>
-                            <input asp-for="UserType" type="radio" value="@UserType.Admin" />
-                            <label>@UserType.Moderator</label>
-                            <input asp-for="UserType" type="radio" value="@UserType.Moderator" />
-                            <label>@UserType.Operator</label>
-                            <input asp-for="UserType" type="radio" value="@UserType.Operator" />
-                            <label>@UserType.User</label>
-                            <input asp-for="UserType" type="radio" value="@UserType.User" />
-                            <span asp-validation-for="Active" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="File"></label>
-                            <input asp-for="File" type="file" class="form-control-file" />
-                            <span asp-validation-for="File" class="text-danger"></span>
-                        </div>
-                        <hr />
-                        <div class="form-group text-right">
-                            <button id="sinan" class="btn btn-secondary" type="button" onclick="$(this).closest('form').fhReset();">Reset</button>
-                            <button class="btn btn-primary" type="submit">Save</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+						<div class="form-group">
+							<label asp-for="Title"></label>
+							<input asp-for="Title" type="text" class="form-control">
+							<span asp-validation-for="Title" class="text-danger"></span>
+						</div>
+						<div class="form-group">
+							<label asp-for="Category"></label>
+							<select asp-for="Category" asp-items="Html.GetEnumSelectList<Category>()"
+									class="form-control">
+								<option value="">Select</option>
+							</select>
+							<span asp-validation-for="Category" class="text-danger"></span>
+						</div>
+						<div class="form-group">
+							<label asp-for="InStock"></label>
+							<input asp-for="InStock" type="text" class="form-control">
+							<span asp-validation-for="InStock" class="form-text m-b-none text-danger"></span>
+						</div>
+						<div class="form-group">
+							<label asp-for="Active"></label>
+							<input asp-for="Active" type="checkbox" />
+							<span asp-validation-for="Active" class="text-danger"></span>
+						</div>
+						<div class="form-group">
+							<label>@UserType.Admin</label>
+							<input asp-for="UserType" type="radio" value="@UserType.Admin" />
+							<label>@UserType.Moderator</label>
+							<input asp-for="UserType" type="radio" value="@UserType.Moderator" />
+							<label>@UserType.Operator</label>
+							<input asp-for="UserType" type="radio" value="@UserType.Operator" />
+							<label>@UserType.User</label>
+							<input asp-for="UserType" type="radio" value="@UserType.User" />
+							<span asp-validation-for="Active" class="text-danger"></span>
+						</div>
+						<div class="form-group">
+							<label asp-for="File"></label>
+							<input asp-for="File" type="file" class="form-control-file" />
+							<span asp-validation-for="File" class="text-danger"></span>
+						</div>
+						<hr />
+						<div class="form-group text-right">
+							<button id="sinan" class="btn btn-secondary" type="button" onclick="$(this).closest('form').fhReset();">Reset</button>
+							<button class="btn btn-primary" type="submit">Save</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 
 @section Scripts {
-    <script>
-        var ProductFormBeforeSubmit = function (rr, $form, options) {
-            console.log("BeforeSubmit function!");
-        }
-    
-        var ProductFormCallback = function (response, statusText, xhr, $form) {
-            console.log(response);
-            console.log("Callback function!");
-        }
-    </script>
+	<script>
+		var ProductFormBeforeSubmit = function (rr, $form, options) {
+			console.log("BeforeSubmit function!");
+		}
+
+		var ProductFormCallback = function (response, statusText, xhr, $form) {
+			console.log(response);
+			console.log("Callback function!");
+		}
+	</script>
 }

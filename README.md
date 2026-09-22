@@ -83,7 +83,10 @@ app.UseFormHelper();
 
 // You can use <form asp-formhelper="true"> or <formhelper> to activate formhelper.
 // Optional parameters:
-// asp-callback="javascriptFunctionName", asp-beforeSubmit="javascriptFunctionName", asp-dataType="FormData/Json", asp-enableButtonAfterSuccess="false", asp-resetFormAfterSuccess="true" asp-toastrPosition="ToastrPosition.BottomRight"
+// asp-callback="javascriptFunctionName", asp-beforeSubmit="javascriptFunctionName", 
+// asp-dataType="FormData/Json", asp-enableButtonAfterSuccess="false", 
+// asp-resetFormAfterSuccess="true" asp-toastrPosition="ToastrPosition.BottomRight"
+// asp-checkTheFormFieldsMessage="Error message from tag helper!"
 ```
 
 **Controller:**
