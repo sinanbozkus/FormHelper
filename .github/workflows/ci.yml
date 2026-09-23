@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: .NET tests (${{ matrix.framework }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { framework: net10.0, runtime: 10.0.x, os: ubuntu-latest }
+          - { framework: net8.0, runtime: 8.0.x, os: ubuntu-latest }
+          - { framework: net6.0, runtime: 6.0.x, os: ubuntu-latest }
+          # .NET Core 3.1 needs OpenSSL 1.1, which the current Linux images don't have.
+          - { framework: netcoreapp3.1, runtime: 3.1.x, os: windows-latest }
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: |
+            ${{ matrix.runtime }}
+            10.0.x
+      - run: dotnet test tests/FormHelper.Tests -f ${{ matrix.framework }}
+      - run: dotnet test tests/FormHelper.FluentValidation.Tests -f ${{ matrix.framework }}
+
+  client:
+    name: Client script
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - run: npm ci
+      - name: Built files are up to date
+        run: npm run check
+      - name: Browser tests
+        run: npm test
+
+  pack:
+    name: Packages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      - run: dotnet pack src/FormHelper -c Release -o artifacts
+      - run: dotnet pack src/FormHelper.FluentValidation -c Release -o artifacts
+      - uses: actions/upload-artifact@v7
+        with:
+          name: packages
+          path: artifacts/*
