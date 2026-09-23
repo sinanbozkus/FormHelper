@@ -1,0 +1,17 @@
+{
+  "name": "formhelper-client",
+  "private": true,
+  "description": "Builds FormHelper's client assets into src/FormHelper/Scripts and src/FormHelper/Styles, and tests them in the browser.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "check": "node build.mjs --check",
+    "test": "node test/run.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

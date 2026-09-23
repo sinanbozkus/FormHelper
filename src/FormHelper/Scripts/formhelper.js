@@ -1,804 +1,1374 @@
-﻿// TOASTR
-
-(function (define) {
-  define(["jquery"], function ($) {
-    return (function () {
-      var $container;
-      var listener;
-      var toastId = 0;
-      var toastType = {
-        error: "error",
-        info: "info",
-        success: "success",
-        warning: "warning",
-      };
-
-      var fhToastr = {
-        clear: clear,
-        remove: remove,
-        error: error,
-        getContainer: getContainer,
-        info: info,
-        options: {},
-        subscribe: subscribe,
-        success: success,
-        version: "2.1.4",
-        warning: warning,
-      };
-
-      var previousToast;
-
-      return fhToastr;
-
-      ////////////////
-
-      function error(message, title, optionsOverride) {
-        return notify({
-          type: toastType.error,
-          iconClass: getOptions().iconClasses.error,
-          message: message,
-          optionsOverride: optionsOverride,
-          title: title,
-        });
+/*! FormHelper v6.0.0 | MIT License | https://github.com/sinanbozkus/FormHelper */
+(() => {
+  var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __propIsEnum = Object.prototype.propertyIsEnumerable;
+  var __objRest = (source, exclude) => {
+    var target = {};
+    for (var prop in source)
+      if (__hasOwnProp.call(source, prop) && exclude.indexOf(prop) < 0)
+        target[prop] = source[prop];
+    if (source != null && __getOwnPropSymbols)
+      for (var prop of __getOwnPropSymbols(source)) {
+        if (exclude.indexOf(prop) < 0 && __propIsEnum.call(source, prop))
+          target[prop] = source[prop];
       }
+    return target;
+  };
 
-      function getContainer(options, create) {
-        if (!options) {
-          options = getOptions();
-        }
-        $container = $("#" + options.containerId);
-        if ($container.length) {
-          return $container;
-        }
-        if (create) {
-          $container = createContainer(options);
-        }
-        return $container;
-      }
-
-      function info(message, title, optionsOverride) {
-        return notify({
-          type: toastType.info,
-          iconClass: getOptions().iconClasses.info,
-          message: message,
-          optionsOverride: optionsOverride,
-          title: title,
-        });
-      }
-
-      function subscribe(callback) {
-        listener = callback;
-      }
-
-      function success(message, title, optionsOverride) {
-        return notify({
-          type: toastType.success,
-          iconClass: getOptions().iconClasses.success,
-          message: message,
-          optionsOverride: optionsOverride,
-          title: title,
-        });
-      }
-
-      function warning(message, title, optionsOverride) {
-        return notify({
-          type: toastType.warning,
-          iconClass: getOptions().iconClasses.warning,
-          message: message,
-          optionsOverride: optionsOverride,
-          title: title,
-        });
-      }
-
-      function clear($toastElement, clearOptions) {
-        var options = getOptions();
-        if (!$container) {
-          getContainer(options);
-        }
-        if (!clearToast($toastElement, options, clearOptions)) {
-          clearContainer(options);
-        }
-      }
-
-      function remove($toastElement) {
-        var options = getOptions();
-        if (!$container) {
-          getContainer(options);
-        }
-        if ($toastElement && $(":focus", $toastElement).length === 0) {
-          removeToast($toastElement);
-          return;
-        }
-        if ($container.children().length) {
-          $container.remove();
-        }
-      }
-
-      // internal functions
-
-      function clearContainer(options) {
-        var toastsToClear = $container.children();
-        for (var i = toastsToClear.length - 1; i >= 0; i--) {
-          clearToast($(toastsToClear[i]), options);
-        }
-      }
-
-      function clearToast($toastElement, options, clearOptions) {
-        var force =
-          clearOptions && clearOptions.force ? clearOptions.force : false;
-        if (
-          $toastElement &&
-          (force || $(":focus", $toastElement).length === 0)
-        ) {
-          $toastElement[options.hideMethod]({
-            duration: options.hideDuration,
-            easing: options.hideEasing,
-            complete: function () {
-              removeToast($toastElement);
-            },
-          });
-          return true;
-        }
-        return false;
-      }
-
-      function createContainer(options) {
-        $container = $("<div/>")
-          .attr("id", options.containerId)
-          .addClass(options.positionClass);
-
-        $container.appendTo($(options.target));
-        return $container;
-      }
-
-      function getDefaults() {
-        return {
-          tapToDismiss: true,
-          toastClass: "formhelper-toast",
-          containerId: "formhelper-toast-container",
-          debug: false,
-
-          showMethod: "fadeIn", //fadeIn, slideDown, and show are built into jQuery
-          showDuration: 300,
-          showEasing: "swing", //swing and linear are built into jQuery
-          onShown: undefined,
-          hideMethod: "fadeOut",
-          hideDuration: 1000,
-          hideEasing: "swing",
-          onHidden: undefined,
-          closeMethod: false,
-          closeDuration: false,
-          closeEasing: false,
-          closeOnHover: true,
-
-          extendedTimeOut: 1000,
-          iconClasses: {
-            error: "formhelper-toast-error",
-            info: "formhelper-toast-info",
-            success: "formhelper-toast-success",
-            warning: "formhelper-toast-warning",
-          },
-          iconClass: "formhelper-toast-info",
-          positionClass: "formhelper-toast-top-right",
-          timeOut: 5000, // Set timeOut and extendedTimeOut to 0 to make it sticky
-          titleClass: "formhelper-toast-title",
-          messageClass: "formhelper-toast-message",
-          escapeHtml: false,
-          target: "body",
-          closeHtml: '<button type="button">&times;</button>',
-          closeClass: "formhelper-toast-close-button",
-          newestOnTop: true,
-          preventDuplicates: false,
-          progressBar: false,
-          progressClass: "formhelper-toast-progress",
-          rtl: false,
-        };
-      }
-
-      function publish(args) {
-        if (!listener) {
-          return;
-        }
-        listener(args);
-      }
-
-      function notify(map) {
-        var options = getOptions();
-        var iconClass = map.iconClass || options.iconClass;
-
-        if (typeof map.optionsOverride !== "undefined") {
-          options = $.extend(options, map.optionsOverride);
-          iconClass = map.optionsOverride.iconClass || iconClass;
-        }
-
-        if (shouldExit(options, map)) {
-          return;
-        }
-
-        toastId++;
-
-        $container = getContainer(options, true);
-
-        var intervalId = null;
-        var $toastElement = $("<div/>");
-        var $titleElement = $("<div/>");
-        var $messageElement = $("<div/>");
-        var $progressElement = $("<div/>");
-        var $closeElement = $(options.closeHtml);
-        var progressBar = {
-          intervalId: null,
-          hideEta: null,
-          maxHideTime: null,
-        };
-        var response = {
-          toastId: toastId,
-          state: "visible",
-          startTime: new Date(),
-          options: options,
-          map: map,
-        };
-
-        personalizeToast();
-
-        displayToast();
-
-        handleEvents();
-
-        publish(response);
-
-        if (options.debug && console) {
-          console.log(response);
-        }
-
-        return $toastElement;
-
-        function escapeHtml(source) {
-          if (source === null) {
-            source = "";
-          }
-
-          return source
-            .replace(/&/g, "&amp;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#39;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
-        }
-
-        function personalizeToast() {
-          setIcon();
-          setTitle();
-          setMessage();
-          setCloseButton();
-          setProgressBar();
-          setRTL();
-          setSequence();
-          setAria();
-        }
-
-        function setAria() {
-          var ariaValue = "";
-          switch (map.iconClass) {
-            case "formhelper-toast-success":
-            case "formhelper-toast-info":
-              ariaValue = "polite";
-              break;
-            default:
-              ariaValue = "assertive";
-          }
-          $toastElement.attr("aria-live", ariaValue);
-        }
-
-        function handleEvents() {
-          if (options.closeOnHover) {
-            $toastElement.hover(stickAround, delayedHideToast);
-          }
-
-          if (!options.onclick && options.tapToDismiss) {
-            $toastElement.click(hideToast);
-          }
-
-          if (options.closeButton && $closeElement) {
-            $closeElement.click(function (event) {
-              if (event.stopPropagation) {
-                event.stopPropagation();
-              } else if (
-                event.cancelBubble !== undefined &&
-                event.cancelBubble !== true
-              ) {
-                event.cancelBubble = true;
-              }
-
-              if (options.onCloseClick) {
-                options.onCloseClick(event);
-              }
-
-              hideToast(true);
-            });
-          }
-
-          if (options.onclick) {
-            $toastElement.click(function (event) {
-              options.onclick(event);
-              hideToast();
-            });
-          }
-        }
-
-        function displayToast() {
-          $toastElement.hide();
-
-          $toastElement[options.showMethod]({
-            duration: options.showDuration,
-            easing: options.showEasing,
-            complete: options.onShown,
-          });
-
-          if (options.timeOut > 0) {
-            intervalId = setTimeout(hideToast, options.timeOut);
-            progressBar.maxHideTime = parseFloat(options.timeOut);
-            progressBar.hideEta =
-              new Date().getTime() + progressBar.maxHideTime;
-            if (options.progressBar) {
-              progressBar.intervalId = setInterval(updateProgress, 10);
-            }
-          }
-        }
-
-        function setIcon() {
-          if (map.iconClass) {
-            $toastElement.addClass(options.toastClass).addClass(iconClass);
-          }
-        }
-
-        function setSequence() {
-          if (options.newestOnTop) {
-            $container.prepend($toastElement);
-          } else {
-            $container.append($toastElement);
-          }
-        }
-
-        function setTitle() {
-          if (map.title) {
-            var suffix = map.title;
-            if (options.escapeHtml) {
-              suffix = escapeHtml(map.title);
-            }
-            $titleElement.append(suffix).addClass(options.titleClass);
-            $toastElement.append($titleElement);
-          }
-        }
-
-        function setMessage() {
-          if (map.message) {
-            var suffix = map.message;
-            if (options.escapeHtml) {
-              suffix = escapeHtml(map.message);
-            }
-            $messageElement.append(suffix).addClass(options.messageClass);
-            $toastElement.append($messageElement);
-          }
-        }
-
-        function setCloseButton() {
-          if (options.closeButton) {
-            $closeElement.addClass(options.closeClass).attr("role", "button");
-            $toastElement.prepend($closeElement);
-          }
-        }
-
-        function setProgressBar() {
-          if (options.progressBar) {
-            $progressElement.addClass(options.progressClass);
-            $toastElement.prepend($progressElement);
-          }
-        }
-
-        function setRTL() {
-          if (options.rtl) {
-            $toastElement.addClass("rtl");
-          }
-        }
-
-        function shouldExit(options, map) {
-          if (options.preventDuplicates) {
-            if (map.message === previousToast) {
-              return true;
-            } else {
-              previousToast = map.message;
-            }
-          }
-          return false;
-        }
-
-        function hideToast(override) {
-          var method =
-            override && options.closeMethod !== false
-              ? options.closeMethod
-              : options.hideMethod;
-          var duration =
-            override && options.closeDuration !== false
-              ? options.closeDuration
-              : options.hideDuration;
-          var easing =
-            override && options.closeEasing !== false
-              ? options.closeEasing
-              : options.hideEasing;
-          if ($(":focus", $toastElement).length && !override) {
-            return;
-          }
-          clearTimeout(progressBar.intervalId);
-          return $toastElement[method]({
-            duration: duration,
-            easing: easing,
-            complete: function () {
-              removeToast($toastElement);
-              clearTimeout(intervalId);
-              if (options.onHidden && response.state !== "hidden") {
-                options.onHidden();
-              }
-              response.state = "hidden";
-              response.endTime = new Date();
-              publish(response);
-            },
-          });
-        }
-
-        function delayedHideToast() {
-          if (options.timeOut > 0 || options.extendedTimeOut > 0) {
-            intervalId = setTimeout(hideToast, options.extendedTimeOut);
-            progressBar.maxHideTime = parseFloat(options.extendedTimeOut);
-            progressBar.hideEta =
-              new Date().getTime() + progressBar.maxHideTime;
-          }
-        }
-
-        function stickAround() {
-          clearTimeout(intervalId);
-          progressBar.hideEta = 0;
-          $toastElement.stop(true, true)[options.showMethod]({
-            duration: options.showDuration,
-            easing: options.showEasing,
-          });
-        }
-
-        function updateProgress() {
-          var percentage =
-            ((progressBar.hideEta - new Date().getTime()) /
-              progressBar.maxHideTime) *
-            100;
-          $progressElement.width(percentage + "%");
-        }
-      }
-
-      function getOptions() {
-        return $.extend({}, getDefaults(), fhToastr.options);
-      }
-
-      function removeToast($toastElement) {
-        if (!$container) {
-          $container = getContainer();
-        }
-        if ($toastElement.is(":visible")) {
-          return;
-        }
-        $toastElement.remove();
-        $toastElement = null;
-        if ($container.children().length === 0) {
-          $container.remove();
-          previousToast = undefined;
-        }
-      }
-    })();
-  });
-})(
-  typeof define === "function" && define.amd
-    ? define
-    : function (deps, factory) {
-        if (typeof module !== "undefined" && module.exports) {
-          //Node
-          module.exports = factory(require("jquery"));
-        } else {
-          window.fhToastr = factory(window.jQuery);
-        }
-      }
-);
-
-// FORM HELPER
-
-(function ($) {
-  "use strict";
-
-  $(document).on("click", "form[formhelper]", (element) => {
-    const form = $(element.currentTarget);
-
-    const options = {
-      url: form.attr("action"),
-      method: form.attr("method"),
-      dataType: form.attr("dataType"),
-      checkTheFormFieldsMessage: form.attr("CheckTheFormFieldsMessage"),
-      redirectDelay: parseInt(form.attr("redirectDelay")),
-      beforeSubmit: form.attr("beforeSubmit"),
-      callback: form.attr("callback"),
-      enableButtonAfterSuccess:
-        form.attr("enableButtonAfterSuccess") === "True",
-      resetFormAfterSuccess: form.attr("ResetFormAfterSuccess") === "True",
-      toastrPositionClass: form.attr("toastrPositionClass"),
-    };
-
-    return new $.formhelper(options, form[0]);
-  });
-
-  function mobileAndTabletcheck() {
-    var check = false;
-    (function (a) {
-      if (
-        /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(
-          a
-        ) ||
-        /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(
-          a.substr(0, 4)
-        )
-      )
-        check = true;
-    })(navigator.userAgent || navigator.vendor || window.opera);
-    return check;
-  }
-
-  function callFunction(name, result) {
-    var parts = name.split(".");
-    var n;
-    var obj = window;
-    for (n = 0; n < parts.length; ++n) {
-      obj = obj[parts[n]];
-      if (!obj) {
-        return;
-      }
+  // src/utils.js
+  function resolveFunction(name) {
+    if (typeof name === "function") {
+      return name;
     }
-    return obj ? obj(result) : undefined;
+    if (!name) {
+      return null;
+    }
+    let target = window;
+    for (const part of String(name).split(".")) {
+      if (target == null) {
+        return null;
+      }
+      target = target[part];
+    }
+    return typeof target === "function" ? target : null;
+  }
+  function dispatch(form, name, detail, cancelable) {
+    const event = new CustomEvent("formhelper:" + name, {
+      bubbles: true,
+      cancelable: !!cancelable,
+      detail
+    });
+    return form.dispatchEvent(event);
+  }
+  function classList(value) {
+    return value ? String(value).split(/\s+/).filter(Boolean) : [];
+  }
+  function escapeHtml(value) {
+    return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function setText(element, lines) {
+    element.textContent = "";
+    const list = Array.isArray(lines) ? lines : String(lines).split(/\r?\n/);
+    list.forEach((line, index) => {
+      if (index > 0) {
+        element.appendChild(document.createElement("br"));
+      }
+      element.appendChild(document.createTextNode(line));
+    });
+  }
+  function toForm(target) {
+    if (!target) {
+      return null;
+    }
+    if (typeof target === "string") {
+      target = document.querySelector(target);
+    } else if (target.jquery) {
+      target = target[0];
+    }
+    if (target && target.tagName !== "FORM" && target.form) {
+      target = target.form;
+    }
+    return target && target.tagName === "FORM" ? target : null;
+  }
+  function isFormHelperForm(form) {
+    return !!form && form.tagName === "FORM" && form.hasAttribute("data-formhelper");
+  }
+  function normalizeFieldName(name) {
+    return String(name || "").replace(/^\$\.?/, "");
   }
 
-  $.formhelper = function (options, el) {
-    var self = this;
-    var $form = $(el);
+  // src/messages.js
+  var describedByCounter = 0;
+  function fieldElements(form, name) {
+    const key = normalizeFieldName(name).toLowerCase();
+    return Array.from(form.elements).filter((e) => e.name && e.name.toLowerCase() === key);
+  }
+  function messageElements(form, name) {
+    const key = normalizeFieldName(name).toLowerCase();
+    return Array.from(form.querySelectorAll("[data-valmsg-for]")).filter((e) => e.getAttribute("data-valmsg-for").toLowerCase() === key);
+  }
+  function replaces(messageElement) {
+    return messageElement.getAttribute("data-valmsg-replace") !== "false";
+  }
+  function showFieldErrors(form, name, messages, options) {
+    const inputs = fieldElements(form, name);
+    const targets = messageElements(form, name);
+    inputs.forEach((input) => {
+      input.classList.remove("input-validation-valid");
+      input.classList.add("input-validation-error", ...classList(options.inputErrorClass));
+      input.setAttribute("aria-invalid", "true");
+    });
+    targets.forEach((target) => {
+      target.classList.remove("field-validation-valid");
+      target.classList.add("field-validation-error", ...classList(options.messageErrorClass));
+      if (replaces(target)) {
+        setText(target, messages);
+      }
+      if (!target.id) {
+        target.id = "formhelper-message-" + ++describedByCounter;
+      }
+      inputs.forEach((input) => {
+        const describedBy = classList(input.getAttribute("aria-describedby"));
+        if (describedBy.indexOf(target.id) === -1) {
+          input.setAttribute("aria-describedby", describedBy.concat(target.id).join(" "));
+        }
+      });
+    });
+    return targets.length > 0;
+  }
+  function clearFieldErrors(form, name, options) {
+    fieldElements(form, name).forEach((input) => clearInput(input, options));
+    messageElements(form, name).forEach((target) => clearMessage(target, options));
+  }
+  function clearAllErrors(form, options) {
+    Array.from(form.elements).forEach((input) => clearInput(input, options));
+    Array.from(form.querySelectorAll("[data-valmsg-for]")).forEach((target) => clearMessage(target, options));
+    setSummary(form, []);
+  }
+  function clearInput(input, options) {
+    if (input.classList.contains("input-validation-error")) {
+      input.classList.remove("input-validation-error", ...classList(options.inputErrorClass));
+      input.classList.add("input-validation-valid");
+    }
+    input.removeAttribute("aria-invalid");
+  }
+  function clearMessage(target, options) {
+    target.classList.remove("field-validation-error", ...classList(options.messageErrorClass));
+    target.classList.add("field-validation-valid");
+    if (replaces(target)) {
+      target.textContent = "";
+    }
+  }
+  function getSummary(form) {
+    return form.querySelector('[data-valmsg-summary="true"], [data-fh-summary]');
+  }
+  function setSummary(form, messages) {
+    const summary = getSummary(form);
+    if (!summary) {
+      return false;
+    }
+    let list = summary.querySelector("ul");
+    if (!list) {
+      list = document.createElement("ul");
+      summary.appendChild(list);
+    }
+    list.textContent = "";
+    messages.forEach((message) => {
+      const item = document.createElement("li");
+      setText(item, message);
+      list.appendChild(item);
+    });
+    summary.classList.toggle("validation-summary-errors", messages.length > 0);
+    summary.classList.toggle("validation-summary-valid", messages.length === 0);
+    return true;
+  }
+  function focusFirstInvalid(form) {
+    const invalid = Array.from(form.elements).find((e) => e.getAttribute("aria-invalid") === "true" || e.classList.contains("input-validation-error"));
+    if (invalid && typeof invalid.focus === "function") {
+      invalid.focus();
+    }
+  }
 
-    if (window.FormData === undefined) {
-      $form.find("button[type='submit']").attr("disabled", "disabled");
-      alert(
-        "Your internet browser is too old and not compatible with Form Helper! Update your browser."
-      );
+  // src/fill.js
+  function fillForm(form, data, callbacks, prefix) {
+    if (!data) {
       return;
     }
-
-    $($form)
-      .find("input, select, textarea")
-      .on("blur", function (el) {
-        $(el.target).valid();
-      });
-
-    options = $.extend({}, $.formhelper.defaultOptions, options);
-
-    $form.unbind("submit");
-
-    $form.on("submit", function (e) {
-      e.preventDefault();
-
-      var toastrPositionClass = mobileAndTabletcheck()
-        ? "formhelper-toast-top-full-width"
-        : options.toastrPositionClass;
-
-      var toastrOptions = {
-        positionClass: toastrPositionClass,
-      };
-
-      $form.removeData("validator");
-      $form.removeData("unobtrusiveValidation");
-      $.validator.unobtrusive.parse($form);
-
-      var validationResult = $form.valid();
-      var validator = $form.validate();
-
-      if (!validationResult) {
-        if (fhToastr) {
-          fhToastr.error(
-            options.checkTheFormFieldsMessage,
-            null,
-            toastrOptions
-          );
-          validator.focusInvalid();
-        }
-        return false;
+    Object.keys(data).forEach((key) => {
+      const value = data[key];
+      const name = (prefix || "") + key;
+      if (callbacks && typeof callbacks[name] === "function") {
+        callbacks[name](value);
+        return;
       }
-
-      $form.find("button[type='submit']").attr("disabled", "disabled");
-
-      var headers = {};
-      var formData = {};
-      var contentType = {};
-
-      if (options.dataType === "FormData") {
-        formData = new FormData($form[0]);
-        contentType = false;
-      } else {
-        var formDataAsJson = new Object();
-
-        $.each($form.serializeArray(), function (key, item) {
-          formDataAsJson[item.name] = item.value;
-        });
-
-        if (formDataAsJson.__RequestVerificationToken !== undefined) {
-          headers["RequestVerificationToken"] =
-            formDataAsJson.__RequestVerificationToken;
+      const all = fieldElements(form, name);
+      const elements = all.length > 1 ? all.filter((e) => e.type !== "hidden") : all;
+      if (elements.length === 0) {
+        if (value && typeof value === "object" && !Array.isArray(value)) {
+          fillForm(form, value, callbacks, name + ".");
         }
-
-        formData = JSON.stringify(formDataAsJson);
-        contentType = "application/json; charset=utf-8";
+        return;
       }
-
-      //send ajax
-
-      $.ajax({
-        url: options.url,
-        type: options.method,
-        headers: headers,
-        data: formData,
-        contentType: contentType,
-        processData: false,
-        beforeSend: function (jqXHR, settings) {
-          if (options.beforeSubmit) {
-            return window[options.beforeSubmit](jqXHR, settings, $form);
-          }
-        },
-        success: function (result, status) {
-          if (result.isSucceed === false) {
-            $form.find("button[type='submit']").removeAttr("disabled");
-          }
-
-          if (result.redirectUri) {
-            toastrOptions = {
-              timeOut: 0,
-              extendedTimeOut: 0,
-              positionClass: toastrPositionClass,
-            };
-          }
-
-          var hasMessage = result.message && result.message !== "";
-
-          if (hasMessage) {
-            if (result.status === 1 || result.status === "Success") {
-              fhToastr.success(result.message, null, toastrOptions);
-            } else if (result.status === 2 || result.status === "Info") {
-              fhToastr.info(result.message, null, toastrOptions);
-            } else if (result.status === 3 || result.status === "Warning") {
-              fhToastr.warning(result.message, null, toastrOptions);
-            } else if (result.status === 4 || result.status === "Error") {
-              fhToastr.error(result.message, null, toastrOptions);
-            }
-          } else if (result.isSucceed === false) {
-            fhToastr.error(
-              options.checkTheFormFieldsMessage,
-              null,
-              toastrOptions
-            );
-          }
-
-          if (result.validationErrors && result.validationErrors.length > 0) {
-            $form.find("button[type='submit']").removeAttr("disabled");
-
-            for (var i in result.validationErrors) {
-              var propertyName = result.validationErrors[i].propertyName;
-              var errorMessage = result.validationErrors[i].message;
-              var obj = new Object();
-              obj[propertyName] = errorMessage;
-              validator.showErrors(obj);
-            }
-
-            validator.focusInvalid();
-          }
-
-          if (options.callback) {
-            callFunction(options.callback, result);
-          }
-
-          var delay = result.redirectDelay
-            ? result.redirectDelay
-            : options.redirectDelay;
-
-          if (result.redirectUri) {
-            setTimeout(
-              function () {
-                window.location.replace(result.redirectUri);
-              },
-              hasMessage ? delay : 1
-            );
-          }
-
-          if (result.status === 1 || result.status === "Success") {
-            if (options.enableButtonAfterSuccess) {
-              $form.find("button[type='submit']").removeAttr("disabled");
-            }
-
-            if (options.resetFormAfterSuccess) {
-              $form[0].reset();
-            }
-          }
-        },
-        error: function (request, status, error) {
-          console.error(request.responseText);
-          fhToastr.error(request.responseText, null, toastrOptions);
-        },
-      });
-
-      //end ajax request
+      elements.forEach((element) => setValue(element, value));
     });
-  };
+  }
+  function setValue(element, value) {
+    if (element.type === "checkbox") {
+      if (Array.isArray(value)) {
+        element.checked = value.map(String).indexOf(element.value) !== -1;
+      } else {
+        element.checked = value === true || value === "true" || value === "True" || value === 1 || value === "1";
+      }
+    } else if (element.type === "radio") {
+      element.checked = value != null && String(value) === element.value;
+    } else if (element.tagName === "SELECT" && element.multiple) {
+      const values = Array.isArray(value) ? value.map(String) : String(value == null ? "" : value).split(/[ ,]+/);
+      Array.from(element.options).forEach((option) => option.selected = values.indexOf(option.value) !== -1);
+    } else if (element.type !== "file") {
+      element.value = value == null ? "" : value;
+    }
+  }
 
-  $.formhelper.defaultOptions = {
-    url: "#",
-    method: "POST",
-    dataType: "FormData",
-    checkTheFormFieldsMessage: "Check the form fields",
+  // src/options.js
+  var globals = {
+    dataType: "formdata",
     redirectDelay: 1500,
-    beforeSubmit: null,
-    callback: null,
+    toastrPosition: "formhelper-toast-top-right",
     enableButtonAfterSuccess: false,
-    resetFormAfterSuccess: false,
-    toastrPositionClass: null,
+    resetFormAfterSuccess: true,
+    checkMessage: "Check the form fields.",
+    // Shown when the response is not a FormResult (e.g. a 500 error page). The details go to the console.
+    // Forms rendered by the tag helper carry FormHelperOptions.ErrorMessage instead.
+    errorMessage: "An error occurred. Please try again.",
+    validation: "auto",
+    inputErrorClass: "",
+    messageErrorClass: "",
+    callback: null,
+    beforeSubmit: null,
+    // undefined: fhToastr, false: no notifications, function({ type, message, form }): your own notifications.
+    notify: void 0
   };
-
-  $.fn.fillFormFields = function (data, callbacks = null) {
-    var that = this;
-
-    var options = {
-      data: data || null,
-      callbacks: callbacks,
+  function getFormOptions(form) {
+    const data = form.dataset;
+    const bool = (value, fallback) => value == null ? fallback : value.toLowerCase() === "true";
+    const text = (value, fallback) => value == null || value === "" ? fallback : value;
+    const redirectDelay = parseInt(data.fhRedirectDelay, 10);
+    return {
+      url: form.getAttribute("action") || window.location.href,
+      method: (form.getAttribute("method") || "post").toUpperCase(),
+      dataType: text(data.fhDataType, globals.dataType).toLowerCase(),
+      redirectDelay: isNaN(redirectDelay) ? globals.redirectDelay : redirectDelay,
+      toastrPosition: text(data.fhToastrPosition, globals.toastrPosition),
+      enableButtonAfterSuccess: bool(data.fhEnableButtonAfterSuccess, globals.enableButtonAfterSuccess),
+      resetFormAfterSuccess: bool(data.fhResetFormAfterSuccess, globals.resetFormAfterSuccess),
+      checkMessage: text(data.fhCheckMessage, globals.checkMessage),
+      errorMessage: text(data.fhErrorMessage, globals.errorMessage),
+      validation: text(data.fhValidation, globals.validation).toLowerCase(),
+      inputErrorClass: text(data.fhInputErrorClass, globals.inputErrorClass),
+      messageErrorClass: text(data.fhMessageErrorClass, globals.messageErrorClass),
+      callback: text(data.fhCallback, globals.callback),
+      beforeSubmit: text(data.fhBeforeSubmit, globals.beforeSubmit),
+      notify: globals.notify
     };
+  }
 
-    if (options.data !== null) {
-      $.each(options.data, function (k, v) {
-        if (
-          options.callbacks != undefined &&
-          options.callbacks != null &&
-          options.callbacks.hasOwnProperty(k)
-        ) {
-          options.callbacks[k](v);
-        } else {
-          var el = $("#" + that[0].id + ' [name="' + k + '" i]');
-          if (
-            el.prop("tagName") == "SELECT" &&
-            el.attr("multiple") !== undefined &&
-            el.attr("enumflags") !== undefined
-          ) {
-            var values = v.toString().split(/[ ,]+/);
-            el.val(values);
-          } else if (
-            el.prop("tagName") == "INPUT" &&
-            el.prop("type").toUpperCase() == "CHECKBOX"
-          ) {
-            if (v === true || v == "true" || v == "1") {
-              el.attr("checked", "checked");
-            } else {
-              el.removeAttr("checked");
-            }
-          } else if (
-            el.prop("tagName") == "INPUT" &&
-            el.prop("type").toUpperCase() == "RADIO"
-          ) {
-            $(`input[name=${k}][value=${v}`).prop("checked", true);
-          } else {
-            el.val(v);
-          }
+  // src/request.js
+  var TOKEN_FIELD = "__RequestVerificationToken";
+  var TOKEN_HEADER = "RequestVerificationToken";
+  function buildRequest(form, options, submitter) {
+    const headers = {
+      "X-Requested-With": "XMLHttpRequest",
+      "Accept": "application/json"
+    };
+    let url = submitter && submitter.getAttribute("formaction") || options.url;
+    const method = (submitter && submitter.getAttribute("formmethod") || options.method).toUpperCase();
+    let body;
+    if (method === "GET") {
+      const query = new URLSearchParams();
+      toFormData(form, submitter).forEach((value, key) => {
+        if (typeof value === "string") {
+          query.append(key, value);
+        }
+      });
+      url += (url.indexOf("?") === -1 ? "?" : "&") + query.toString();
+    } else if (options.dataType === "json") {
+      const { data, token } = toJson(form, submitter);
+      if (token) {
+        headers[TOKEN_HEADER] = token;
+      }
+      headers["Content-Type"] = "application/json; charset=utf-8";
+      body = JSON.stringify(data);
+    } else {
+      body = toFormData(form, submitter);
+    }
+    return { url, method, headers, body };
+  }
+  function toFormData(form, submitter) {
+    let formData;
+    try {
+      formData = submitter ? new FormData(form, submitter) : new FormData(form);
+    } catch (e) {
+      formData = new FormData(form);
+    }
+    if (submitter && submitter.name && !formData.has(submitter.name)) {
+      formData.append(submitter.name, submitter.value);
+    }
+    return formData;
+  }
+  function toJson(form, submitter) {
+    const elements = Array.from(form.elements).filter((e) => e.name && !e.disabled);
+    const checkboxes = {};
+    elements.forEach((e) => {
+      if (e.type === "checkbox") {
+        checkboxes[e.name] = (checkboxes[e.name] || 0) + 1;
+      }
+    });
+    const values = [];
+    let token = null;
+    elements.forEach((element) => {
+      const { name, type } = element;
+      if (name === TOKEN_FIELD) {
+        token = element.value;
+        return;
+      }
+      if (type === "file" || type === "submit" || type === "button" || type === "reset" || type === "image") {
+        return;
+      }
+      if (type === "hidden" && checkboxes[name]) {
+        return;
+      }
+      if (type === "checkbox") {
+        if (checkboxes[name] === 1 && element.value.toLowerCase() === "true") {
+          values.push([name, element.checked, false]);
+        } else if (element.checked) {
+          values.push([name, element.value, checkboxes[name] > 1]);
+        }
+        return;
+      }
+      if (type === "radio") {
+        if (element.checked) {
+          values.push([name, element.value, false]);
+        }
+        return;
+      }
+      if (element.tagName === "SELECT" && element.multiple) {
+        values.push([name, Array.from(element.selectedOptions).map((o) => o.value), false]);
+        return;
+      }
+      values.push([name, element.value === "" ? null : element.value, false]);
+    });
+    if (submitter && submitter.name) {
+      values.push([submitter.name, submitter.value, false]);
+    }
+    const data = {};
+    const counts = {};
+    values.forEach(([name]) => counts[name] = (counts[name] || 0) + 1);
+    values.forEach(([name, value, asArray]) => {
+      if (asArray || counts[name] > 1) {
+        const current = getPath(data, name);
+        setPath(data, name, Array.isArray(current) ? current.concat(value) : [value]);
+      } else {
+        setPath(data, name, value);
+      }
+    });
+    return { data, token };
+  }
+  function tokens(name) {
+    return name.replace(/\[(\d*)\]/g, ".$1").split(".").filter((t) => t !== "");
+  }
+  function getPath(target, name) {
+    return tokens(name).reduce((current, token) => current == null ? void 0 : current[token], target);
+  }
+  function setPath(target, name, value) {
+    const parts = tokens(name);
+    let current = target;
+    if (parts.some((p) => p === "__proto__" || p === "constructor" || p === "prototype")) {
+      return;
+    }
+    parts.forEach((token, index) => {
+      if (index === parts.length - 1) {
+        current[token] = value;
+        return;
+      }
+      if (current[token] == null || typeof current[token] !== "object") {
+        current[token] = /^\d+$/.test(parts[index + 1]) ? [] : {};
+      }
+      current = current[token];
+    });
+  }
+
+  // src/toast.js
+  var defaults = {
+    containerId: "formhelper-toast-container",
+    target: "body",
+    toastClass: "formhelper-toast",
+    titleClass: "formhelper-toast-title",
+    messageClass: "formhelper-toast-message",
+    closeClass: "formhelper-toast-close-button",
+    progressClass: "formhelper-toast-progress",
+    positionClass: "formhelper-toast-top-right",
+    iconClasses: {
+      error: "formhelper-toast-error",
+      info: "formhelper-toast-info",
+      success: "formhelper-toast-success",
+      warning: "formhelper-toast-warning"
+    },
+    timeOut: 5e3,
+    // set timeOut and extendedTimeOut to 0 to make it sticky
+    extendedTimeOut: 1e3,
+    showDuration: 300,
+    hideDuration: 1e3,
+    closeButton: false,
+    closeHtml: '<button type="button">&times;</button>',
+    progressBar: false,
+    preventDuplicates: false,
+    newestOnTop: true,
+    tapToDismiss: true,
+    closeOnHover: true,
+    // true: message and title are shown as text. Set false to show html you trust (never user input).
+    escapeHtml: true,
+    rtl: false,
+    onclick: null,
+    onShown: null,
+    onHidden: null,
+    onCloseClick: null
+  };
+  var HIDDEN_CLASS = "formhelper-toast-hidden";
+  var previousMessage;
+  var toastr = {
+    version: "6.0.0",
+    options: {},
+    success: (message, title, options) => notify("success", message, title, options),
+    info: (message, title, options) => notify("info", message, title, options),
+    warning: (message, title, options) => notify("warning", message, title, options),
+    error: (message, title, options) => notify("error", message, title, options),
+    clear,
+    remove
+  };
+  function getOptions(override) {
+    const options = Object.assign({}, defaults, toastr.options, override);
+    options.iconClasses = Object.assign({}, defaults.iconClasses, toastr.options.iconClasses, override && override.iconClasses);
+    return options;
+  }
+  function getContainer(options, create) {
+    let container = document.getElementById(options.containerId);
+    if (!container && create) {
+      container = document.createElement("div");
+      container.id = options.containerId;
+      (document.querySelector(options.target) || document.body).appendChild(container);
+    }
+    return container;
+  }
+  function setContent(element, value, escape) {
+    if (escape) {
+      setText(element, String(value));
+    } else {
+      element.innerHTML = value;
+    }
+  }
+  function notify(type, message, title, override) {
+    const options = getOptions(override);
+    if (options.preventDuplicates) {
+      if (message === previousMessage) {
+        return null;
+      }
+      previousMessage = message;
+    }
+    const container = getContainer(options, true);
+    container.className = options.positionClass;
+    const toast = document.createElement("div");
+    toast.className = options.toastClass + " " + options.iconClasses[type];
+    toast.setAttribute("role", type === "error" || type === "warning" ? "alert" : "status");
+    toast.setAttribute("aria-live", type === "error" || type === "warning" ? "assertive" : "polite");
+    if (options.rtl) {
+      toast.classList.add("rtl");
+    }
+    let progress = null;
+    if (options.progressBar) {
+      progress = document.createElement("div");
+      progress.className = options.progressClass;
+      toast.appendChild(progress);
+    }
+    if (options.closeButton) {
+      const template = document.createElement("template");
+      template.innerHTML = options.closeHtml.trim();
+      const close = template.content.firstElementChild;
+      close.classList.add(options.closeClass);
+      close.setAttribute("role", "button");
+      close.setAttribute("aria-label", "Close");
+      close.addEventListener("click", (event) => {
+        event.stopPropagation();
+        if (options.onCloseClick) {
+          options.onCloseClick(event);
+        }
+        hide(true);
+      });
+      toast.insertBefore(close, toast.firstChild);
+    }
+    if (title) {
+      const titleElement = document.createElement("div");
+      titleElement.className = options.titleClass;
+      setContent(titleElement, title, options.escapeHtml);
+      toast.appendChild(titleElement);
+    }
+    if (message) {
+      const messageElement = document.createElement("div");
+      messageElement.className = options.messageClass;
+      setContent(messageElement, message, options.escapeHtml);
+      toast.appendChild(messageElement);
+    }
+    if (options.newestOnTop) {
+      container.insertBefore(toast, container.firstChild);
+    } else {
+      container.appendChild(toast);
+    }
+    toast.classList.add(HIDDEN_CLASS);
+    toast.style.transitionDuration = options.showDuration + "ms";
+    void toast.offsetWidth;
+    toast.classList.remove(HIDDEN_CLASS);
+    if (options.onShown) {
+      setTimeout(options.onShown, options.showDuration);
+    }
+    let hideTimer = null;
+    let progressTimer = null;
+    let hideEta = 0;
+    let maxHideTime = 0;
+    let hidden = false;
+    function startTimer(duration) {
+      if (duration > 0) {
+        hideTimer = setTimeout(() => hide(false), duration);
+        maxHideTime = duration;
+        hideEta = Date.now() + duration;
+        if (progress && !progressTimer) {
+          progressTimer = setInterval(() => {
+            const percentage = Math.max(0, (hideEta - Date.now()) / maxHideTime * 100);
+            progress.style.width = percentage + "%";
+          }, 10);
+        }
+      }
+    }
+    function hide(override2) {
+      if (hidden || !override2 && toast.contains(document.activeElement)) {
+        return;
+      }
+      hidden = true;
+      clearTimeout(hideTimer);
+      clearInterval(progressTimer);
+      toast.style.transitionDuration = options.hideDuration + "ms";
+      toast.classList.add(HIDDEN_CLASS);
+      setTimeout(() => {
+        removeToast(toast);
+        if (options.onHidden) {
+          options.onHidden();
+        }
+      }, options.hideDuration);
+    }
+    if (options.closeOnHover) {
+      toast.addEventListener("mouseenter", () => {
+        if (hidden) {
+          return;
+        }
+        clearTimeout(hideTimer);
+        hideEta = 0;
+      });
+      toast.addEventListener("mouseleave", () => {
+        if (!hidden && (options.timeOut > 0 || options.extendedTimeOut > 0)) {
+          startTimer(options.extendedTimeOut);
         }
       });
     }
+    if (options.onclick) {
+      toast.addEventListener("click", (event) => {
+        options.onclick(event);
+        hide(false);
+      });
+    } else if (options.tapToDismiss) {
+      toast.addEventListener("click", () => hide(false));
+    }
+    startTimer(options.timeOut);
+    toast.formhelperHide = hide;
+    return toast;
+  }
+  function removeToast(toast) {
+    const container = toast.parentNode;
+    if (container) {
+      container.removeChild(toast);
+      if (container.children.length === 0 && container.parentNode) {
+        container.parentNode.removeChild(container);
+        previousMessage = void 0;
+      }
+    }
+  }
+  function clear(toast) {
+    const toasts = toast ? [toast.jquery ? toast[0] : toast] : currentToasts();
+    toasts.forEach((t) => t && t.formhelperHide ? t.formhelperHide(true) : t && removeToast(t));
+  }
+  function remove(toast) {
+    const toasts = toast ? [toast.jquery ? toast[0] : toast] : currentToasts();
+    toasts.forEach((t) => t && removeToast(t));
+  }
+  function currentToasts() {
+    const container = getContainer(getOptions(), false);
+    return container ? Array.from(container.children) : [];
+  }
+
+  // src/validation/rules.js
+  var rules = /* @__PURE__ */ Object.create(null);
+  function addRule(name, validate) {
+    rules[String(name).toLowerCase()] = validate;
+  }
+  function toNumber(value) {
+    return value === "" || value == null ? NaN : Number(String(value).trim().replace(",", "."));
+  }
+  function lengthOf(value, element, form) {
+    if (element.tagName === "SELECT") {
+      return Array.from(element.options).filter((o) => o.selected).length;
+    }
+    if (element.type === "checkbox" || element.type === "radio") {
+      return fieldElements(form, element.name).filter((e) => e.checked).length;
+    }
+    return value.length;
+  }
+  addRule("required", (value) => value.trim() !== "");
+  addRule("length", (value, element, params, form) => {
+    const length = lengthOf(value, element, form);
+    return (!params.min || length >= Number(params.min)) && (!params.max || length <= Number(params.max));
+  });
+  addRule("minlength", (value, element, params, form) => lengthOf(value, element, form) >= Number(params.min));
+  addRule("maxlength", (value, element, params, form) => lengthOf(value, element, form) <= Number(params.max));
+  addRule("range", (value, element, params) => {
+    const number = toNumber(value);
+    if (isNaN(number)) {
+      return false;
+    }
+    const min = toNumber(params.min);
+    const max = toNumber(params.max);
+    return (isNaN(min) || number >= min) && (isNaN(max) || number <= max);
+  });
+  addRule("number", (value) => /^[-+]?(\d+([.,]\d*)?|[.,]\d+)$/.test(value.trim()));
+  addRule("regex", (value, element, params) => {
+    let expression;
+    try {
+      expression = new RegExp(params.pattern);
+    } catch (e) {
+      console.warn("FormHelper: the pattern of " + element.name + " is not valid in JavaScript; it is validated on the server only.", e);
+      return true;
+    }
+    const match = expression.exec(value);
+    return !!match && match.index === 0 && match[0].length === value.length;
+  });
+  addRule("email", (value) => /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(value));
+  addRule("url", (value) => {
+    try {
+      const url = new URL(value);
+      return url.protocol === "http:" || url.protocol === "https:" || url.protocol === "ftp:";
+    } catch (e) {
+      return false;
+    }
+  });
+  addRule("phone", (value) => {
+    const number = value.trim().replace(/\s*(x|ext\.?|extension)\s*\d+$/i, "");
+    return /^\+?[\d\s().-]+$/.test(number) && /\d/.test(number);
+  });
+  addRule("creditcard", (value) => {
+    if (/[^0-9 \-]+/.test(value)) {
+      return false;
+    }
+    const digits = value.replace(/\D/g, "");
+    if (digits.length < 13 || digits.length > 19) {
+      return false;
+    }
+    let sum = 0;
+    let even = false;
+    for (let n = digits.length - 1; n >= 0; n--) {
+      let digit = parseInt(digits.charAt(n), 10);
+      if (even && (digit *= 2) > 9) {
+        digit -= 9;
+      }
+      sum += digit;
+      even = !even;
+    }
+    return sum % 10 === 0;
+  });
+  addRule("equalto", (value, element, params, form) => {
+    let other = params.other || "";
+    if (other.indexOf("*.") === 0) {
+      const name = element.name;
+      const prefix = name.substr(0, name.lastIndexOf(".") + 1);
+      other = prefix + other.substr(2);
+    }
+    const target = fieldElements(form, other)[0];
+    return !target || target.value === value;
+  });
+  var remoteRequests = /* @__PURE__ */ new WeakMap();
+  addRule("remote", (value, element, params, form) => {
+    if (!params.url) {
+      return true;
+    }
+    const method = (params.type || "GET").toUpperCase();
+    const prefix = element.name.substr(0, element.name.lastIndexOf(".") + 1);
+    const data = new URLSearchParams();
+    String(params.additionalfields || element.name).split(",").map((field) => field.trim()).filter(Boolean).map((field) => field.indexOf("*.") === 0 ? prefix + field.substr(2) : field).forEach((field) => data.append(field, remoteFieldValue(form, field)));
+    const key = method + " " + params.url + "?" + data.toString();
+    const previous = remoteRequests.get(element);
+    if (previous && previous.key === key) {
+      return previous.promise;
+    }
+    const headers = { "X-Requested-With": "XMLHttpRequest", "Accept": "application/json" };
+    let request;
+    if (method === "GET") {
+      request = fetch(params.url + (params.url.indexOf("?") === -1 ? "?" : "&") + data.toString(), { headers, credentials: "same-origin" });
+    } else {
+      const token = form.querySelector('input[name="__RequestVerificationToken"]');
+      if (token) {
+        headers["RequestVerificationToken"] = token.value;
+      }
+      headers["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8";
+      request = fetch(params.url, { method, headers, body: data, credentials: "same-origin" });
+    }
+    const promise = request.then((response) => {
+      if (!response.ok) {
+        throw new Error("HTTP " + response.status);
+      }
+      return response.json();
+    }).then((result) => {
+      if (result === true || result === "true") {
+        return true;
+      }
+      return typeof result === "string" && result !== "" ? result : false;
+    }).catch((error) => {
+      console.warn("FormHelper: remote validation failed (" + params.url + ").", error);
+      remoteRequests.delete(element);
+      return true;
+    });
+    remoteRequests.set(element, { key, promise });
+    return promise;
+  });
+  function remoteFieldValue(form, name) {
+    const elements = fieldElements(form, name);
+    const first = elements[0];
+    if (!first) {
+      return "";
+    }
+    if (first.type === "checkbox" || first.type === "radio") {
+      const checked = elements.find((e) => (e.type === "checkbox" || e.type === "radio") && e.checked);
+      const hidden = elements.find((e) => e.type === "hidden");
+      return checked ? checked.value : hidden ? hidden.value : "";
+    }
+    return first.value;
+  }
+  addRule("fileextensions", (value, element, params) => {
+    const allowed = String(params.extensions || "png,jpg,jpeg,gif").split(",").map((e) => e.trim().replace(/^\./, "").toLowerCase()).filter(Boolean);
+    const names = element.files && element.files.length > 0 ? Array.from(element.files).map((f) => f.name) : [value];
+    return names.every((name) => allowed.indexOf(name.split(".").pop().toLowerCase()) !== -1);
+  });
+
+  // src/validation/builtin.js
+  function createBuiltInEngine(clientRules) {
+    return {
+      name: clientRules ? "builtin" : "none",
+      async validate(form, options) {
+        if (!clientRules) {
+          return true;
+        }
+        const names = validatedFieldNames(form);
+        const results = await Promise.all(names.map((name) => validateField(form, name, options)));
+        const messages = results.filter((r) => r !== true);
+        setSummary(form, messages);
+        return messages.length === 0;
+      },
+      async validateElement(form, element, options) {
+        if (!clientRules || !element.name) {
+          return true;
+        }
+        return await validateField(form, element.name, options) === true;
+      },
+      showErrors(form, errors, options) {
+        const unplaced = [];
+        errors.forEach((error) => {
+          if (!error.propertyName) {
+            return;
+          }
+          if (!showFieldErrors(form, error.propertyName, error.messages, options)) {
+            unplaced.push(...error.messages);
+          }
+        });
+        return unplaced;
+      },
+      clear(form, options) {
+        clearAllErrors(form, options);
+      },
+      focusInvalid(form) {
+        focusFirstInvalid(form);
+      }
+    };
+  }
+  function validatedFieldNames(form) {
+    const names = [];
+    Array.from(form.elements).forEach((element) => {
+      if (element.name && element.getAttribute("data-val") === "true" && names.indexOf(element.name) === -1) {
+        names.push(element.name);
+      }
+    });
+    return names;
+  }
+  async function validateField(form, name, options) {
+    const elements = fieldElements(form, name);
+    const element = elements.find((e) => e.getAttribute("data-val") === "true");
+    if (!element || isIgnored(element, elements)) {
+      return true;
+    }
+    const value = getValue(elements);
+    for (const rule of getRules(element)) {
+      const validate = rules[rule.name];
+      if (!validate || value === "" && rule.name !== "required" && rule.name !== "equalto") {
+        continue;
+      }
+      let result = validate(value, element, rule.params, form);
+      if (result && typeof result.then === "function") {
+        result = await result;
+        if (getValue(fieldElements(form, name)) !== value) {
+          return true;
+        }
+      }
+      if (result !== true) {
+        const message = typeof result === "string" && result !== "" ? result : rule.message;
+        showFieldErrors(form, name, [message], options);
+        return message;
+      }
+    }
+    clearFieldErrors(form, name, options);
+    return true;
+  }
+  function getRules(element) {
+    const list = [];
+    const attributes = Array.from(element.attributes);
+    attributes.forEach((attribute) => {
+      const match = /^data-val-([a-z0-9]+)$/i.exec(attribute.name);
+      if (!match) {
+        return;
+      }
+      const name = match[1].toLowerCase();
+      if (name === "required" && element.type === "checkbox") {
+        return;
+      }
+      const prefix = "data-val-" + name + "-";
+      const params = {};
+      attributes.forEach((a) => {
+        if (a.name.toLowerCase().indexOf(prefix) === 0) {
+          params[a.name.substring(prefix.length).toLowerCase()] = a.value;
+        }
+      });
+      const rule = { name, message: attribute.value, params };
+      if (name === "required") {
+        list.unshift(rule);
+      } else {
+        list.push(rule);
+      }
+    });
+    return list;
+  }
+  function getValue(elements) {
+    const element = elements[0];
+    if (element.type === "radio" || element.type === "checkbox") {
+      const checked = elements.filter((e) => (e.type === "radio" || e.type === "checkbox") && e.checked);
+      return checked.length > 0 ? checked[0].value : "";
+    }
+    if (element.tagName === "SELECT" && element.multiple) {
+      return Array.from(element.selectedOptions).map((o) => o.value).join(",");
+    }
+    if (element.type === "file") {
+      return element.files && element.files.length > 0 ? element.files[0].name : "";
+    }
+    return String(element.value == null ? "" : element.value).replace(/\r/g, "");
+  }
+  function isIgnored(element, elements) {
+    if (element.disabled || element.type === "hidden") {
+      return true;
+    }
+    return !elements.some((e) => e.offsetWidth > 0 || e.offsetHeight > 0 || e.getClientRects().length > 0);
+  }
+
+  // src/validation/jquery.js
+  function hasJQueryValidation() {
+    const $ = window.jQuery;
+    return !!($ && $.validator && $.validator.unobtrusive);
+  }
+  function createJQueryEngine() {
+    return {
+      name: "jquery",
+      async validate(form, options) {
+        const $form = window.jQuery(form);
+        const validator = getValidator(form, options);
+        let valid = $form.valid();
+        if (validator && validator.pendingRequest > 0) {
+          await waitFor(() => validator.pendingRequest === 0, 3e4);
+          valid = $form.valid();
+        }
+        return valid;
+      },
+      validateElement(form, element, options) {
+        const validator = getValidator(form, options);
+        return Promise.resolve(!validator || window.jQuery(element).valid());
+      },
+      showErrors(form, errors, options) {
+        const validator = getValidator(form, options);
+        const map = {};
+        const unplaced = [];
+        errors.forEach((error) => {
+          if (!error.propertyName) {
+            return;
+          }
+          const element = fieldElements(form, error.propertyName)[0];
+          if (validator && element && messageElements(form, element.name).length > 0) {
+            map[element.name] = error.messages.map(escapeHtml).join("<br>");
+          } else {
+            unplaced.push(...error.messages);
+          }
+        });
+        if (validator && Object.keys(map).length > 0) {
+          validator.showErrors(map);
+        }
+        return unplaced;
+      },
+      clear(form, options) {
+        const validator = window.jQuery(form).data("validator");
+        if (validator) {
+          validator.resetForm();
+        }
+        clearAllErrors(form, options);
+      },
+      focusInvalid(form) {
+        const validator = window.jQuery(form).data("validator");
+        if (validator) {
+          validator.focusInvalid();
+        }
+      }
+    };
+  }
+  function waitFor(condition, timeout) {
+    return new Promise((resolve) => {
+      const started = Date.now();
+      const timer = setInterval(() => {
+        if (condition() || Date.now() - started > timeout) {
+          clearInterval(timer);
+          resolve();
+        }
+      }, 50);
+    });
+  }
+  function getValidator(form, options) {
+    const $ = window.jQuery;
+    const $form = $(form);
+    protectJQueryValidation();
+    if (!$form.data("validator")) {
+      $.validator.unobtrusive.parse(form);
+    }
+    const validator = $form.data("validator");
+    if (validator) {
+      addNewFields(form, validator);
+      if (!validator.formhelperHooked) {
+        validator.formhelperHooked = true;
+        addCssClassHooks(form, validator, options);
+      }
+    }
+    return validator;
+  }
+  function addNewFields(form, validator) {
+    const $ = window.jQuery;
+    const settings = validator.settings;
+    settings.rules = settings.rules || {};
+    settings.messages = settings.messages || {};
+    form.querySelectorAll('[data-val="true"]').forEach((element) => {
+      if (!element.name || Object.prototype.hasOwnProperty.call(settings.rules, element.name)) {
+        return;
+      }
+      $.validator.unobtrusive.parseElement(element, true);
+      const info = $(form).data("unobtrusiveValidation");
+      settings.rules[element.name] = info && info.options.rules[element.name] || {};
+      settings.messages[element.name] = info && info.options.messages[element.name] || {};
+    });
+  }
+  function protectJQueryValidation() {
+    const $ = window.jQuery;
+    if (!$ || !$.validator) {
+      return;
+    }
+    guardRegexMethod();
+    if (!$.validator.formhelperRemoteEscaped) {
+      $.validator.formhelperRemoteEscaped = true;
+      escapeRemoteMessages($);
+    }
+  }
+  function escapeRemoteMessages($) {
+    $.ajaxPrefilter((options) => {
+      if (typeof options.port !== "string" || options.port.indexOf("validate") !== 0) {
+        return;
+      }
+      const dataFilter = options.dataFilter;
+      options.dataFilter = function(data, type) {
+        data = dataFilter ? dataFilter.call(this, data, type) : data;
+        try {
+          const response = JSON.parse(data);
+          return typeof response === "string" ? JSON.stringify(escapeHtml(response)) : data;
+        } catch (e) {
+          return data;
+        }
+      };
+    });
+  }
+  function guardRegexMethod() {
+    const methods = window.jQuery.validator.methods;
+    const regex = methods.regex;
+    if (!regex || regex.formhelperGuarded) {
+      return;
+    }
+    methods.regex = function(value, element, params) {
+      try {
+        return regex.call(this, value, element, params);
+      } catch (e) {
+        if (!(e instanceof SyntaxError)) {
+          throw e;
+        }
+        console.warn("FormHelper: the pattern of " + element.name + " is not valid in JavaScript; it is validated on the server only.", e);
+        return true;
+      }
+    };
+    methods.regex.formhelperGuarded = true;
+  }
+  function addCssClassHooks(form, validator, options) {
+    const settings = validator.settings;
+    const highlight = settings.highlight;
+    const unhighlight = settings.unhighlight;
+    settings.highlight = function(element, errorClass, validClass) {
+      if (highlight) {
+        highlight.call(this, element, errorClass, validClass);
+      }
+      element.classList.add(...classList(options.inputErrorClass));
+      messageElements(form, element.name).forEach((m) => m.classList.add(...classList(options.messageErrorClass)));
+    };
+    settings.unhighlight = function(element, errorClass, validClass) {
+      if (unhighlight) {
+        unhighlight.call(this, element, errorClass, validClass);
+      }
+      element.classList.remove(...classList(options.inputErrorClass));
+      messageElements(form, element.name).forEach((m) => m.classList.remove(...classList(options.messageErrorClass)));
+    };
+  }
+
+  // src/core.js
+  var engines = {
+    builtin: createBuiltInEngine(true),
+    none: createBuiltInEngine(false),
+    jquery: createJQueryEngine()
+  };
+  var busyForms = /* @__PURE__ */ new WeakSet();
+  function getEngine(options) {
+    const mode = options.validation;
+    if (mode === "none" || mode === "builtin") {
+      return engines[mode];
+    }
+    if (hasJQueryValidation()) {
+      return engines.jquery;
+    }
+    if (mode === "jquery") {
+      console.warn('FormHelper: validation is set to "jquery" but jQuery Validation Unobtrusive was not found; the built-in validator is used.');
+    }
+    return engines.builtin;
+  }
+  var statusTypes = { 1: "success", 2: "info", 3: "warning", 4: "error", success: "success", info: "info", warning: "warning", error: "error" };
+  function statusType(result) {
+    return statusTypes[String(result.status).toLowerCase()] || (isSucceed(result) ? "success" : "error");
+  }
+  function isFormResult(result) {
+    return !!result && typeof result === "object" && (typeof result.isSucceed === "boolean" || String(result.status).toLowerCase() in statusTypes);
+  }
+  function isSucceed(result) {
+    if (typeof result.isSucceed === "boolean") {
+      return result.isSucceed;
+    }
+    const status = String(result.status).toLowerCase();
+    return status === "1" || status === "2" || status === "success" || status === "info";
+  }
+  function notify2(type, message, form, options, toastOptions) {
+    if (!message || options.notify === false) {
+      return;
+    }
+    if (typeof options.notify === "function") {
+      options.notify({ type, message, form });
+      return;
+    }
+    const small = window.matchMedia && window.matchMedia("(max-width: 767.98px)").matches;
+    toastr[type](message, null, Object.assign({
+      positionClass: small ? "formhelper-toast-top-full-width" : options.toastrPosition
+    }, toastOptions));
+  }
+  function submitButtons(form) {
+    return Array.from(form.elements).filter((e) => e.tagName === "BUTTON" && (e.type || "submit").toLowerCase() === "submit" || e.tagName === "INPUT" && (e.type === "submit" || e.type === "image"));
+  }
+  function lockButtons(form) {
+    const locked = submitButtons(form).filter((b) => !b.disabled);
+    locked.forEach((b) => b.disabled = true);
+    form.formhelperLockedButtons = locked;
+  }
+  function unlockButtons(form) {
+    (form.formhelperLockedButtons || []).forEach((b) => b.disabled = false);
+    form.formhelperLockedButtons = [];
+  }
+  async function readResponse(response) {
+    const text = await response.text();
+    let result = null;
+    if ((response.headers.get("Content-Type") || "").indexOf("json") !== -1) {
+      try {
+        result = JSON.parse(text);
+      } catch (e) {
+        result = null;
+      }
+    }
+    return { text, result };
+  }
+  async function submitForm(form, submitter) {
+    if (busyForms.has(form)) {
+      return;
+    }
+    const options = getFormOptions(form);
+    const engine = getEngine(options);
+    const skipValidation = submitter && submitter.hasAttribute("formnovalidate");
+    busyForms.add(form);
+    try {
+      if (!skipValidation) {
+        const valid = await engine.validate(form, options);
+        if (!valid) {
+          notify2("error", options.checkMessage, form, options);
+          engine.focusInvalid(form);
+          dispatch(form, "invalid", { form });
+          return;
+        }
+      }
+      const request = buildRequest(form, options, submitter);
+      const beforeSubmit = resolveFunction(options.beforeSubmit);
+      if (beforeSubmit && await beforeSubmit(form, request) === false) {
+        return;
+      }
+      if (!dispatch(form, "before-submit", { form, request }, true)) {
+        return;
+      }
+      lockButtons(form);
+      let response = null;
+      let result = null;
+      let body = "";
+      try {
+        response = await fetch(request.url, {
+          method: request.method,
+          headers: request.headers,
+          body: request.body,
+          credentials: "same-origin"
+        });
+        ({ text: body, result } = await readResponse(response));
+      } catch (error) {
+        console.error("FormHelper: the request failed.", error);
+      }
+      if (!isFormResult(result) && response && response.redirected && response.ok) {
+        window.location.replace(response.url);
+        return;
+      }
+      if (!isFormResult(result)) {
+        if (response) {
+          console.error("FormHelper: unexpected response (" + response.status + ").", body);
+        }
+        unlockButtons(form);
+        notify2("error", options.errorMessage, form, options);
+        dispatch(form, "error", { form, result: null, response });
+        dispatch(form, "complete", { form, result: null, response });
+        return;
+      }
+      handleResult(form, options, engine, result, response);
+    } finally {
+      busyForms.delete(form);
+    }
+  }
+  function handleResult(form, options, engine, result, response) {
+    clearAllErrors(form, options);
+    const succeed = isSucceed(result);
+    const errors = normalizeErrors(result.validationErrors);
+    const hasMessage = typeof result.message === "string" && result.message !== "";
+    const toastOptions = result.redirectUri ? { timeOut: 0, extendedTimeOut: 0 } : void 0;
+    if (hasMessage) {
+      notify2(statusType(result), result.message, form, options, toastOptions);
+    } else if (!succeed) {
+      notify2("error", options.checkMessage, form, options, toastOptions);
+    }
+    if (!succeed) {
+      unlockButtons(form);
+    }
+    if (errors.length > 0) {
+      const unplaced = engine.showErrors(form, errors, options);
+      if (getSummary(form)) {
+        setSummary(form, errors.reduce((all, e) => all.concat(e.messages), []));
+      } else if (unplaced.length > 0) {
+        notify2("error", unplaced.join("\n"), form, options);
+      }
+      engine.focusInvalid(form);
+    }
+    const callback = resolveFunction(options.callback);
+    if (callback) {
+      callback(result, form);
+    }
+    dispatch(form, succeed ? "success" : "error", { form, result, response });
+    dispatch(form, "complete", { form, result, response });
+    if (result.redirectUri) {
+      const delay = hasMessage ? result.redirectDelay || options.redirectDelay : 1;
+      setTimeout(() => window.location.replace(result.redirectUri), delay);
+    }
+    if (succeed) {
+      if (options.enableButtonAfterSuccess) {
+        unlockButtons(form);
+      }
+      if (options.resetFormAfterSuccess) {
+        resetValues(form);
+        engine.clear(form, options);
+      }
+    }
+  }
+  function normalizeErrors(errors) {
+    if (!errors) {
+      return [];
+    }
+    const list = Array.isArray(errors) ? errors : Object.keys(errors).map((key) => ({ propertyName: key, messages: errors[key] }));
+    return list.map((e) => {
+      const messages = e.messages;
+      return {
+        propertyName: normalizeFieldName(e.propertyName),
+        messages: (Array.isArray(messages) ? messages : [messages]).filter((m) => m != null && m !== "").map(String)
+      };
+    }).filter((e) => e.messages.length > 0);
+  }
+  function resetValues(form) {
+    form.formhelperResetting = true;
+    try {
+      form.reset();
+    } finally {
+      form.formhelperResetting = false;
+    }
+  }
+  function resetForm(form) {
+    const options = getFormOptions(form);
+    resetValues(form);
+    getEngine(options).clear(form, options);
+    unlockButtons(form);
+    submitButtons(form).forEach((b) => b.disabled = false);
+  }
+  function onSubmit(event) {
+    const form = event.target;
+    if (!isFormHelperForm(form) || event.defaultPrevented) {
+      return;
+    }
+    event.preventDefault();
+    submitForm(form, event.submitter || null);
+  }
+  function onFocusOut(event) {
+    const element = event.target;
+    const form = element && element.form;
+    if (!isFormHelperForm(form) || !element.name || element.getAttribute("data-val") !== "true") {
+      return;
+    }
+    const options = getFormOptions(form);
+    getEngine(options).validateElement(form, element, options);
+  }
+  function onInput(event) {
+    const element = event.target;
+    const form = element && element.form;
+    if (!isFormHelperForm(form) || !element.name) {
+      return;
+    }
+    const options = getFormOptions(form);
+    const engine = getEngine(options);
+    if (engine.name !== "jquery" && element.getAttribute("aria-invalid") === "true") {
+      engine.validateElement(form, element, options);
+    }
+  }
+  function onReset(event) {
+    const form = event.target;
+    if (isFormHelperForm(form) && !form.formhelperResetting) {
+      const options = getFormOptions(form);
+      setTimeout(() => getEngine(options).clear(form, options), 0);
+    }
+  }
+  var initialized = false;
+  var FormHelper = {
+    version: "6.0.0",
+    init() {
+      if (initialized) {
+        return;
+      }
+      initialized = true;
+      document.addEventListener("submit", onSubmit, true);
+      document.addEventListener("focusout", onFocusOut);
+      document.addEventListener("input", onInput);
+      document.addEventListener("change", onInput);
+      document.addEventListener("reset", onReset);
+    },
+    // Defaults for all forms, e.g. FormHelper.configure({ notify: false, errorMessage: "..." }).
+    // toastr: default options of the notifications, e.g. { toastr: { closeButton: true } }.
+    configure(options) {
+      const _a = options || {}, { toastr: toastrOptions } = _a, rest = __objRest(_a, ["toastr"]);
+      Object.assign(globals, rest);
+      if (toastrOptions) {
+        Object.assign(toastr.options, toastrOptions);
+      }
+    },
+    submit(target) {
+      const form = toForm(target);
+      return form ? submitForm(form, null) : Promise.resolve();
+    },
+    validate(target) {
+      const form = toForm(target);
+      if (!form) {
+        return Promise.resolve(false);
+      }
+      const options = getFormOptions(form);
+      return getEngine(options).validate(form, options);
+    },
+    reset(target) {
+      const form = toForm(target);
+      if (form) {
+        resetForm(form);
+      }
+    },
+    fill(target, data, callbacks) {
+      const form = toForm(target);
+      if (form) {
+        fillForm(form, data, callbacks);
+      }
+    },
+    // Shows errors in FormResult's format: [{ propertyName, messages }] or { name: "message" }.
+    showErrors(target, errors) {
+      const form = toForm(target);
+      if (!form) {
+        return;
+      }
+      const options = getFormOptions(form);
+      const engine = getEngine(options);
+      const list = normalizeErrors(errors);
+      engine.showErrors(form, list, options);
+      setSummary(form, list.reduce((all, e) => all.concat(e.messages), []));
+    },
+    validation: {
+      // FormHelper.validation.addRule("mustbetrue", (value, element, params) => element.checked)
+      addRule
+    },
+    toastr
   };
 
-  $.fn.fhReset = function () {
-    this[0].reset();
-    this.find("input[type='submit'],button[type='submit']").removeAttr(
-      "disabled"
-    );
-    this.find("[class*='field-validation']").empty();
-  };
-})(jQuery);
+  // src/index.js
+  function registerJQuery() {
+    const $ = window.jQuery;
+    if (!$ || !$.fn) {
+      return;
+    }
+    if (!$.parseJSON) {
+      $.parseJSON = JSON.parse;
+    }
+    protectJQueryValidation();
+    if ($.formhelperRegistered) {
+      return;
+    }
+    $.formhelperRegistered = true;
+    $(document).on("submit.formhelper", "form[data-formhelper]", function(event) {
+      if (event.originalEvent) {
+        return;
+      }
+      event.preventDefault();
+      window.FormHelper.submit(this);
+    });
+  }
+  if (!window.FormHelper) {
+    window.FormHelper = FormHelper;
+    window.fhToastr = toastr;
+    FormHelper.init();
+    document.addEventListener("DOMContentLoaded", registerJQuery);
+    window.addEventListener("load", registerJQuery);
+  }
+  registerJQuery();
+})();
