@@ -1,33 +1,40 @@
-﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json;
 
 namespace FormHelper
 {
     public static class FormHelperHtmlHelpers
     {
+        /// <summary>
+        /// Adds the FormHelper attributes to the form with <see cref="FormConfig.FormId"/>.
+        /// Place it after the form. The tag helper (&lt;form asp-formhelper="true"&gt;) is the simpler alternative.
+        /// </summary>
         public static HtmlString RenderFormScript(this IHtmlHelper html, FormConfig config)
         {
-            var configuration = config.ViewContext.HttpContext.RequestServices.GetService<FormHelperOptions>();
+            var services = config.ViewContext.HttpContext.RequestServices;
+            var options = services.GetFormHelperOptions();
 
-            return new HtmlString($@"
-                            <script>
-                                $(document).ready(function () {{
-                                    const $form = $('#{config.FormId}');
-                                    
-                                    $form.attr('formhelper')
-                                    $form.attr('dataType', '{config.DataType}');
-                                    $form.attr('CheckTheFormFieldsMessage', '{configuration.CheckTheFormFieldsMessage}');
-                                    $form.attr('redirectDelay', '{configuration.RedirectDelay}');
-                                    $form.attr('beforeSubmit', '{config.BeforeSubmit}');
-                                    $form.attr('callback', '{config.Callback}');
-                                    $form.attr('enableButtonAfterSuccess', '{config.EnableButtonAfterSuccess}');
-                                    $form.attr('resetFormAfterSuccess', '{config.ResetFormAfterSuccess}');
-                                    $form.attr('toastrPositionClass', '{(config.ToastrPosition == null ? configuration.ToastrDefaultPosition.ToClassName() : config.ToastrPosition.Value.ToClassName())}');
+            var attributes = FormHelperAttributes.FromOptions(options);
+            attributes.DataType = config.DataType;
+            attributes.Callback = config.Callback;
+            attributes.BeforeSubmit = config.BeforeSubmit;
+            attributes.ToastrPosition = config.ToastrPosition ?? options.ToastrDefaultPosition;
+            attributes.EnableButtonAfterSuccess = config.EnableButtonAfterSuccess;
+            attributes.ResetFormAfterSuccess = config.ResetFormAfterSuccess;
+            attributes.CheckTheFormFieldsMessage = config.CheckTheFormFieldsMessage ?? services.Localize(options, options.CheckTheFormFieldsMessage);
+            attributes.ErrorMessage = services.Localize(options, options.ErrorMessage);
+            attributes.Validation = config.Validation ?? options.ClientValidation;
 
-                                }});
-                            </script>
-                            ");
+            // System.Text.Json escapes <, > and & by default, so the values are safe inside a script block.
+            var formId = JsonSerializer.Serialize(config.FormId);
+            var values = JsonSerializer.Serialize(attributes.ToDictionary());
+
+            return new HtmlString(
+                "<script>(function(){" +
+                $"var f=document.getElementById({formId});if(!f)return;" +
+                $"var a={values};for(var k in a)f.setAttribute(k,a[k]);" +
+                "})();</script>");
         }
     }
 }
