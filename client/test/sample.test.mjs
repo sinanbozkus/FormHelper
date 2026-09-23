@@ -151,8 +151,9 @@ export default async function (browser, base, check) {
   check("builtin page: empty submit shows client errors", r.toasts[0]?.text === "Check the form fields." && r.title === "'Title' must not be empty." && r.category === "'Category' must not be empty.", r);
   check("builtin page: css classes, aria-invalid and focus on the first invalid field", r.cls.includes("is-invalid") && r.aria === "true" && r.focused === "Title", r);
 
-  r = await browser.eval(`const f = __t.form(); __t.set(f, "Title", "Bo"); await __t.sleep(100); const a = __t.msg(f, "Title");
-    __t.set(f, "Title", "Book"); await __t.sleep(100); return { a, b: __t.msg(f, "Title"), cls: __t.input(f, "Title").className };`);
+  // Title also has a [Remote] rule, so the tests wait for the result instead of a fixed time.
+  r = await browser.eval(`const f = __t.form(); __t.set(f, "Title", "Bo"); await __t.until(() => __t.msg(f, "Title").includes("at least")); const a = __t.msg(f, "Title");
+    __t.set(f, "Title", "Book"); await __t.until(() => __t.msg(f, "Title") === ""); return { a, b: __t.msg(f, "Title"), cls: __t.input(f, "Title").className };`);
   check("builtin page: minlength while typing, then the message goes away", r.a === "The length of 'Title' must be at least 3 characters." && r.b === "" && !r.cls.includes("is-invalid"), r);
 
   // ASP.NET adds data-val-number only for float/double/decimal properties.
@@ -199,8 +200,10 @@ export default async function (browser, base, check) {
 
   r = await browser.eval(`FormHelper.validation.addRule("uppercase", (value) => value === value.toUpperCase() || "Must be upper case.");
     const f = __t.form(); __t.input(f, "Title").setAttribute("data-val-uppercase", "Upper case please");
-    __t.set(f, "Title", "book"); __t.blur(f, "Title"); await __t.sleep(100); const a = __t.msg(f, "Title");
-    __t.set(f, "Title", "BOOK"); await __t.sleep(100); return { a, b: __t.msg(f, "Title") };`);
+    __t.set(f, "Title", "book"); __t.blur(f, "Title"); await __t.until(() => __t.msg(f, "Title") !== ""); const a = __t.msg(f, "Title");
+    __t.set(f, "Title", "BOOK"); await __t.until(() => __t.msg(f, "Title") === ""); const b = __t.msg(f, "Title");
+    __t.input(f, "Title").removeAttribute("data-val-uppercase");
+    return { a, b };`);
   check("builtin page: custom rule with FormHelper.validation.addRule", r.a === "Must be upper case." && r.b === "", r);
 
   // The errors of the previous response are cleared, also when no client-side validation runs.
@@ -230,12 +233,13 @@ export default async function (browser, base, check) {
   // FormHelper.FluentValidation sends Matches patterns wrapped, so they are found anywhere in the value.
   r = await browser.eval(`const f = __t.form(); const t = __t.input(f, "Title");
     t.setAttribute("data-val-regex", "Needs upper case letters."); t.setAttribute("data-val-regex-pattern", "[\\\\s\\\\S]*?(?:[A-Z]+)[\\\\s\\\\S]*");
-    __t.set(f, "Title", "ABC123"); __t.blur(f, "Title"); await __t.sleep(100); const a = __t.msg(f, "Title");
+    __t.set(f, "Title", "abc123"); __t.blur(f, "Title"); await __t.until(() => __t.msg(f, "Title") !== ""); const none = __t.msg(f, "Title");
+    __t.set(f, "Title", "ABC123"); await __t.until(() => __t.msg(f, "Title") === ""); const a = __t.msg(f, "Title");
     t.setAttribute("data-val-regex-pattern", "(?i)^abc$"); const originalWarn = console.warn; console.warn = () => {};
-    __t.set(f, "Title", "XYZ"); __t.blur(f, "Title"); await __t.sleep(100); const b = __t.msg(f, "Title"); const valid = await FormHelper.validate(f);
+    __t.set(f, "Title", "XYZ"); const valid = await FormHelper.validate(f); const b = __t.msg(f, "Title");
     console.warn = originalWarn; t.removeAttribute("data-val-regex"); t.removeAttribute("data-val-regex-pattern");
-    return { a, b, valid };`);
-  check("builtin page: a wrapped pattern matches anywhere in the value", r.a === "", r);
+    return { none, a, b, valid };`);
+  check("builtin page: a wrapped pattern matches anywhere in the value", r.none === "Needs upper case letters." && r.a === "", r);
   check("builtin page: a pattern JavaScript can't parse doesn't block the form", r.b === "" && r.valid === true, r);
 
   // [MinLength] / [MaxLength] on a collection count the selected items, like jQuery Validation and the server.
@@ -265,7 +269,7 @@ export default async function (browser, base, check) {
   await browser.eval(`const f = __t.form(); window.__beforeRedirect = true;
     window.fetch = () => Promise.resolve({ ok: true, status: 200, redirected: true, url: location.origin + "/Home/HtmlHelper",
       headers: new Headers({ "Content-Type": "text/html" }), text: () => Promise.resolve("<html></html>") });
-    __t.set(f, "Title", "BOOK"); // upper case: the custom rule above is still on the field __t.set(f, "Category", "2"); __t.set(f, "InStock", "5");
+    __t.set(f, "Title", "BOOK"); __t.set(f, "Category", "2"); __t.set(f, "InStock", "5");
     f.querySelector("button[type=submit]").click();`);
   for (let i = 0; i < 50; i++) {
     await new Promise((resolve) => setTimeout(resolve, 100));
