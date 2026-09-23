@@ -1,62 +1,19 @@
-﻿@model ProductFormViewModel
+@model ProductFormViewModel
 
-<div class="modal-dialog modal-lg" role="document">
+<div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title">@(Model.IsNew ? "New Product" : "Edit Product")</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <!-- You can use <formhelper> or <form asp-formhelper="true"> to activate formhelper. -->
-        <formhelper asp-controller="Home" asp-action="Save" enctype="multipart/form-data" asp-AddDOMContentLoaded="false">
+        <!-- This form is added to the page after it has loaded; FormHelper still picks it up. -->
+        <formhelper asp-controller="Home" asp-action="Save" enctype="multipart/form-data">
             <div class="modal-body">
-                <input type="hidden" asp-for="Id" />
-
-                <div class="form-group">
-                    <label asp-for="Title"></label>
-                    <input asp-for="Title" type="text" class="form-control">
-                    <span asp-validation-for="Title" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Category"></label>
-                    <select asp-for="Category" asp-items="Html.GetEnumSelectList<Category>()" class="form-control">
-                        <option value="">Select</option>
-                    </select>
-                    <span asp-validation-for="Category" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="InStock"></label>
-                    <input asp-for="InStock" type="text" class="form-control">
-                    <span asp-validation-for="InStock" class="form-text m-b-none text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Active"></label>
-                    <input asp-for="Active" type="checkbox" />
-                    <span asp-validation-for="Active" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label>@UserType.Admin</label>
-                    <input asp-for="UserType" type="radio" value="@UserType.Admin" />
-                    <label>@UserType.Moderator</label>
-                    <input asp-for="UserType" type="radio" value="@UserType.Moderator" />
-                    <label>@UserType.Operator</label>
-                    <input asp-for="UserType" type="radio" value="@UserType.Operator" />
-                    <label>@UserType.User</label>
-                    <input asp-for="UserType" type="radio" value="@UserType.User" />
-                    <span asp-validation-for="Active" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="File"></label>
-                    <input asp-for="File" type="file" class="form-control-file" />
-                    <span asp-validation-for="File" class="text-danger"></span>
-                </div>
+                <partial name="_ProductFields" />
             </div>
             <div class="modal-footer">
-                <div class="form-group text-right">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
-                    <button class="btn btn-primary" type="submit">Save</button>
-                </div>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save</button>
             </div>
         </formhelper>
     </div>

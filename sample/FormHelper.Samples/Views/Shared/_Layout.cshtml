@@ -1,41 +1,46 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FormHelper Samples</title>
+    <link rel="icon" type="image/png" href="~/favicon.png" />
 
-    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
-    <!-- form helper -->
-    <link rel="stylesheet" href="/formhelper/formhelper.min.css" />
-
-
+    <!-- form helper (embedded in the package, served by app.UseFormHelper()) -->
+    <formhelper-styles />
 </head>
 <body>
 
     <div class="text-center mt-3">
-        <h1 class="display-4"><img src="~/formhelper-logo.png" class="mb-2 mr-3" />Form Helper</h1>
-        <p>Form & Validation Helper for <a href="https://dotnet.microsoft.com/learn/web/aspnet-hello-world-tutorial/intro" target="_blank">ASP.NET Core</a></p>
+        <h1 class="display-4"><img src="~/formhelper-logo.png" class="mb-2 me-3" alt="" />Form Helper</h1>
+        <p>Form &amp; Validation Helper for <a href="https://dotnet.microsoft.com/apps/aspnet" target="_blank">ASP.NET Core</a></p>
     </div>
 
     @{
-        var page = (Page)ViewData["page"];
+        var page = ViewData["page"] as Page?;
     }
 
     <div class="text-center mt-4 mb-4">
-        <div class="btn-group" role="group" aria-label="Basic example">
+        <div class="btn-group" role="group" aria-label="Samples">
             <a href="@Url.Action("TagHelper", "Home")" class="btn btn-light @(page == Page.TagHelper ? "active" : "")">
                 Tag Helper
             </a>
             <a href="@Url.Action("HtmlHelper", "Home")" class="btn btn-light @(page == Page.HtmlHelper ? "active" : "")">
                 Post with Ajax
             </a>
+            <a href="@Url.Action("WithoutJQuery", "Home")" class="btn btn-light @(page == Page.WithoutJQuery ? "active" : "")">
+                Without jQuery
+            </a>
+            <a href="@Url.Page("/Product")" class="btn btn-light @(page == Page.RazorPage ? "active" : "")">
+                Razor Pages
+            </a>
             <a href="@Url.Action("Post", "Home")" class="btn btn-light @(page == Page.Post ? "active" : "")">
                 Native Post
             </a>
-            <button id="openModal" class="btn btn-light">
+            <button id="openModal" type="button" class="btn btn-light">
                 Remote Modal
             </button>
         </div>
@@ -43,8 +48,8 @@
 
     <div class="text-center">
         <p>
-            <a href="https://fluentvalidation.net/" target="_blank">Fluent Validation</a> was used for the validator in the samples.
-            <br />You can also use your own validator. Form Helper doesn't depend to Fluent Validation.
+            <a href="https://docs.fluentvalidation.net/" target="_blank">Fluent Validation</a> was used for the validator in the samples.
+            <br />You can also use your own validator. Form Helper doesn't depend on Fluent Validation.
         </p>
     </div>
 
@@ -56,24 +61,36 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.Now.Year - FormHelper.Samples - <small><a href="http://www.sinanbozkus.com" target="_blank">by Sinan BOZKUS</a></small>
+            &copy; @DateTime.Now.Year - FormHelper.Samples - <small><a href="https://www.sinanbozkus.com" target="_blank">by Sinan BOZKUS</a></small>
         </div>
     </footer>
 
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- The modal's content is loaded from the server when the button is clicked. -->
+    <div id="remoteModal" class="modal fade" tabindex="-1" aria-hidden="true"></div>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-    <script src="/formhelper/formhelper.bundle.min.js"></script>
-    <!-- remote modal -->
-    <script src="//cdn.jsdelivr.net/gh/sinanbozkus/remotemodal/remotemodal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    @if (ViewData["WithoutJQuery"] is true)
+    {
+        <!-- formhelper.js alone: no dependencies, the built-in validator reads the same data-val-* attributes -->
+        <formhelper-scripts />
+    }
+    else
+    {
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+        <!-- bundle="true": also includes jQuery Validation + Unobtrusive (skipped if the page already has them) -->
+        <formhelper-scripts bundle="true" />
+    }
 
     <script>
-        $("#openModal").click(function () {
-            RemoteModal("@Url.Action("Modal", "Home")");
+        document.getElementById("openModal").addEventListener("click", async function () {
+            const modal = document.getElementById("remoteModal");
+            const response = await fetch("@Url.Action("Modal", "Home")");
+            modal.innerHTML = await response.text();
+            bootstrap.Modal.getOrCreateInstance(modal).show();
         });
     </script>
 
-    @RenderSection("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

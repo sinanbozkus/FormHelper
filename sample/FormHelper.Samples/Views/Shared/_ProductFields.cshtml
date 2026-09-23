@@ -1,0 +1,45 @@
+@model ProductFormViewModel
+
+<input type="hidden" asp-for="Id" />
+
+<div class="mb-3">
+    <label asp-for="Title" class="form-label"></label>
+    <input asp-for="Title" type="text" class="form-control" />
+    <span asp-validation-for="Title" class="text-danger small"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="Category" class="form-label"></label>
+    <select asp-for="Category" asp-items="Html.GetEnumSelectList<Category>()" class="form-select">
+        <option value="">Select</option>
+    </select>
+    <span asp-validation-for="Category" class="text-danger small"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="InStock" class="form-label"></label>
+    <input asp-for="InStock" type="text" class="form-control" />
+    <span asp-validation-for="InStock" class="text-danger small"></span>
+</div>
+<div class="mb-3 form-check">
+    <input asp-for="Active" type="checkbox" class="form-check-input" />
+    <label asp-for="Active" class="form-check-label"></label>
+    <span asp-validation-for="Active" class="text-danger small d-block"></span>
+</div>
+<div class="mb-3">
+    <div class="form-label">User Type</div>
+    @foreach (var userType in Enum.GetValues<UserType>())
+    {
+        <div class="form-check form-check-inline">
+            <input asp-for="UserType" type="radio" value="@userType" id="UserType_@userType" class="form-check-input" />
+            <label for="UserType_@userType" class="form-check-label">@userType</label>
+        </div>
+    }
+    <span asp-validation-for="UserType" class="text-danger small d-block"></span>
+</div>
+@if (ViewData["HideFile"] is not true)
+{
+    <div class="mb-3">
+        <label asp-for="File" class="form-label"></label>
+        <input asp-for="File" type="file" class="form-control" />
+        <span asp-validation-for="File" class="text-danger small"></span>
+    </div>
+}

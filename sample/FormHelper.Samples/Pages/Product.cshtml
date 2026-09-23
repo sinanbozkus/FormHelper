@@ -1,20 +1,20 @@
+@page
+@model ProductModel
 @{
-    ViewData["page"] = Page.Post;
+    ViewData["page"] = FormHelper.Samples.Enums.Page.RazorPage;
 }
-
-@model ProductFormViewModel
 
 <div class="row justify-content-center">
     <div class="col col-lg-8">
         <div class="card">
             <div class="card-header">
-                @(Model.IsNew ? "New Product" : "Edit Product")
+                Razor Pages
             </div>
             <div class="card-body">
-                <!-- A normal (full page) post: [FormValidator(UseAjax = false)] renders this view again when the model is invalid. -->
-                <form asp-controller="Home" asp-action="SavePost" enctype="multipart/form-data">
+                <form method="post" asp-formhelper="true">
+                    <div asp-validation-summary="All" class="alert alert-danger"></div>
 
-                    <partial name="_ProductFields" />
+                    <partial name="_ProductFields" for="Input" />
 
                     <hr />
                     <div class="d-flex justify-content-end gap-2">
