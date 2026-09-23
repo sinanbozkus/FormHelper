@@ -48,7 +48,8 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.x
-      - run: npm ci
+      # esbuild doesn't need its install script (its binary comes from an optional dependency)
+      - run: npm ci --ignore-scripts
       - name: Built files are up to date
         run: npm run check
       - name: Browser tests

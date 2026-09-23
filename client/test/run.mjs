@@ -8,7 +8,7 @@ import { spawn, spawnSync } from "node:child_process";
 import { readdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { launch } from "./chrome.mjs";
+import { freePort, launch } from "./chrome.mjs";
 import loading from "./loading.test.mjs";
 import sample from "./sample.test.mjs";
 
@@ -27,7 +27,7 @@ async function startSample() {
 
   const bin = path.join(sampleDir, "bin/Release");
   const framework = readdirSync(bin).sort().pop();
-  const base = `http://127.0.0.1:${5300 + Math.floor(Math.random() * 500)}`;
+  const base = `http://127.0.0.1:${await freePort()}`;
 
   // Run from the project folder so views and wwwroot are found.
   const app = spawn(dotnet, [path.join(bin, framework, "FormHelper.Samples.dll"), "--urls", base], {

@@ -215,7 +215,7 @@ namespace FormHelper.FluentValidation.ClientSide
         private static string DisplayName(MemberInfo member)
         {
             return ValidatorOptions.Global.DisplayNameResolver(member.DeclaringType, member, null)
-                   ?? Regex.Replace(member.Name, "(?<=[a-z0-9])(?=[A-Z])", " ");
+                   ?? Regex.Replace(member.Name, "(?<=[a-z0-9])(?=[A-Z])", " ", RegexOptions.None, RegexTimeout);
         }
 
         private static bool IsNumber(object? value)
@@ -224,15 +224,17 @@ namespace FormHelper.FluentValidation.ClientSide
                    value is long || value is ulong || value is float || value is double || value is decimal;
         }
 
+        private static readonly TimeSpan RegexTimeout = TimeSpan.FromSeconds(1);
+
         // Common syntax JavaScript doesn't have (or reads differently): inline options, comments, atomic groups,
         // conditionals, balancing groups, named groups with quotes, \A \Z \z \G anchors, unicode categories and
         // character class subtraction. It can't list everything; the client skips a pattern it can't parse.
-        private static readonly Regex DotNetOnlySyntax = new Regex(@"\(\?[imnsx-]+[:)]|\(\?#|\(\?>|\(\?\(|\(\?<[^>=!]*-|\(\?'|\\[AZzG]|\\[pP]\{|-\[");
+        private static readonly Regex DotNetOnlySyntax = new Regex(@"\(\?[imnsx-]+[:)]|\(\?#|\(\?>|\(\?\(|\(\?<[^>=!]*-|\(\?'|\\[AZzG]|\\[pP]\{|-\[", RegexOptions.None, RegexTimeout);
 
         // \w \d \b and their negations are Unicode-aware in .NET (e.g. \w matches "ç") but ASCII-only in JavaScript,
         // so the browser would reject values the server accepts. RegexOptions.ECMAScript doesn't make them equal either
         // (its \w still matches "İ"). An escaped backslash (\\w) is a literal and doesn't count.
-        private static readonly Regex UnicodeAwareClasses = new Regex(@"(?<!\\)(?:\\\\)*\\[wWdDbB]");
+        private static readonly Regex UnicodeAwareClasses = new Regex(@"(?<!\\)(?:\\\\)*\\[wWdDbB]", RegexOptions.None, RegexTimeout);
 
         private const RegexOptions ClientCompatibleOptions = RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ECMAScript;
 

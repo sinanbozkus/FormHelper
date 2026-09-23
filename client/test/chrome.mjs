@@ -1,10 +1,23 @@
 // A minimal headless Chrome driver over the DevTools protocol (no dependencies, Node 22+).
 import { spawn } from "node:child_process";
 import { existsSync, mkdtempSync, rmSync } from "node:fs";
+import { createServer } from "node:net";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// A port the OS says is free.
+export function freePort() {
+  return new Promise((resolve, reject) => {
+    const server = createServer();
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", () => {
+      const { port } = server.address();
+      server.close(() => resolve(port));
+    });
+  });
+}
 
 const candidates = {
   darwin: ["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "/Applications/Chromium.app/Contents/MacOS/Chromium"],
@@ -32,7 +45,7 @@ function findChrome() {
 
 export async function launch() {
   const userDataDir = mkdtempSync(path.join(tmpdir(), "formhelper-chrome-"));
-  const port = 9300 + Math.floor(Math.random() * 500);
+  const port = await freePort();
   const args = ["--headless=new", `--remote-debugging-port=${port}`, `--user-data-dir=${userDataDir}`,
     "--no-first-run", "--no-default-browser-check", "--window-size=1280,900", "about:blank"];
 
