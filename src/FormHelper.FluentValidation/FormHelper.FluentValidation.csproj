@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>FormHelper.FluentValidation</PackageId>
+    <RootNamespace>FormHelper.FluentValidation</RootNamespace>
+    <Description>Fluent Validation for FormHelper: validates the models of [FormValidator] actions and Razor Pages asynchronously (MustAsync works) and adds client-side validation attributes. A replacement for the unsupported FluentValidation.AspNetCore package.</Description>
+    <PackageTags>formhelper fluentvalidation aspnetcore mvc razorpages validation clientside ajax form</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="..\FormHelper\FormHelper.csproj" />
+    <!-- FluentValidation 11 is the lowest version that runs on .NET Core 3.1; .NET 8+ applications can use 12. -->
+    <PackageReference Include="FluentValidation" Version="11.0.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="FormHelper.FluentValidation.Tests" />
+  </ItemGroup>
+
+</Project>

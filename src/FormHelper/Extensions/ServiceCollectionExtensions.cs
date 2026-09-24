@@ -1,38 +1,42 @@
-﻿using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using System;
-using System.Reflection;
+using System.Linq;
 
 namespace FormHelper
 {
     public static class ServiceCollectionExtensions
     {
-        public static IMvcBuilder AddFormHelper(this IMvcBuilder builder, Action<FormHelperOptions> options = null)
+        public static IMvcBuilder AddFormHelper(this IMvcBuilder builder, Action<FormHelperOptions>? options = null)
         {
-            var _options = new FormHelperOptions
+            builder.Services.AddFormHelper(options);
+
+            return builder;
+        }
+
+        public static IServiceCollection AddFormHelper(this IServiceCollection services, Action<FormHelperOptions>? options = null)
+        {
+            services.AddOptions<FormHelperOptions>();
+
+            // [FormValidator] validates the antiforgery token; AddControllers() alone doesn't register it.
+            services.AddAntiforgery();
+
+            // An invalid token rejected before [FormValidator] runs (Razor Pages, [AutoValidateAntiforgeryToken])
+            // still gets FormHelper's message.
+            services.Configure<MvcOptions>(mvc =>
             {
-                CheckTheFormFieldsMessage = "Check the form fields.",
-                RedirectDelay = 1500,
-                ToastrDefaultPosition = ToastrPosition.TopRight
-            };
+                if (!mvc.Filters.OfType<InvalidAntiforgeryResultFilter>().Any())
+                {
+                    mvc.Filters.Add(new InvalidAntiforgeryResultFilter());
+                }
+            });
 
             if (options != null)
             {
-                options(_options);
+                services.Configure(options);
             }
 
-            builder.Services.AddSingleton(_options);
-
-            if (_options.EmbeddedFiles == true)
-            {
-                builder.Services.Configure<MvcRazorRuntimeCompilationOptions>(options =>
-                {
-                    options.FileProviders.Add(new EmbeddedFileProvider(typeof(FormHelperHtmlHelpers).GetTypeInfo().Assembly));
-                });
-            }
-
-            return builder;
+            return services;
         }
     }
 }

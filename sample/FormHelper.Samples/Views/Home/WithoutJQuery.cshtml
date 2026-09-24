@@ -1,0 +1,43 @@
+@{
+    ViewData["page"] = Page.WithoutJQuery;
+    // The layout loads formhelper.js alone: no jQuery, the built-in validator is used.
+    ViewData["WithoutJQuery"] = true;
+}
+
+@model ProductFormViewModel
+
+<div class="row justify-content-center">
+    <div class="col col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                Without jQuery &middot; Json data type
+            </div>
+            <div class="card-body">
+                <form id="json-form" asp-formhelper="true" asp-controller="Home" asp-action="SaveJson" asp-dataType="Json"
+                      asp-callback="ProductSaved" asp-resetFormAfterSuccess="false" asp-enableButtonAfterSuccess="true">
+
+                    <partial name="_ProductFields" view-data='new ViewDataDictionary(ViewData) { ["HideFile"] = true }' />
+
+                    <hr />
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-secondary" type="button" onclick="FormHelper.reset(this.form)">Reset</button>
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function ProductSaved(result, form) {
+            console.log("Callback function!", result);
+        }
+
+        // DOM events are an alternative to asp-callback / asp-beforeSubmit.
+        document.getElementById("json-form").addEventListener("formhelper:success", function (e) {
+            console.log("formhelper:success", e.detail.result.object);
+        });
+    </script>
+}

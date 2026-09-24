@@ -1,9 +1,11 @@
-﻿.formhelper-toast-title {
+/*! FormHelper v6.0.0 | MIT License | https://github.com/sinanbozkus/FormHelper */
+/* FormHelper notifications (fhToastr). */
+
+.formhelper-toast-title {
     font-weight: bold;
 }
 
 .formhelper-toast-message {
-    -ms-word-wrap: break-word;
     word-wrap: break-word;
 }
 
@@ -25,11 +27,8 @@
     font-size: 20px;
     font-weight: bold;
     color: #FFFFFF;
-    -webkit-text-shadow: 0 1px 0 #ffffff;
     text-shadow: 0 1px 0 #ffffff;
     opacity: 0.8;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
-    filter: alpha(opacity=80);
     line-height: 1;
 }
 
@@ -39,8 +38,6 @@
         text-decoration: none;
         cursor: pointer;
         opacity: 0.4;
-        -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
-        filter: alpha(opacity=40);
     }
 
 .rtl .formhelper-toast-close-button {
@@ -48,15 +45,14 @@
     float: left;
     right: 0.3em;
 }
-/*Additional properties for button version
- iOS requires the button element instead of an anchor tag.
- If you want the anchor version, it requires `href="#"`.*/
+
 button.formhelper-toast-close-button {
     padding: 0;
     cursor: pointer;
     background: transparent;
     border: 0;
     -webkit-appearance: none;
+    appearance: none;
 }
 
 .formhelper-toast-top-center {
@@ -107,12 +103,9 @@ button.formhelper-toast-close-button {
     position: fixed;
     z-index: 999999;
     pointer-events: none;
-    /*overrides*/
 }
 
     #formhelper-toast-container * {
-        -moz-box-sizing: border-box;
-        -webkit-box-sizing: border-box;
         box-sizing: border-box;
     }
 
@@ -123,18 +116,14 @@ button.formhelper-toast-close-button {
         margin: 0 0 6px;
         padding: 15px 15px 15px 50px;
         width: 300px;
-        -moz-border-radius: 3px 3px 3px 3px;
-        -webkit-border-radius: 3px 3px 3px 3px;
-        border-radius: 3px 3px 3px 3px;
+        border-radius: 3px;
         background-position: 15px center;
         background-repeat: no-repeat;
-        -moz-box-shadow: 0 0 12px #999999;
-        -webkit-box-shadow: 0 0 12px #999999;
         box-shadow: 0 0 12px #999999;
         color: #FFFFFF;
         opacity: 0.8;
-        -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
-        filter: alpha(opacity=80);
+        transition-property: opacity;
+        transition-timing-function: ease;
     }
 
         #formhelper-toast-container > div.rtl {
@@ -144,13 +133,14 @@ button.formhelper-toast-close-button {
         }
 
         #formhelper-toast-container > div:hover {
-            -moz-box-shadow: 0 0 12px #000000;
-            -webkit-box-shadow: 0 0 12px #000000;
             box-shadow: 0 0 12px #000000;
             opacity: 1;
-            -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-            filter: alpha(opacity=100);
             cursor: pointer;
+        }
+
+        /* fade in / fade out */
+        #formhelper-toast-container > div.formhelper-toast-hidden {
+            opacity: 0;
         }
 
     #formhelper-toast-container > .formhelper-toast-info {
@@ -210,10 +200,15 @@ button.formhelper-toast-close-button {
     height: 4px;
     background-color: #000000;
     opacity: 0.4;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
-    filter: alpha(opacity=40);
 }
-/*Responsive Design*/
+
+@media (prefers-reduced-motion: reduce) {
+    #formhelper-toast-container > div {
+        transition: none !important;
+    }
+}
+
+/* Responsive Design */
 @media all and (max-width: 240px) {
     #formhelper-toast-container > div {
         padding: 8px 8px 8px 50px;

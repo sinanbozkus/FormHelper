@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/sample/FormHelper.Samples/bin/Debug/net5.0/FormHelper.Samples.dll",
+            "program": "${workspaceFolder}/sample/FormHelper.Samples/bin/Debug/net10.0/FormHelper.Samples.dll",
             "args": [],
             "cwd": "${workspaceFolder}/sample/FormHelper.Samples",
             "stopAtEntry": false,
