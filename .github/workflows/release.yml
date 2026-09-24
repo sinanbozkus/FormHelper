@@ -1,0 +1,62 @@
+# Publishes a version when a GitHub release is published (never on a push):
+# the NuGet packages (Trusted Publishing, no stored API key) and a zip of the scripts and styles.
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # attach files to the release
+      id-token: write  # nuget.org exchanges GitHub's OIDC token for a short-lived API key
+    env:
+      TAG: ${{ github.event.release.tag_name }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: The tag matches the version
+        run: |
+          version=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/Directory.Build.props)
+          if [ "v$version" != "$TAG" ]; then
+            echo "::error::The release tag $TAG doesn't match <Version>$version</Version> in src/Directory.Build.props."
+            exit 1
+          fi
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Pack
+        run: |
+          dotnet pack src/FormHelper -c Release -o artifacts
+          dotnet pack src/FormHelper.FluentValidation -c Release -o artifacts
+
+      - name: NuGet login
+        id: login
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        with:
+          user: sinanbozkus
+
+      # FormHelper first: FormHelper.FluentValidation depends on it. The .snupkg symbols are pushed with them.
+      # --skip-duplicate lets a failed run be run again.
+      - name: Push to NuGet
+        env:
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+        run: |
+          for package in FormHelper FormHelper.FluentValidation; do
+            dotnet nuget push "artifacts/$package.$VERSION.nupkg" --api-key "$NUGET_API_KEY" \
+              --source https://api.nuget.org/v3/index.json --skip-duplicate
+          done
+
+      - name: Attach the scripts, styles and packages to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          name="formhelper-$VERSION"
+          mkdir -p "$name"
+          cp src/FormHelper/Scripts/* src/FormHelper/Styles/* License.txt "$name"/
+          zip -r "$name.zip" "$name"
+          gh release upload "$TAG" "$name.zip" artifacts/*.nupkg --clobber
