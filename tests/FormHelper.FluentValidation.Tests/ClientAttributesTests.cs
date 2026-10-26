@@ -20,6 +20,7 @@ namespace FormHelper.FluentValidation.Tests
     /// <summary>
     /// The data-val-* attributes MVC's tag helpers render for a property, through the registered client validator providers.
     /// </summary>
+    [UseCulture("en-US")]
     public class ClientAttributesTests
     {
         private readonly IServiceProvider _services;
