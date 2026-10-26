@@ -16,6 +16,7 @@ using Xunit;
 
 namespace FormHelper.FluentValidation.Tests
 {
+    [UseCulture("en-US")]
     public class ServerValidationTests
     {
         private static readonly Dictionary<string, string> ValidForm = new Dictionary<string, string>
@@ -115,6 +116,7 @@ namespace FormHelper.FluentValidation.Tests
                 .Build();
 
             await host.StartAsync();
+            host.GetTestServer().PreserveExecutionContext = true;
             return host;
         }
 

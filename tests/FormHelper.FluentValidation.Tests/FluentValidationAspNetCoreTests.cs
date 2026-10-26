@@ -15,6 +15,7 @@ namespace FormHelper.FluentValidation.Tests
     /// <summary>
     /// A project that still uses FluentValidation.AspNetCore (which supports FluentValidation 11 only) next to FormHelper.FluentValidation.
     /// </summary>
+    [UseCulture("en-US")]
     public class FluentValidationAspNetCoreTests
     {
         [Fact]
